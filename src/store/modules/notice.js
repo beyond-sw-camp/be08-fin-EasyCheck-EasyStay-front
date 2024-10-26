@@ -21,6 +21,9 @@ export default {
     removeNotice(state, noticeId) {
       state.notices = state.notices.filter((notice) => notice.id !== noticeId);
     },
+    updateNotice(state, noticeId) {
+      state.notices.push(noticeId);
+    },
   },
   actions: {
     // 공지사항 등록 액션 수정
@@ -77,6 +80,18 @@ export default {
       } catch (error) {
         console.error("공지사항 삭제 실패 : ", error);
         throw error;
+      }
+    },
+
+    async updateNotice({ commit }, noticeId) {
+      try {
+        await apiClient.put(`/api/v1/notices-replyx/${noticeId}`);
+
+        commit("setNotice", noticeId);
+
+        await commit("getAllNotices");
+      } catch (error) {
+        console.error("공지사항 수정 실패 : ", error);
       }
     },
 

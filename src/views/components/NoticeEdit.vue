@@ -1,71 +1,7 @@
-<script setup>
-import { onBeforeMount, onMounted, onBeforeUnmount } from "vue";
-import { useStore } from "vuex";
-import { ref } from "vue";
-import { useRouter } from "vue-router";
-import setNavPills from "@/assets/js/nav-pills.js";
-import setTooltip from "@/assets/js/tooltip.js";
-// import ProfileCard from "./components/ProfileCard.vue";
-import ArgonInput from "@/components/ArgonInput.vue";
-import ArgonButton from "@/components/ArgonButton.vue";
-
-const body = document.getElementsByTagName("body")[0];
-
-const store = useStore();
-const router = useRouter();
-
-// const notices = computed(() => store.state.notices);
-
-const title = ref(""); // 공지사항 제목
-const content = ref(""); // 공지사항 내용
-
-onMounted(() => {
-  store.state.isAbsolute = true;
-  store.dispatch("notice/getAllNotice"); // 공지사항 목록 가져오기
-  setNavPills();
-  setTooltip();
-});
-onBeforeMount(() => {
-  store.state.imageLayout = "profile-overview";
-  store.state.showNavbar = false;
-  store.state.showFooter = true;
-  store.state.hideConfigButton = true;
-  body.classList.add("profile-overview");
-});
-onBeforeUnmount(() => {
-  store.state.isAbsolute = false;
-  store.state.imageLayout = "default";
-  store.state.showNavbar = true;
-  store.state.showFooter = true;
-  store.state.hideConfigButton = false;
-  body.classList.remove("profile-overview");
-});
-
-// 공지사항 등록 함수 정의
-const handlecreateNotice = async () => {
-  try {
-    console.log("요청 본문:", {
-      accommodationId: 1,
-      title: title.value,
-      content: content.value,
-    });
-    await store.dispatch("notice/createNotice", {
-      accommodationId: 1,
-      title: title.value,
-      content: content.value,
-    });
-    // 리스트 페이지로 이동
-    router.push("/noticeslist");
-  } catch (error) {
-    console.error("등록 실패:", error);
-    // 여기에 에러 메시지를 표시하는 로직을 추가할 수 있습니다
-    alert("등록에 실패했습니다. 다시 시도해주세요.");
-  }
-};
-</script>
 <template>
   <main>
     <div class="container-fluid">
+      <!-- Same layout as the notice registration page -->
       <div
         class="page-header min-height-300"
         style="
@@ -82,7 +18,7 @@ const handlecreateNotice = async () => {
             <div class="col-auto">
               <div class="avatar avatar-xl position-relative">
                 <img
-                  src="../assets/img/002.png"
+                  src="@/assets/img/002.png"
                   alt="profile_image"
                   class="shadow-sm w-100 border-radius-lg"
                 />
@@ -90,9 +26,10 @@ const handlecreateNotice = async () => {
             </div>
             <div class="col-auto my-auto">
               <div class="h-100">
-                <h5 class="mb-1">공지사항 등록</h5>
+                <h5 class="mb-1">공지사항 수정</h5>
+                <!-- 제목 변경 -->
                 <p class="mb-0 font-weight-bold text-sm">
-                  리조트/호텔에 대한 공지사항을 등록
+                  리조트/호텔에 대한 공지사항을 수정
                 </p>
               </div>
             </div>
@@ -121,9 +58,10 @@ const handlecreateNotice = async () => {
                           font-size: 20px;
                           margin-right: 5px;
                         "
-                        @click="handlecreateNotice"
-                        >등록하기</argon-button
+                        @click="handleUpdateNotice"
                       >
+                        수정하기
+                      </argon-button>
                     </a>
                   </li>
                 </ul>
@@ -139,7 +77,8 @@ const handlecreateNotice = async () => {
           <div class="card">
             <div class="card-header pb-0">
               <div class="d-flex align-items-center">
-                <p class="mb-0">공지사항 등록</p>
+                <p class="mb-0">공지사항 수정</p>
+                <!-- 제목 변경 -->
               </div>
             </div>
             <div class="card-body">
@@ -180,19 +119,41 @@ const handlecreateNotice = async () => {
   </main>
 </template>
 
-<style scoped>
-.text-uppercase {
-  color: #5e72e4; /* 제목 색상 */
-}
-
-input[type="text"],
-textarea {
-  transition: all 0.3s; /* 부드러운 효과 */
-}
-
-input[type="text"]:focus,
-textarea:focus {
-  border-color: #5e72e4; /* 포커스 시 테두리 색상 변경 */
-  box-shadow: 0 0 5px rgba(94, 114, 228, 0.5); /* 포커스 시 그림자 효과 */
-}
-</style>
+<script>
+export default {
+  data() {
+    return {
+      title: "", // 기존 공지 제목
+      content: "", // 기존 공지 내용
+    };
+  },
+  mounted() {
+    // 수정할 공지사항 데이터를 불러오는 API 호출
+    this.fetchNoticeDetail();
+  },
+  methods: {
+    fetchNoticeDetail() {
+      // 예시 API 호출로 공지 데이터를 가져와서 title과 content를 설정
+      const noticeId = this.$route.params.id; // 수정할 공지의 ID
+      this.$axios.get(`/api/v1/notices-reply/${noticeId}`).then((response) => {
+        const notice = response.data;
+        this.title = notice.title;
+        this.content = notice.content;
+      });
+    },
+    handleUpdateNotice() {
+      // 수정된 공지사항 데이터를 저장하는 API 호출
+      const noticeId = this.$route.params.id;
+      this.$axios
+        .put(`/api/v1/notices-reply/${noticeId}`, {
+          title: this.title,
+          content: this.content,
+        })
+        .then(() => {
+          // 성공 시 페이지 이동이나 알림 처리
+          this.$router.push("/noticeslist");
+        });
+    },
+  },
+};
+</script>

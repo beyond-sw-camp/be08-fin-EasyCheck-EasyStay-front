@@ -8,6 +8,7 @@ import service from "./modules/service";
 import theme from "./modules/theme";
 import suggestion from "./modules/suggestion";
 import pay from "./modules/pay";
+import event from "./modules/event";
 
 export default createStore({
   modules: {
@@ -42,6 +43,10 @@ export default createStore({
     pay: {
       namespaced: true,
       ...pay,
+    },
+    event: {
+      namespaced: true,
+      ...event,
     },
   },
 });
