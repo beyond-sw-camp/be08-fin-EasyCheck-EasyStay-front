@@ -16,6 +16,7 @@ import ThemeParksRegistration from "../views/ThemeParksRegistration.vue";
 import Signup from "../views/Signup.vue";
 import Signin from "../views/Signin.vue";
 import MoneyGraph from "../views/MoneyGraph.vue";
+import NoticeEdit from "../views/components/NoticeEdit.vue";
 
 const routes = [
   {
@@ -83,11 +84,11 @@ const routes = [
     name: "Virtual Reality",
     component: VirtualReality,
   },
-  // {
-  //   path: "/rtl-page",
-  //   name: "RTL",
-  //   component: RTL,
-  // },
+  {
+    path: "/noticeedit",
+    name: "NoticeEdit",
+    component: NoticeEdit,
+  },
   {
     path: "/noticeregistration",
     name: "NoticeRegistration",

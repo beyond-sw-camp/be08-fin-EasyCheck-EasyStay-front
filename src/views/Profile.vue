@@ -1,6 +1,8 @@
 <script setup>
-import { onBeforeMount, onMounted, onBeforeUnmount, ref } from "vue";
+import { onBeforeMount, onMounted, onBeforeUnmount } from "vue";
 import { useStore } from "vuex";
+import { ref } from "vue";
+import { useRouter } from "vue-router";
 
 import setNavPills from "@/assets/js/nav-pills.js";
 import setTooltip from "@/assets/js/tooltip.js";
@@ -11,8 +13,13 @@ import ArgonButton from "@/components/ArgonButton.vue";
 const body = document.getElementsByTagName("body")[0];
 
 const store = useStore();
-
+const router = useRouter();
 const photoList = ref([]);
+
+const introduce = ref(""); // 이벤트 소개
+const day = ref(""); // 진행 기간
+const days = ref(""); // 종료 기간
+const name = ref(""); // 이벤트 이름
 
 function updatePhotoList(newPhoto) {
   if (newPhoto) {
@@ -40,6 +47,29 @@ onBeforeUnmount(() => {
   store.state.hideConfigButton = false;
   body.classList.remove("profile-overview");
 });
+// 이벤트 등록 함수 정의
+const handlecreateEvent = async () => {
+  try {
+    const eventData = {
+      eventName: name.value, // 사용자로부터 입력받은 이벤트 이름
+      detail: introduce.value, // 이벤트 상세 내용
+      startDate: day.value, // 시작 날짜
+      endDate: days.value, // 종료 날짜
+    };
+
+    // 이미지 파일을 추가
+    const imageFiles = photoList.value; // 업로드할 이미지 파일 목록
+
+    // Vuex 액션 호출
+    await store.dispatch("event/createEvent", { eventData, imageFiles });
+
+    // 이벤트 리스트로 이동
+    router.push("/eventlist");
+  } catch (error) {
+    console.error("등록 실패:", error);
+    alert("등록에 실패했습니다. 다시 시도해주세요.");
+  }
+};
 </script>
 <template>
   <main>
@@ -99,6 +129,7 @@ onBeforeUnmount(() => {
                           font-size: 20px;
                           margin-right: 5px;
                         "
+                        @click="handlecreateEvent"
                         >등록하기</argon-button
                       >
                     </a>
@@ -122,22 +153,32 @@ onBeforeUnmount(() => {
             <div class="card-body">
               <div class="row">
                 <div class="col-md-12">
-                  <label for="example-text-input" class="form-control-label"
-                    >이름</label
-                  >
-                  <argon-input type="text" value="name" />
+                  <argon-input
+                    v-model="name"
+                    type="text"
+                    placeholder="이벤트 이름"
+                  />
                 </div>
                 <div class="col-md-6">
-                  <label for="example-text-input" class="form-control-label"
-                    >진행기간</label
-                  >
-                  <argon-input type="text" value="day" />
+                  <argon-input
+                    v-model="day"
+                    type="text"
+                    placeholder="진행 기간"
+                  />
                 </div>
                 <div class="col-md-6">
-                  <label for="example-text-input" class="form-control-label"
-                    >판매기간</label
-                  >
-                  <argon-input type="text" value="day" />
+                  <argon-input
+                    v-model="days"
+                    type="text"
+                    placeholder="진행 기간"
+                  />
+                </div>
+                <div class="col-md-6">
+                  <argon-input
+                    v-model="introduce"
+                    type="text"
+                    placeholder="이벤트 소개"
+                  />
                 </div>
                 <div class="col-md-12">
                   <label for="example-text-input" class="form-control-label"

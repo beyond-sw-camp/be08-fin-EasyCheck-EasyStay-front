@@ -24,16 +24,6 @@
               >
                 제목
               </th>
-              <!-- <th
-                class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
-              >
-                작성자
-              </th>
-              <th
-                class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
-              >
-                작성일
-              </th> -->
               <th class="text-secondary opacity-7"></th>
             </tr>
           </thead>
@@ -75,7 +65,12 @@
               <!-- 버튼 -->
               <td class="text-center" colspan="2">
                 <div class="button-group">
-                  <button class="btn btn-sm btn-primary">수정</button>
+                  <button
+                    class="btn btn-sm btn-primary"
+                    @click="handleUpdate(author.id)"
+                  >
+                    수정
+                  </button>
                   <button
                     class="btn btn-sm btn-danger"
                     @click="handleDelete(author.id)"
@@ -93,6 +88,16 @@
 </template>
 
 <script>
+// import { useStore } from "vuex";
+// import { useRouter } from "vue-router";
+// import { ref } from "vue";
+
+// const store = useStore();
+// const router = useRouter();
+
+// const title = ref(""); // 공지사항 제목
+// const content = ref(""); // 공지사항 내용
+
 export default {
   props: {
     title: {
@@ -113,6 +118,16 @@ export default {
           alert("공지사항이 삭제되었습니다.");
         } catch (error) {
           alert("삭제에 실패했습니다. 다시 시도해주세요.");
+        }
+      }
+    },
+    async handleUpdate(noticeId) {
+      if (confirm("정말로 이 공지사항을 수정하시겠습니까?")) {
+        try {
+          await this.$store.dispatch("notice/updateNotice", noticeId);
+          alert("공지사항이 수정되었습니다.");
+        } catch (error) {
+          alert("수정에 실패했습니다. 다시 시도해주세요.");
         }
       }
     },
