@@ -42,6 +42,9 @@ export default {
     SET_CURRENT_EVENT(state, event) {
       state.currentEvent = event;
     },
+    removeEvent(state, eventId) {
+      state.Events = state.Events.filter((event) => event.id !== eventId);
+    },
   },
   actions: {
     // 이벤트 등록 액션
@@ -97,6 +100,17 @@ export default {
         commit("setEvent", response.data); // 상태 업데이트
       } catch (error) {
         console.error("이벤트 목록 가져오기 실패:", error);
+      }
+    },
+    async deleteEvent({ commit }, eventId) {
+      try {
+        // 공지사항 삭제
+        await apiClient.delete(`/events/${eventId}`);
+
+        commit("removeEvent", eventId);
+      } catch (error) {
+        console.error("이벤트 삭제 실패 : ", error);
+        throw error;
       }
     },
   },

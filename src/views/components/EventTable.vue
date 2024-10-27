@@ -74,7 +74,12 @@
               <td class="text-center" colspan="2">
                 <div class="button-group">
                   <button class="btn btn-sm btn-primary">수정</button>
-                  <button class="btn btn-sm btn-danger">삭제</button>
+                  <button
+                    class="btn btn-sm btn-danger"
+                    @click="handleDelete(event.id)"
+                  >
+                    삭제
+                  </button>
                 </div>
               </td>
             </tr>
@@ -96,6 +101,18 @@ export default {
       type: Array,
       required: true,
       default: () => [],
+    },
+  },
+  methods: {
+    async handleDelete(eventId) {
+      if (confirm("정말로 이 공지사항을 삭제하시겠습니까?")) {
+        try {
+          await this.$store.dispatch("event/deleteEvent", eventId);
+          alert("이벤트가 삭제되었습니다.");
+        } catch (error) {
+          alert("삭제에 실패했습니다. 다시 시도해주세요.");
+        }
+      }
     },
   },
 };
