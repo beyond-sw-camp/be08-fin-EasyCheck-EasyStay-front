@@ -1,5 +1,18 @@
 import apiClient from "@/api";
 
+// base64 데이터를 File 객체로 변환하는 함수
+// function dataURLtoFile(dataurl, filename) {
+//   const arr = dataurl.split(",");
+//   const mime = arr[0].match(/:(.*?);/)[1];
+//   const bstr = atob(arr[1]);
+//   let n = bstr.length;
+//   const u8arr = new Uint8Array(n);
+//   while (n--) {
+//     u8arr[n] = bstr.charCodeAt(n);
+//   }
+//   return new File([u8arr], filename, { type: mime });
+// }
+
 export default {
   namespaced: true,
   state: {
@@ -31,53 +44,49 @@ export default {
     },
   },
   actions: {
-    // 이벤트 등록 액션 수정
+    // 이벤트 등록 액션
     async createEvent({ commit }, { eventData, imageFiles }) {
-      commit("SET_LOADING", true);
-      commit("SET_ERROR", null);
-
       try {
         const formData = new FormData();
 
-        // 날짜 변환 함수
-        const formatDate = (dateString) => {
-          return dateString.split("T")[0]; // 'YYYY-MM-DD' 형식으로 변환
-        };
+        const eventBlob = new Blob([JSON.stringify(eventData)], {
+          type: "application/json",
+        });
 
-        // 이벤트 데이터를 JSON 문자열로 변환하여 추가
-        formData.append(
-          "description",
-          JSON.stringify({
-            eventName: eventData.eventName,
-            detail: eventData.detail,
-            startDate: formatDate(eventData.startDate), // 변환된 날짜 사용
-            endDate: formatDate(eventData.endDate), // 변환된 날짜 사용
-          })
-        );
+        formData.append("description", eventBlob);
 
-        // 이미지 파일들을 formData에 추가
-        imageFiles.forEach((file) => {
+        // base64 이미지 데이터를 File 객체로 변환하여 추가
+        imageFiles.forEach((base64Data, index) => {
+          // base64 문자열에서 실제 데이터 부분만 추출
+          const base64Content = base64Data.url.split(",")[1];
+          // base64를 바이너리 데이터로 변환
+          const binaryData = atob(base64Content);
+          // 바이너리 데이터를 Uint8Array로 변환
+          const bytes = new Uint8Array(binaryData.length);
+          for (let i = 0; i < binaryData.length; i++) {
+            bytes[i] = binaryData.charCodeAt(i);
+          }
+          // Blob 생성
+          const blob = new Blob([bytes], { type: "image/jpeg" });
+          // File 객체 생성
+          const file = new File([blob], `image${index + 1}.jpg`, {
+            type: "image/jpeg",
+          });
+
           formData.append("Image", file);
         });
 
-        const config = {
+        const response = await apiClient.post("/events", formData, {
           headers: {
-            "Content-Type": "application/json", // JSON 형식으로 설정
+            "Content-Type": "multipart/form-data",
           },
-        };
+        });
 
-        const response = await apiClient.post("/events", formData, config);
-        console.log("으어어", response.data);
-        commit("SET_CURRENT_EVENT", response.data);
-        return response.data;
+        console.log("이벤트 등록 성공:", response.data);
+        commit("addEvent", response.data); // 이벤트 추가 뮤테이션 호출
       } catch (error) {
-        commit(
-          "SET_ERROR",
-          error.response?.data?.message || "이벤트 생성 중 오류가 발생했습니다."
-        );
-        throw error;
-      } finally {
-        commit("SET_LOADING", false);
+        console.error("이벤트 등록 중 오류 발생:", error);
+        throw error; // 에러를 호출한 쪽으로 전달
       }
     },
 
@@ -90,15 +99,16 @@ export default {
         console.error("이벤트 목록 가져오기 실패:", error);
       }
     },
-
-    // 로그아웃 액션
-    logout({ commit }) {
-      // 토큰 제거
-      localStorage.removeItem("accessToken");
-      localStorage.removeItem("refreshToken");
-      commit("clearAuthState"); // 인증 상태 초기화
-    },
   },
+
+  // 로그아웃 액션
+  logout({ commit }) {
+    // 토큰 제거
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("refreshToken");
+    commit("clearAuthState"); // 인증 상태 초기화
+  },
+
   getters: {
     isAuthenticated: (state) => state.isAuthenticated, // 인증 여부 확인
     currentUser: (state) => state.user, // 현재 유저 정보 반환
