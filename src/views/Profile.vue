@@ -3,7 +3,6 @@ import { onBeforeMount, onMounted, onBeforeUnmount } from "vue";
 import { useStore } from "vuex";
 import { ref } from "vue";
 import { useRouter } from "vue-router";
-
 import setNavPills from "@/assets/js/nav-pills.js";
 import setTooltip from "@/assets/js/tooltip.js";
 import ProfileCard from "./components/ProfileCard.vue";
@@ -20,6 +19,7 @@ const introduce = ref(""); // 이벤트 소개
 const day = ref(""); // 진행 기간
 const days = ref(""); // 종료 기간
 const name = ref(""); // 이벤트 이름
+const events = ref([]);
 
 function updatePhotoList(newPhoto) {
   if (newPhoto) {
@@ -27,8 +27,10 @@ function updatePhotoList(newPhoto) {
   }
 }
 
-onMounted(() => {
-  store.state.isAbsolute = true;
+onMounted(async () => {
+  // 이벤트 목록 가져오기
+  await store.dispatch("event/getAllEvent"); // Vuex 액션 호출
+  events.value = store.getters.events; // 이벤트 목록을 로컬 상태에 저장
   setNavPills();
   setTooltip();
 });
@@ -51,6 +53,7 @@ onBeforeUnmount(() => {
 const handlecreateEvent = async () => {
   try {
     const eventData = {
+      accommodationEntity: 1,
       eventName: name.value, // 사용자로부터 입력받은 이벤트 이름
       detail: introduce.value, // 이벤트 상세 내용
       startDate: day.value, // 시작 날짜
@@ -59,7 +62,12 @@ const handlecreateEvent = async () => {
 
     // 이미지 파일을 추가
     const imageFiles = photoList.value; // 업로드할 이미지 파일 목록
+    console.log("요청 본문 :", "event/createEvent", { eventData, imageFiles });
 
+    // if (!imageFiles || imageFiles.length === 0) {
+    //   console.log("파일 선택이 취소되었습니다.");
+    //   return;
+    // }
     // Vuex 액션 호출
     await store.dispatch("event/createEvent", { eventData, imageFiles });
 
