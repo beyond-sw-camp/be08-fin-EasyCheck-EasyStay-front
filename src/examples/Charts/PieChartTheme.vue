@@ -12,6 +12,7 @@
     <canvas ref="chartCanvas" style="max-height: 700px"></canvas>
   </div>
 </template>
+
 <script setup>
 import { ref, onMounted, nextTick } from "vue";
 import {
@@ -19,10 +20,19 @@ import {
   Title,
   Tooltip,
   Legend,
-  ArcElement,
+  BarElement,
+  CategoryScale,
+  LinearScale,
 } from "chart.js/auto";
 
-ChartJS.register(Title, Tooltip, Legend, ArcElement);
+ChartJS.register(
+  Title,
+  Tooltip,
+  Legend,
+  BarElement,
+  CategoryScale,
+  LinearScale
+);
 
 // 차트 옵션 설정
 const chartOptions = {
@@ -71,36 +81,22 @@ onMounted(async () => {
   if (chartCanvas.value) {
     const ctx = chartCanvas.value.getContext("2d");
 
-    // 벚꽃색 계열 그라데이션 설정
-    const cherryBlossomGradient1 = ctx.createLinearGradient(0, 0, 0, 500);
-    cherryBlossomGradient1.addColorStop(0, "#FFB2C2"); // 연한 벚꽃색
-    cherryBlossomGradient1.addColorStop(1, "#FF6F91"); // 진한 벚꽃색
+    // 색상 설정
+    const colors = [
+      "#FFB2C2", // 연한 벚꽃색
+      "#FF6F91", // 진한 벚꽃색
+      "#F8D3E4", // 아주 연한 핑크
+    ];
 
-    const cherryBlossomGradient2 = ctx.createLinearGradient(0, 0, 0, 500);
-    cherryBlossomGradient2.addColorStop(0, "#F8D3E4"); // 아주 연한 핑크
-    cherryBlossomGradient2.addColorStop(1, "#F28E9B"); // 부드러운 핑크
-
-    const cherryBlossomGradient3 = ctx.createLinearGradient(0, 0, 0, 500);
-    cherryBlossomGradient3.addColorStop(0, "#FF69B4"); // 핫 핑크
-    cherryBlossomGradient3.addColorStop(1, "#C71585"); // 미디엄 보라
-
-    const cherryBlossomGradient4 = ctx.createLinearGradient(0, 0, 0, 500);
-    cherryBlossomGradient4.addColorStop(0, "#FF8DAA"); // 중간 핑크
-    cherryBlossomGradient4.addColorStop(1, "#FF3E5B"); // 강렬한 핑크
     new ChartJS(ctx, {
-      type: "pie",
+      type: "bar", // 막대그래프로 변경
       data: {
-        labels: ["디럭스", "스위트", "로얄", "플래티넘"],
+        labels: ["설악 워터피아", "플라자 CC 설악", "워터파크"], // 카테고리 변경
         datasets: [
           {
-            label: "각 테마별 매출 비율",
-            data: [288000, 360000, 460000, 1208000],
-            backgroundColor: [
-              cherryBlossomGradient1, // 첫 번째 벚꽃색 그라데이션
-              cherryBlossomGradient2, // 두 번째 벚꽃색 그라데이션
-              cherryBlossomGradient3, // 세 번째 벚꽃색 그라데이션
-              cherryBlossomGradient4, // 네 번째 벚꽃색 그라데이션
-            ],
+            label: "각 테마파크별 매출 비율",
+            data: [288000, 360000, 460000], // 각 카테고리의 데이터
+            backgroundColor: colors, // 각 카테고리의 색상
           },
         ],
       },

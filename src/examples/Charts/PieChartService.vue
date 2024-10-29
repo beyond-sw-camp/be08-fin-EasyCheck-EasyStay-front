@@ -12,6 +12,7 @@
     <canvas ref="chartCanvas" style="max-height: 700px"></canvas>
   </div>
 </template>
+
 <script setup>
 import { ref, onMounted, nextTick } from "vue";
 import {
@@ -19,10 +20,19 @@ import {
   Title,
   Tooltip,
   Legend,
-  ArcElement,
+  BarElement,
+  CategoryScale,
+  LinearScale,
 } from "chart.js/auto";
 
-ChartJS.register(Title, Tooltip, Legend, ArcElement);
+ChartJS.register(
+  Title,
+  Tooltip,
+  Legend,
+  BarElement,
+  CategoryScale,
+  LinearScale
+);
 
 // 차트 옵션 설정
 const chartOptions = {
@@ -89,19 +99,19 @@ onMounted(async () => {
     deepSkyBlueGradient.addColorStop(1, "#4682B4"); // 진한 파란색
 
     new ChartJS(ctx, {
-      type: "pie",
+      type: "bar", // 막대그래프로 변경
       data: {
-        labels: ["부가서비스", "테마파크", "객실", "와인"],
+        labels: ["부가서비스", "테마파크", "객실", "와인"], // 카테고리 유지
         datasets: [
           {
-            label: "각 테마별 매출 비율",
-            data: [400000, 360000, 460000, 1208000],
+            label: "각 부가서비스별 매출 비율",
+            data: [400000, 360000, 460000, 1208000], // 각 카테고리의 데이터
             backgroundColor: [
               lightBlueGradient,
               skyBlueGradient,
               darkBlueGradient,
               deepSkyBlueGradient,
-            ],
+            ], // 그라데이션 색상 배열
           },
         ],
       },

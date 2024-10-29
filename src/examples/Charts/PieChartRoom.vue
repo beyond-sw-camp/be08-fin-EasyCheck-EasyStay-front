@@ -12,6 +12,7 @@
     <canvas ref="chartCanvas" style="max-height: 700px"></canvas>
   </div>
 </template>
+
 <script setup>
 import { ref, onMounted, nextTick } from "vue";
 import {
@@ -20,9 +21,20 @@ import {
   Tooltip,
   Legend,
   ArcElement,
+  BarElement,
+  CategoryScale,
+  LinearScale,
 } from "chart.js/auto";
 
-ChartJS.register(Title, Tooltip, Legend, ArcElement);
+ChartJS.register(
+  Title,
+  Tooltip,
+  Legend,
+  ArcElement,
+  BarElement,
+  CategoryScale,
+  LinearScale
+);
 
 // 차트 옵션 설정
 const chartOptions = {
@@ -46,6 +58,14 @@ const chartOptions = {
       left: 10,
       right: 10,
       bottom: 10,
+    },
+  },
+  scales: {
+    x: {
+      beginAtZero: true,
+    },
+    y: {
+      beginAtZero: true,
     },
   },
 };
@@ -72,11 +92,9 @@ onMounted(async () => {
     const ctx = chartCanvas.value.getContext("2d");
 
     // 그라데이션 색상 설정
-
-    // 노을색 그라데이션 설정
-    // const deluxeGradient = ctx.createLinearGradient(0, 0, 0, 500);
-    // deluxeGradient.addColorStop(0, "#FF7E5F"); // 밝은 주황색
-    // deluxeGradient.addColorStop(1, "#FEB47B"); // 연한 노란색
+    const deluxeGradient = ctx.createLinearGradient(0, 0, 0, 500);
+    deluxeGradient.addColorStop(0, "#FF7E5F"); // 밝은 주황색
+    deluxeGradient.addColorStop(1, "#FEB47B"); // 연한 노란색
 
     const suiteGradient = ctx.createLinearGradient(0, 0, 0, 500);
     suiteGradient.addColorStop(0, "#FF6A88"); // 분홍색
@@ -91,15 +109,15 @@ onMounted(async () => {
     platinumGradient.addColorStop(1, "#FC6767"); // 밝은 붉은색
 
     new ChartJS(ctx, {
-      type: "pie",
+      type: "bar", // 막대그래프로 변경
       data: {
-        labels: ["부가서비스", "테마파크", "객실"],
+        labels: ["디럭스", "스위트", "로얄", "플래티넘"], // 카테고리 추가
         datasets: [
           {
-            label: "각 테마별 매출 비율",
-            data: [360000, 460000, 1208000],
+            label: "각 객실별 매출 비율",
+            data: [360000, 460000, 1208000, 500000], // 각 카테고리의 데이터
             backgroundColor: [
-              //   deluxeGradient,
+              deluxeGradient,
               suiteGradient,
               royalGradient,
               platinumGradient,
