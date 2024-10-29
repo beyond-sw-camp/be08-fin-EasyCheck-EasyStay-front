@@ -15,19 +15,16 @@
               <th class="text-center opacity-7">번호</th>
               <th class="opacity-7">결제자</th>
               <th class="text-center opacity-7">회원구분</th>
+              <th class="text-center opacity-7">결제금액</th>
               <th class="text-center opacity-7">결제상태</th>
-              <th class="text-center opacity-7">환불</th>
+              <th class="text-center opacity-7">결제수단</th>
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(customer, index) in customers" :key="customer.id">
+            <tr v-for="(pay, index) in pays" :key="pay.id">
               <!-- 사진 -->
               <td class="photo-cell">
-                <img
-                  :src="customer.image"
-                  class="avatar"
-                  :alt="customer.name"
-                />
+                <img :src="pay.image" class="avatar" :alt="pay.name" />
               </td>
 
               <!-- 번호 -->
@@ -37,41 +34,58 @@
 
               <!-- 결제자 이름 -->
               <td class="name-cell">
-                <h6 class="mb-0 text-m">{{ customer.name }}</h6>
+                <h6 class="mb-0 text-m">{{ pay.username }}</h6>
               </td>
 
               <!-- 회원 구분 -->
               <td class="text-center">
                 <span
                   class="badge"
-                  :class="getMemberBadge(customer.memberType)"
+                  :class="
+                    pay.userRole === 'USER' ? 'user-badge' : 'corporate-badge'
+                  "
                 >
-                  {{ customer.memberType }}
+                  {{ pay.userRole === "USER" ? "회원" : "법인회원" }}
+                </span>
+              </td>
+
+              <!-- 결제 금액 -->
+              <td class="text-center">
+                <span class="text-lg">
+                  {{ pay.amount }}
                 </span>
               </td>
 
               <!-- 결제 상태 -->
               <td class="text-center">
                 <span
-                  class="text-lg"
+                  class="status-badge"
                   :class="
-                    customer.paymentStatus === '완료'
-                      ? 'text-success'
-                      : 'text-danger'
+                    pay.completionStatus === 'COMPLETE'
+                      ? 'complete'
+                      : 'incomplete'
                   "
                 >
-                  {{ customer.paymentStatus }}
+                  <i
+                    :class="
+                      pay.completionStatus === 'COMPLETE'
+                        ? 'fas fa-check-circle'
+                        : 'fas fa-times-circle'
+                    "
+                    aria-hidden="true"
+                  ></i>
+                  {{ pay.completionStatus }}
                 </span>
               </td>
-
-              <!-- 환불 버튼 -->
+              <!-- 결제 수단 -->
               <td class="text-center">
-                <button
-                  class="btn btn-danger btn-sm"
-                  @click="confirmRefund(customer)"
-                >
-                  환불
-                </button>
+                <span class="payment-method">
+                  <i
+                    :class="getPaymentIcon(pay.method)"
+                    class="payment-icon"
+                  ></i>
+                  {{ pay.method }}
+                </span>
               </td>
             </tr>
           </tbody>
@@ -82,6 +96,8 @@
 </template>
 
 <script>
+import { mapState, mapActions } from "vuex";
+
 export default {
   props: {
     title: {
@@ -94,17 +110,22 @@ export default {
       default: () => [],
     },
   },
+  computed: {
+    ...mapState({
+      pays: (state) => state.pay.pays, // Vuex 상태에서 dinings 가져오기
+    }),
+  },
+  created() {
+    this.getAllpays(); // 컴포넌트 생성 시 다이닝 목록을 가져오는 액션 실행
+  },
+  mounted() {
+    // 공지사항을 가져오는 Vuex 액션 호출
+    this.$store.dispatch("pay/getAllpays");
+  },
   methods: {
+    ...mapActions("pay", ["getAllpays"]), // Vuex 액션 연결
     getMemberBadge(type) {
       return type === "회원" ? "badge-success" : "badge-secondary";
-    },
-    confirmRefund(customer) {
-      const confirmed = confirm(
-        `정말로 ${customer.name}님의 결제를 환불하시겠습니까?`
-      );
-      if (confirmed) {
-        this.refundCustomer(customer);
-      }
     },
     refundCustomer(customer) {
       // 결제 상태를 "취소됨"으로 변경
@@ -113,6 +134,14 @@ export default {
         `환불 처리: 고객 ID ${customer.id}, 새로운 결제 상태: ${customer.paymentStatus}`
       );
       // 추가적인 환불 처리 로직을 여기에 작성할 수 있습니다.
+    },
+    getPaymentIcon(method) {
+      if (method === "CARD") {
+        return "fas fa-credit-card card-icon"; // 카드 아이콘
+      } else if (method === "VBANK") {
+        return "fas fa-university bank-icon"; // 계좌이체 아이콘
+      }
+      return ""; // 기본적으로 아이콘이 없는 경우
     },
   },
 };
@@ -160,23 +189,28 @@ export default {
   padding-left: 15px;
 }
 
-/* 뱃지 스타일 */
-.badge {
-  padding: 8px 10px;
-  border-radius: 8px;
+.user-badge {
+  background: linear-gradient(
+    135deg,
+    #a3c1e1,
+    #6b9fc6
+  ); /* 차분한 블루 그라데이션 */
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 8px; /* 둥근 모서리 */
   font-size: 1rem;
+  font-weight: bold;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 그림자 */
 }
-
-.badge-success {
-  background-color: #2ecc71;
+.corporate-badge {
+  background: linear-gradient(135deg, #555555, #2c2c2c); /* 차콜 그라데이션 */
   color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 8px; /* 둥근 모서리 */
+  font-size: 1rem;
+  font-weight: bold;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 그림자 */
 }
-
-.badge-secondary {
-  background-color: #95a5a6;
-  color: white;
-}
-
 /* 버튼 스타일 */
 .btn {
   padding: 6px 12px;
@@ -194,5 +228,48 @@ export default {
 
 .btn-danger:hover {
   background-color: #c0392b;
+}
+.payment-method {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem; /* 텍스트 크기 조정 */
+}
+
+.payment-icon {
+  margin-right: 0.5rem; /* 텍스트와 아이콘 간의 간격 */
+  font-size: 1.5rem; /* 아이콘 크기 */
+  color: #333; /* 아이콘 색상 */
+}
+
+.card-icon {
+  color: #1e90ff; /* 카드 아이콘 색상 */
+}
+
+.bank-icon {
+  color: #4caf50; /* 계좌이체 아이콘 색상 */
+}
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 0.8rem;
+  border-radius: 12px; /* 둥근 모서리 */
+  font-size: 0.8rem;
+  font-weight: bold;
+  color: white; /* 텍스트 색상 */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 그림자 */
+}
+
+.complete {
+  background: linear-gradient(135deg, #28a745, #218838); /* 성공 그라데이션 */
+}
+
+.incomplete {
+  background: linear-gradient(135deg, #dc3545, #c82333); /* 실패 그라데이션 */
+}
+
+.status-badge i {
+  margin-right: 0.5rem; /* 아이콘과 텍스트 간격 */
 }
 </style>
