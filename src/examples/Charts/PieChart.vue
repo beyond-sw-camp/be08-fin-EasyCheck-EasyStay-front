@@ -24,18 +24,6 @@ import {
 
 ChartJS.register(Title, Tooltip, Legend, ArcElement);
 
-// 차트 데이터를 설정
-// const chartData = {
-//   labels: ["디럭스", "스위트", "로얄", "플래티넘"],
-//   datasets: [
-//     {
-//       label: "객실 매출 비율",
-//       data: [288000, 360000, 460000, 1208000],
-//       backgroundColor: ["#E53935", "#1E88E5", "#FDD835", "#00897B"],
-//     },
-//   ],
-// };
-
 // 차트 옵션 설정
 const chartOptions = {
   responsive: true,

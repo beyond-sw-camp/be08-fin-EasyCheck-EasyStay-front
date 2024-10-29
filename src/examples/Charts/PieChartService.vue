@@ -12,6 +12,7 @@
     <canvas ref="chartCanvas" style="max-height: 700px"></canvas>
   </div>
 </template>
+
 <script setup>
 import { ref, onMounted, nextTick } from "vue";
 import {
@@ -19,10 +20,19 @@ import {
   Title,
   Tooltip,
   Legend,
-  ArcElement,
+  BarElement,
+  CategoryScale,
+  LinearScale,
 } from "chart.js/auto";
 
-ChartJS.register(Title, Tooltip, Legend, ArcElement);
+ChartJS.register(
+  Title,
+  Tooltip,
+  Legend,
+  BarElement,
+  CategoryScale,
+  LinearScale
+);
 
 const chartOptions = {
   responsive: true,
@@ -64,41 +74,41 @@ const backgroundColorPlugin = {
 const chartCanvas = ref(null);
 
 onMounted(async () => {
-  await nextTick();
+  await nextTick(); // DOM이 완전히 렌더링된 후 차트 생성
   if (chartCanvas.value) {
     const ctx = chartCanvas.value.getContext("2d");
 
-    // 호텔 서비스에 어울리는 고급스러운 색상 그라데이션 설정
-    const serviceGradient = ctx.createLinearGradient(0, 0, 0, 500);
-    serviceGradient.addColorStop(0, "#8B4513"); // 브라운
-    serviceGradient.addColorStop(1, "#A0522D"); // 연한 브라운
+    // 그라데이션 색상 설정
+    const lightBlueGradient = ctx.createLinearGradient(0, 0, 0, 500);
+    lightBlueGradient.addColorStop(0, "#ADD8E6"); // 연한 파란색
+    lightBlueGradient.addColorStop(1, "#4682B4"); // 진한 파란색
 
-    const themeparkGradient = ctx.createLinearGradient(0, 0, 0, 500);
-    themeparkGradient.addColorStop(0, "#C19A6B"); // 골든 브라운
-    themeparkGradient.addColorStop(1, "#DEB887"); // 버르뉴드 우드
+    const skyBlueGradient = ctx.createLinearGradient(0, 0, 0, 500);
+    skyBlueGradient.addColorStop(0, "#87CEFA"); // 하늘색
+    skyBlueGradient.addColorStop(1, "#1E90FF"); // 중간 파란색
 
-    const roomGradient = ctx.createLinearGradient(0, 0, 0, 500);
-    roomGradient.addColorStop(0, "#CD853F"); // 페루
-    roomGradient.addColorStop(1, "#DAA520"); // 골든로드
+    const darkBlueGradient = ctx.createLinearGradient(0, 0, 0, 500);
+    darkBlueGradient.addColorStop(0, "#00BFFF"); // 밝은 청색
+    darkBlueGradient.addColorStop(1, "#0000CD"); // 진한 청색
 
-    const wineGradient = ctx.createLinearGradient(0, 0, 0, 500);
-    wineGradient.addColorStop(0, "#8B0000"); // 다크 레드
-    wineGradient.addColorStop(1, "#B22222"); // 파이어브릭
+    const deepSkyBlueGradient = ctx.createLinearGradient(0, 0, 0, 500);
+    deepSkyBlueGradient.addColorStop(0, "#00CED1"); // 연한 청록색
+    deepSkyBlueGradient.addColorStop(1, "#4682B4"); // 진한 파란색
 
     new ChartJS(ctx, {
-      type: "pie",
+      type: "bar", // 막대그래프로 변경
       data: {
-        labels: ["부가서비스", "테마파크", "객실", "와인"],
+        labels: ["부가서비스", "테마파크", "객실", "와인"], // 카테고리 유지
         datasets: [
           {
-            label: "각 테마별 매출 비율",
-            data: [400000, 360000, 460000, 1208000],
+            label: "각 부가서비스별 매출 비율",
+            data: [400000, 360000, 460000, 1208000], // 각 카테고리의 데이터
             backgroundColor: [
-              serviceGradient,
-              themeparkGradient,
-              roomGradient,
-              wineGradient,
-            ],
+              lightBlueGradient,
+              skyBlueGradient,
+              darkBlueGradient,
+              deepSkyBlueGradient,
+            ], // 그라데이션 색상 배열
           },
         ],
       },

@@ -12,6 +12,7 @@
     <canvas ref="chartCanvas" style="max-height: 700px"></canvas>
   </div>
 </template>
+
 <script setup>
 import { ref, onMounted, nextTick } from "vue";
 import {
@@ -19,10 +20,19 @@ import {
   Title,
   Tooltip,
   Legend,
-  ArcElement,
+  BarElement,
+  CategoryScale,
+  LinearScale,
 } from "chart.js/auto";
 
-ChartJS.register(Title, Tooltip, Legend, ArcElement);
+ChartJS.register(
+  Title,
+  Tooltip,
+  Legend,
+  BarElement,
+  CategoryScale,
+  LinearScale
+);
 
 const chartOptions = {
   responsive: true,
@@ -64,41 +74,26 @@ const backgroundColorPlugin = {
 const chartCanvas = ref(null);
 
 onMounted(async () => {
-  await nextTick();
+  await nextTick(); // DOM이 완전히 렌더링된 후 차트 생성
   if (chartCanvas.value) {
     const ctx = chartCanvas.value.getContext("2d");
 
-    // 테마파크 분위기에 맞는 밝고 경쾌한 색상 그라데이션
-    const deluxeGradient = ctx.createLinearGradient(0, 0, 0, 500);
-    deluxeGradient.addColorStop(0, "#FFD700"); // 밝은 골드
-    deluxeGradient.addColorStop(1, "#FFA500"); // 오렌지
-
-    const suiteGradient = ctx.createLinearGradient(0, 0, 0, 500);
-    suiteGradient.addColorStop(0, "#FF4500"); // 선명한 레드 오렌지
-    suiteGradient.addColorStop(1, "#FF6347"); // 토마토 레드
-
-    const royalGradient = ctx.createLinearGradient(0, 0, 0, 500);
-    royalGradient.addColorStop(0, "#32CD32"); // 라임 그린
-    royalGradient.addColorStop(1, "#98FB98"); // 연한 그린
-
-    const platinumGradient = ctx.createLinearGradient(0, 0, 0, 500);
-    platinumGradient.addColorStop(0, "#1E90FF"); // 밝은 블루
-    platinumGradient.addColorStop(1, "#00BFFF"); // 딥스카이블루
+    // 색상 설정
+    const colors = [
+      "#FFB2C2", // 연한 벚꽃색
+      "#FF6F91", // 진한 벚꽃색
+      "#F8D3E4", // 아주 연한 핑크
+    ];
 
     new ChartJS(ctx, {
-      type: "pie",
+      type: "bar", // 막대그래프로 변경
       data: {
-        labels: ["디럭스", "스위트", "로얄", "플래티넘"],
+        labels: ["설악 워터피아", "플라자 CC 설악", "워터파크"], // 카테고리 변경
         datasets: [
           {
-            label: "각 테마별 매출 비율",
-            data: [288000, 360000, 460000, 1208000],
-            backgroundColor: [
-              deluxeGradient,
-              suiteGradient,
-              royalGradient,
-              platinumGradient,
-            ],
+            label: "각 테마파크별 매출 비율",
+            data: [288000, 360000, 460000], // 각 카테고리의 데이터
+            backgroundColor: colors, // 각 카테고리의 색상
           },
         ],
       },

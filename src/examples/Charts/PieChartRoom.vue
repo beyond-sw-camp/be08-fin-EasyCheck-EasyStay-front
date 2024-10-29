@@ -21,9 +21,20 @@ import {
   Tooltip,
   Legend,
   ArcElement,
+  BarElement,
+  CategoryScale,
+  LinearScale,
 } from "chart.js/auto";
 
-ChartJS.register(Title, Tooltip, Legend, ArcElement);
+ChartJS.register(
+  Title,
+  Tooltip,
+  Legend,
+  ArcElement,
+  BarElement,
+  CategoryScale,
+  LinearScale
+);
 
 const chartOptions = {
   responsive: true,
@@ -48,6 +59,14 @@ const chartOptions = {
       bottom: 10,
     },
   },
+  scales: {
+    x: {
+      beginAtZero: true,
+    },
+    y: {
+      beginAtZero: true,
+    },
+  },
 };
 
 const backgroundColorPlugin = {
@@ -69,28 +88,37 @@ onMounted(async () => {
   if (chartCanvas.value) {
     const ctx = chartCanvas.value.getContext("2d");
 
-    // 모던하고 세련된 그라데이션 설정
-    const serviceGradient = ctx.createLinearGradient(0, 0, 0, 500);
-    serviceGradient.addColorStop(0, "#3B82F6"); // 밝은 파랑
-    serviceGradient.addColorStop(1, "#60A5FA"); // 연한 파랑
+    // 그라데이션 색상 설정
+    const deluxeGradient = ctx.createLinearGradient(0, 0, 0, 500);
+    deluxeGradient.addColorStop(0, "#FF7E5F"); // 밝은 주황색
+    deluxeGradient.addColorStop(1, "#FEB47B"); // 연한 노란색
 
-    const themeparkGradient = ctx.createLinearGradient(0, 0, 0, 500);
-    themeparkGradient.addColorStop(0, "#10B981"); // 에메랄드
-    themeparkGradient.addColorStop(1, "#34D399"); // 연한 에메랄드
+    const suiteGradient = ctx.createLinearGradient(0, 0, 0, 500);
+    suiteGradient.addColorStop(0, "#FF6A88"); // 분홍색
+    suiteGradient.addColorStop(1, "#FFA07A"); // 살구색
 
-    const roomGradient = ctx.createLinearGradient(0, 0, 0, 500);
-    roomGradient.addColorStop(0, "#6366F1"); // 인디고
-    roomGradient.addColorStop(1, "#818CF8"); // 연한 인디고
+    const royalGradient = ctx.createLinearGradient(0, 0, 0, 500);
+    royalGradient.addColorStop(0, "#FF7E5F"); // 노란 주황색
+    royalGradient.addColorStop(1, "#FEB47B"); // 밝은 노란색
+
+    const platinumGradient = ctx.createLinearGradient(0, 0, 0, 500);
+    platinumGradient.addColorStop(0, "#F76B1C"); // 붉은 주황색
+    platinumGradient.addColorStop(1, "#FC6767"); // 밝은 붉은색
 
     new ChartJS(ctx, {
-      type: "pie",
+      type: "bar", // 막대그래프로 변경
       data: {
-        labels: ["부가서비스", "테마파크", "객실"],
+        labels: ["디럭스", "스위트", "로얄", "플래티넘"], // 카테고리 추가
         datasets: [
           {
-            label: "각 테마별 매출 비율",
-            data: [360000, 460000, 1208000],
-            backgroundColor: [serviceGradient, themeparkGradient, roomGradient],
+            label: "각 객실별 매출 비율",
+            data: [360000, 460000, 1208000, 500000], // 각 카테고리의 데이터
+            backgroundColor: [
+              deluxeGradient,
+              suiteGradient,
+              royalGradient,
+              platinumGradient,
+            ],
           },
         ],
       },
