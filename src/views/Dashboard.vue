@@ -1,13 +1,13 @@
 <script setup>
 import MiniStatisticsCard from "@/examples/Cards/MiniStatisticsCard.vue";
 import GradientLineChart from "@/examples/Charts/GradientLineChart.vue";
-import Carousel from "./components/Carousel.vue";
-// import CategoriesList from "./components/CategoriesList.vue";
+import GradientLineChart2 from "@/examples/Charts/GradientLineChart2.vue";
 
 import Deluxe from "@/assets/img/icons/flags/Deluxe.png";
 import Suite from "@/assets/img/icons/flags/Suite.png";
 import Royal from "@/assets/img/icons/flags/Royal.png";
 import Platinum from "@/assets/img/icons/flags/Platinum.png";
+import Theme from "@/assets/img/icons/flags/teme.png";
 
 // 객실 관리
 const sales = {
@@ -38,6 +38,30 @@ const sales = {
     value: "$1,208,000",
     bounce: "2명",
     flag: Platinum,
+  },
+};
+// 객실 관리
+const temes = {
+  us: {
+    country: "설악 워터피아",
+    sales: 10,
+    value: "$288,000",
+    bounce: "2명",
+    flag: Theme,
+  },
+  germany: {
+    country: "플라자CC설악",
+    sales: 10,
+    value: "$360,000",
+    bounce: "4명",
+    flag: Theme,
+  },
+  britain: {
+    country: "워터파크",
+    sales: 10,
+    value: "$460,000",
+    bounce: "6명",
+    flag: Theme,
   },
 };
 // 가장 인기있는 객실, 당일 목표 대비 실적, 문의 개수, 매출
@@ -102,11 +126,11 @@ const sales = {
         </div>
         <!-- 매출 그래프 -->
         <div class="row">
-          <div class="col-lg-7 mb-lg">
+          <div class="col-lg-6 mb-lg">
             <!-- line chart -->
             <div class="card z-index-2">
               <gradient-line-chart
-                id="chart-line"
+                id="chart-line-1"
                 title="각 객실별 매출 현황"
                 description=""
                 :chart="{
@@ -133,13 +157,36 @@ const sales = {
               />
             </div>
           </div>
-          <div class="col-lg-5">
-            <!-- 그림들 (노을 풍경, 리조트 풍경 등) -->
-            <Carousel />
+          <div class="col-lg-6 mb-lg">
+            <!-- line chart -->
+            <div class="card z-index-2">
+              <gradient-line-chart2
+                id="chart-line-2"
+                title="각 테마파크별 매출 현황"
+                description=""
+                :chart="{
+                  labels: ['Aug', 'Sep', 'Oct'],
+                  datasets: [
+                    {
+                      label: '설악 워터피아',
+                      data: [120, 120, 130],
+                    },
+                    {
+                      label: '플라자CC설악',
+                      data: [110, 160, 100],
+                    },
+                    {
+                      label: '워터파크',
+                      data: [100, 140, 150],
+                    },
+                  ],
+                }"
+              />
+            </div>
           </div>
         </div>
         <div class="row mt-4">
-          <div class="col-lg-12 mb-lg-0 mb-4">
+          <div class="col-lg-6 mb-lg-0 mb-4">
             <div class="card">
               <div class="p-3 pb-0 card-header">
                 <div class="d-flex justify-content-between">
@@ -197,40 +244,68 @@ const sales = {
               </div>
             </div>
           </div>
-
-          <!-- Categories 리스트 -->
-          <!-- <div class="col-lg-5">
-            <categories-list
-              :categories="[
-                {
-                  icon: {
-                    component: 'ni ni-mobile-button',
-                    background: 'dark',
-                  },
-                  label: '하츄핑 어트랙션',
-                  description: '250 in stock <strong>346+ sold</strong>',
-                },
-                {
-                  icon: {
-                    component: 'ni ni-tag',
-                    background: 'dark',
-                  },
-                  label: 'Tickets',
-                  description: '123 closed <strong>15 open</strong>',
-                },
-                {
-                  icon: { component: 'ni ni-box-2', background: 'dark' },
-                  label: 'Error logs',
-                  description: '1 is active <strong>40 closed</strong>',
-                },
-                {
-                  icon: { component: 'ni ni-satisfied', background: 'dark' },
-                  label: 'Happy Users',
-                  description: '+ 430',
-                },
-              ]"
-            />
-          </div> -->
+          <div class="col-lg-6 mb-lg-0 mb-4">
+            <div class="card">
+              <div class="p-3 pb-0 card-header">
+                <div class="d-flex justify-content-between">
+                  <h6 class="mb-3">테마파크 관리</h6>
+                </div>
+              </div>
+              <div class="table-responsive">
+                <table class="table align-items-center">
+                  <tbody>
+                    <tr v-for="(teme, index) in temes" :key="index">
+                      <td class="w-30">
+                        <div class="px-1 py-1 d-flex align-items-center">
+                          <div class="ms-3">
+                            <img
+                              :src="teme.flag"
+                              alt="Country flag"
+                              style="width: 40px; height: 40px"
+                            />
+                          </div>
+                          <div class="ms-5">
+                            <!-- <p class="mb-0 text-s font-weight-bold">
+                              객실 종류:
+                            </p> -->
+                            <h6 class="mb-0 text-m">
+                              종류 : {{ teme.country }}
+                            </h6>
+                          </div>
+                        </div>
+                      </td>
+                      <td>
+                        <div class="text-center">
+                          <!-- <p class="mb-0 text-s font-weight-bold">
+                            객실 총 개수:
+                          </p> -->
+                          <h6 class="mb-0 text-sm">
+                            시설 개수 : {{ teme.sales }}
+                          </h6>
+                        </div>
+                      </td>
+                      <td>
+                        <div class="text-center">
+                          <!-- <p class="mb-0 text-s font-weight-bold">가격:</p> -->
+                          <h6 class="mb-0 text-sm">
+                            입장권 가격 : {{ teme.value }}
+                          </h6>
+                        </div>
+                      </td>
+                      <td class="text-sm align-middle">
+                        <div class="text-center col">
+                          <!-- <p class="mb-0 text-s font-weight-bold">:</p> -->
+                          <h6 class="mb-0 text-sm">
+                            기준 인원 : {{ teme.bounce }}
+                          </h6>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
