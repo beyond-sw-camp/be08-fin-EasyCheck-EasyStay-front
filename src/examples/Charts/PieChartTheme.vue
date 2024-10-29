@@ -34,7 +34,6 @@ ChartJS.register(
   LinearScale
 );
 
-// 차트 옵션 설정
 const chartOptions = {
   responsive: true,
   maintainAspectRatio: false,
@@ -46,7 +45,7 @@ const chartOptions = {
       display: true,
       text: "테마파크 매출",
       font: {
-        size: 24, // 글씨 크기를 24px로 설정
+        size: 24,
       },
     },
   },
@@ -60,20 +59,18 @@ const chartOptions = {
   },
 };
 
-// 차트 배경색을 하얀색으로 설정하는 beforeDraw 커스텀 훅 추가
 const backgroundColorPlugin = {
   id: "customCanvasBackgroundColor",
   beforeDraw: (chart) => {
     const ctx = chart.canvas.getContext("2d");
     ctx.save();
     ctx.globalCompositeOperation = "destination-over";
-    ctx.fillStyle = "white"; // 배경색을 하얀색으로 설정
+    ctx.fillStyle = "white";
     ctx.fillRect(0, 0, chart.width, chart.height);
     ctx.restore();
   },
 };
 
-// DOM이 렌더링된 후에 차트를 그리기 위한 ref와 onMounted
 const chartCanvas = ref(null);
 
 onMounted(async () => {
