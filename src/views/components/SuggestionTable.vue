@@ -58,16 +58,19 @@
                 <h6 class="mb-0 text-m">{{ park.title }}</h6>
               </td>
 
-              <!-- 작성자 -->
+              <!-- 건의사항 내용 -->
               <td class="text-center">
-                <p class="text-m text-secondary mb-0">{{ park.author }}</p>
+                <p class="text-m text-secondary mb-0">{{ park.content }}</p>
               </td>
 
-              <!-- 작성일 -->
+              <!-- 이메일 -->
               <td class="text-center">
-                <span class="text-sm font-weight-bold">{{
-                  park.submittedDate
-                }}</span>
+                <p class="text-m text-secondary mb-0">{{ park.email }}</p>
+              </td>
+
+              <!-- 건의사항 타입 -->
+              <td class="text-center">
+                <span class="text-sm font-weight-bold">{{ park.type }}</span>
               </td>
 
               <!-- 버튼 -->

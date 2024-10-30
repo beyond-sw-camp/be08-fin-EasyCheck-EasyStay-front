@@ -31,8 +31,9 @@ export default {
         const suggestionsData = response.data.map((suggestions) => ({
           id: suggestions.id,
           title: suggestions.title,
-          author: suggestions.email, // accommodationName을 location으로
-          submittedDate: suggestions.subject, // description을 openingDate로 사용
+          content: suggestions.content,
+          email: suggestions.email, // accommodationName을 location으로
+          type: suggestions.subject, // description을 openingDate로 사용
         }));
         console.log("받아온 건의사항 데이터:", suggestionsData);
         commit("setsuggestions", suggestionsData); // 상태 업데이트
