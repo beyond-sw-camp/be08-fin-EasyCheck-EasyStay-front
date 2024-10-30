@@ -1,23 +1,11 @@
 import apiClient from "@/api";
 
-// base64 데이터를 File 객체로 변환하는 함수
-// function dataURLtoFile(dataurl, filename) {
-//   const arr = dataurl.split(",");
-//   const mime = arr[0].match(/:(.*?);/)[1];
-//   const bstr = atob(arr[1]);
-//   let n = bstr.length;
-//   const u8arr = new Uint8Array(n);
-//   while (n--) {
-//     u8arr[n] = bstr.charCodeAt(n);
-//   }
-//   return new File([u8arr], filename, { type: mime });
-// }
-
 export default {
   namespaced: true,
   state: {
     isAuthenticated: true, // 초기 상태를 true로 설정 (필요에 따라 조정)
     Events: [], // 공지사항 리스트를 저장할 상태
+    Event: null,
     isLoading: false,
     error: null,
     currentEvent: null,
@@ -44,6 +32,9 @@ export default {
     },
     removeEvent(state, eventId) {
       state.Events = state.Events.filter((event) => event.id !== eventId);
+    },
+    updateEvent(state, Event) {
+      state.Event = Event;
     },
   },
   actions: {
@@ -102,6 +93,24 @@ export default {
         console.error("이벤트 목록 가져오기 실패:", error);
       }
     },
+
+    async fetchEventById({ commit }, eventId) {
+      console.log("요청한 ID:", eventId);
+
+      try {
+        const response = await apiClient.get(`/events/${eventId}`);
+        console.log("데이터 확인 : ", response);
+        console.log("데이터 정보", response.data);
+        commit("updateEvent", response.data);
+        return response.data;
+      } catch (err) {
+        this.error = err.message;
+        console.error("Error fetching notice:", err);
+      } finally {
+        this.loading = false;
+      }
+    },
+
     async deleteEvent({ commit }, eventId) {
       try {
         // 공지사항 삭제
@@ -111,6 +120,30 @@ export default {
       } catch (error) {
         console.error("이벤트 삭제 실패 : ", error);
         throw error;
+      }
+    },
+
+    async updateNotice(
+      { commit },
+      { eventId, eventName, detail, startDate, endDate, images }
+    ) {
+      try {
+        const response = await apiClient.put(`/events/${eventId}`, {
+          eventName,
+          detail,
+          startDate,
+          endDate,
+          images,
+        });
+
+        console.log("수정 : ", response);
+
+        alert("공지사항이 수정되었습니다.");
+        // 공지사항 목록 페이지로 이동
+        commit("setEvent"); // 상태 업데이트를 먼저 하고
+        return response;
+      } catch (error) {
+        console.error("공지사항 수정 실패 : ", error);
       }
     },
   },

@@ -59,7 +59,15 @@
               </td>
 
               <!-- 건의사항 내용 -->
-              <td class="text-center">
+              <td
+                class="text-center"
+                style="
+                  max-width: 200px;
+                  white-space: nowrap;
+                  overflow: hidden;
+                  text-overflow: ellipsis;
+                "
+              >
                 <p class="text-m text-secondary mb-0">{{ park.content }}</p>
               </td>
 
