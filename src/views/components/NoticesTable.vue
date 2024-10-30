@@ -88,17 +88,9 @@
 </template>
 
 <script>
-// import { useStore } from "vuex";
-// import { useRouter } from "vue-router";
-// import { ref } from "vue";
+import { defineComponent } from "vue";
 
-// const store = useStore();
-// const router = useRouter();
-
-// const title = ref(""); // 공지사항 제목
-// const content = ref(""); // 공지사항 내용
-
-export default {
+export default defineComponent({
   props: {
     title: {
       type: String,
@@ -108,6 +100,10 @@ export default {
       type: Array,
       required: true,
       default: () => [],
+    },
+    id: {
+      type: String,
+      required: true,
     },
   },
   methods: {
@@ -121,18 +117,19 @@ export default {
         }
       }
     },
-    async handleUpdate(noticeId) {
+    async handleUpdate(id) {
+      console.log("Notice ID:", id);
       if (confirm("정말로 이 공지사항을 수정하시겠습니까?")) {
         try {
-          await this.$store.dispatch("notice/updateNotice", noticeId);
-          alert("공지사항이 수정되었습니다.");
+          console.log("Navigating to NoticeEdit with ID:", id);
+          this.$router.push({ name: "NoticeEdit", params: { id: id } });
         } catch (error) {
           alert("수정에 실패했습니다. 다시 시도해주세요.");
         }
       }
     },
   },
-};
+});
 </script>
 
 <style scoped>

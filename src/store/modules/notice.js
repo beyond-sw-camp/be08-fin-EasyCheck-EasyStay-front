@@ -6,6 +6,7 @@ export default {
   state: {
     isAuthenticated: true, // 초기 상태를 true로 설정 (필요에 따라 조정)
     notices: [], // 공지사항 리스트를 저장할 상태
+    notice: null,
   },
   mutations: {
     setNotices(state, notices) {
@@ -21,8 +22,8 @@ export default {
     removeNotice(state, noticeId) {
       state.notices = state.notices.filter((notice) => notice.id !== noticeId);
     },
-    updateNotice(state, noticeId) {
-      state.notices.push(noticeId);
+    updateNotice(state, notice) {
+      state.notice = notice;
     },
   },
   actions: {
@@ -71,6 +72,23 @@ export default {
       }
     },
 
+    async fetchNoticeById({ commit }, noticeId) {
+      console.log("요청한 ID:", noticeId);
+
+      try {
+        const response = await apiClient.get(`/notices-reply/${noticeId}`);
+        console.log("데이터 확인 : ", response);
+        console.log("데이터 정보", response.data);
+        commit("updateNotice", response.data);
+        return response.data;
+      } catch (err) {
+        this.error = err.message;
+        console.error("Error fetching notice:", err);
+      } finally {
+        this.loading = false;
+      }
+    },
+
     async deleteNotice({ commit }, noticeId) {
       try {
         // 공지사항 삭제
@@ -83,13 +101,19 @@ export default {
       }
     },
 
-    async updateNotice({ commit }, noticeId) {
+    async updateNotice({ commit }, { noticeId, title, content }) {
       try {
-        await apiClient.put(`/api/v1/notices-replyx/${noticeId}`);
+        const response = await apiClient.put(`/notices-reply/${noticeId}`, {
+          title,
+          content,
+        });
 
-        commit("setNotice", noticeId);
+        console.log("수정 : ", response);
 
-        await commit("getAllNotices");
+        alert("공지사항이 수정되었습니다.");
+        // 공지사항 목록 페이지로 이동
+        commit("setNotices"); // 상태 업데이트를 먼저 하고
+        return response;
       } catch (error) {
         console.error("공지사항 수정 실패 : ", error);
       }
@@ -106,5 +130,8 @@ export default {
   getters: {
     isAuthenticated: (state) => state.isAuthenticated, // 인증 여부 확인
     currentUser: (state) => state.user, // 현재 유저 정보 반환
+    getNoticeById: (state) => (id) => {
+      return state.notices.find((notice) => notice.id === Number(id));
+    },
   },
 };
