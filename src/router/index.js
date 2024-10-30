@@ -45,6 +45,11 @@ const routes = [
     component: NoticesList,
   },
   {
+    path: "/noticeslist/:id",
+    name: "NoticeEdit",
+    component: NoticeEdit, // 수정할 공지사항 페이지 컴포넌트
+  },
+  {
     path: "/themeparkslist",
     name: "ThemeParksList",
     component: ThemeParksList,
@@ -83,11 +88,6 @@ const routes = [
     path: "/virtual-reality",
     name: "Virtual Reality",
     component: VirtualReality,
-  },
-  {
-    path: "/noticeedit",
-    name: "NoticeEdit",
-    component: NoticeEdit,
   },
   {
     path: "/noticeregistration",
