@@ -17,6 +17,7 @@ import Signup from "../views/Signup.vue";
 import Signin from "../views/Signin.vue";
 import MoneyGraph from "../views/MoneyGraph.vue";
 import NoticeEdit from "../views/components/NoticeEdit.vue";
+import EventEdit from "../views/components/EventEdit.vue";
 
 const routes = [
   {
@@ -58,6 +59,11 @@ const routes = [
     path: "/eventlist",
     name: "EventList",
     component: EventList,
+  },
+  {
+    path: "/eventlist/:id",
+    name: "EventEdit",
+    component: EventEdit,
   },
   {
     path: "/suggestionlist",

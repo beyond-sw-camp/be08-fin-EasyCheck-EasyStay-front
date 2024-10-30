@@ -170,69 +170,29 @@ const handlecreateEvent = async () => {
                 <div class="col-md-6">
                   <argon-input
                     v-model="day"
-                    type="text"
+                    type="date"
                     placeholder="진행 기간"
                   />
                 </div>
                 <div class="col-md-6">
                   <argon-input
                     v-model="days"
-                    type="text"
-                    placeholder="진행 기간"
+                    type="date"
+                    placeholder="종료 기간"
                   />
                 </div>
-                <div class="col-md-6">
-                  <argon-input
+                <div class="col-md-12">
+                  <textarea
+                    class="form-control"
                     v-model="introduce"
-                    type="text"
-                    placeholder="이벤트 소개"
-                  />
-                </div>
-                <div class="col-md-12">
-                  <label for="example-text-input" class="form-control-label"
-                    >소개</label
-                  >
-                  <argon-input type="text" value="introduce" />
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-md-12">
-                  <label for="example-text-input" class="form-control-label"
-                    >이벤트 상세 제목</label
-                  >
-                  <argon-input type="text" value="Content" />
-                </div>
-                <div class="col-md-6">
-                  <label for="example-text-input" class="form-control-label"
-                    >기간</label
-                  >
-                  <argon-input type="text" value="month" />
-                </div>
-                <div class="col-md-6">
-                  <label for="example-text-input" class="form-control-label"
-                    >시간</label
-                  >
-                  <argon-input type="text" value="time" />
-                </div>
-                <div class="col-md-6">
-                  <label for="example-text-input" class="form-control-label"
-                    >장소</label
-                  >
-                  <argon-input type="text" value="place" />
-                </div>
-                <div class="col-md-6">
-                  <label for="example-text-input" class="form-control-label"
-                    >예약 문의</label
-                  >
-                  <argon-input type="text" value="reservation" />
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-md-12">
-                  <label for="example-text-input" class="form-control-label"
-                    >주의사항</label
-                  >
-                  <argon-input type="text" value="warning" />
+                    style="
+                      resize: none;
+                      height: 300px;
+                      padding: 10px;
+                      border-radius: 5px;
+                    "
+                    placeholder="이벤트 내용을 입력하세요"
+                  ></textarea>
                 </div>
               </div>
             </div>

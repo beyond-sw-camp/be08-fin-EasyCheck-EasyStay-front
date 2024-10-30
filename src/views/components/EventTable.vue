@@ -63,7 +63,15 @@
                   {{ event.accommodationName }}
                 </p>
               </td>
-              <td class="text-center">
+              <td
+                class="text-center"
+                style="
+                  max-width: 200px;
+                  white-space: nowrap;
+                  overflow: hidden;
+                  text-overflow: ellipsis;
+                "
+              >
                 <span class="text-sm font-weight-bold">{{ event.detail }}</span>
               </td>
               <td class="text-center">
@@ -73,7 +81,12 @@
               </td>
               <td class="text-center" colspan="2">
                 <div class="button-group">
-                  <button class="btn btn-sm btn-primary">수정</button>
+                  <button
+                    class="btn btn-sm btn-primary"
+                    @click="handleUpdate(event.id)"
+                  >
+                    수정
+                  </button>
                   <button
                     class="btn btn-sm btn-danger"
                     @click="handleDelete(event.id)"
@@ -102,6 +115,10 @@ export default {
       required: true,
       default: () => [],
     },
+    id: {
+      type: String,
+      required: true,
+    },
   },
   methods: {
     async handleDelete(eventId) {
@@ -111,6 +128,17 @@ export default {
           alert("이벤트가 삭제되었습니다.");
         } catch (error) {
           alert("삭제에 실패했습니다. 다시 시도해주세요.");
+        }
+      }
+    },
+    async handleUpdate(id) {
+      console.log("Event ID:", id);
+      if (confirm("정말로 이 공지사항을 수정하시겠습니까?")) {
+        try {
+          console.log("Navigating to EventEdit with ID:", id);
+          this.$router.push({ name: "EventEdit", params: { id: id } });
+        } catch (error) {
+          alert("수정에 실패했습니다. 다시 시도해주세요.");
         }
       }
     },
