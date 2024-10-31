@@ -35,17 +35,8 @@ const handleLogout = () => {
           class="pe-md-3 d-flex align-items-center"
           :class="isRTL ? 'me-md-auto' : 'ms-md-auto'"
         >
-          <div class="input-group">
-            <span class="input-group-text text-body">
-              <i class="fas fa-search" aria-hidden="true"></i>
-              <!-- 검색 아이콘 -->
-            </span>
-            <!-- 검색 기능 -->
-            <input
-              type="text"
-              class="form-control"
-              :placeholder="isRTL ? 'أكتب هنا...' : ''"
-            />
+          <div class="card">
+            <p class="card-title">설악 리조트</p>
           </div>
         </div>
 
@@ -70,3 +61,27 @@ const handleLogout = () => {
     </div>
   </nav>
 </template>
+
+<style>
+.card {
+  width: 200px; /* 카드 너비 */
+  padding: 20px;
+  margin: 15px auto;
+  background-color: #ffffff;
+  border-radius: 10px; /* 모서리를 둥글게 */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 그림자 */
+  text-align: center;
+  transition: transform 0.3s ease; /* 애니메이션 효과 */
+}
+
+.card:hover {
+  transform: translateY(-5px); /* 호버 시 카드가 올라가는 효과 */
+}
+
+.card-title {
+  font-size: 1.2em;
+  font-weight: bold;
+  color: #333333; /* 텍스트 색상 */
+  margin: 0;
+}
+</style>
