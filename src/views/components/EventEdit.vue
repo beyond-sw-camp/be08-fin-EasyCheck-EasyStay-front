@@ -185,6 +185,7 @@ const fetchEventById = async (id) => {
     if (fetchedEvent) {
       console.log(fetchedEvent.eventName); // title 로그 확인
       console.log(fetchedEvent.detail); // content 로그 확인
+      console.log(fetchedEvent.images); // content 로그 확인
 
       eventName.value = fetchedEvent.eventName;
       detail.value = fetchedEvent.detail;
@@ -205,7 +206,7 @@ const handlePhotoChange = (newPhoto, index) => {
     images.value.splice(index, 1);
   } else {
     // 이미지 추가
-    images.value.push(newPhoto.url);
+    images.value.push(newPhoto);
   }
 };
 

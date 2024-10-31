@@ -58,9 +58,9 @@ const handleLogin = async () => {
         <div class="container">
           <div class="row">
             <div
-              class="mx-auto col-xl-4 col-lg-5 col-md-7 d-flex flex-column mx-lg-0"
+              class="mx-auto col-xl-3 col-lg-5 col-md-7 d-flex flex-column mx-lg-0"
             >
-              <div class="card card-plain">
+              <div class="card-plain">
                 <div class="pb-0 card-header text-start">
                   <img
                     src="@/assets/img/013.png"
