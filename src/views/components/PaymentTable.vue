@@ -22,25 +22,18 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(pay, index) in pays" :key="pay.id">
-              <!-- 사진 -->
-              <td class="photo-cell">
-                <!-- <img :src="pay.images" class="avatar" :alt="pay.name" /> -->
-              </td>
-
-              <!-- 번호 -->
+            <tr v-for="(pay, index) in paginatedPays" :key="pay.id">
+              <td class="photo-cell"></td>
               <td class="number-cell">
-                <span class="text-sm font-weight-bold">{{ index + 1 }}</span>
+                <span class="text-sm font-weight-bold">{{
+                  index + 1 + (currentPage - 1) * itemsPerPage
+                }}</span>
               </td>
-
-              <!-- 결제자 이름 -->
               <td class="name-cell">
                 <h6 class="mb-0 text-m">
                   {{ maskName(pay.username) }}({{ pay.email }})
                 </h6>
               </td>
-
-              <!-- 회원 구분 -->
               <td class="text-center">
                 <span
                   class="badge"
@@ -51,15 +44,9 @@
                   {{ pay.userRole === "USER" ? "회원" : "법인회원" }}
                 </span>
               </td>
-
-              <!-- 결제 금액 -->
               <td class="text-center">
-                <span class="text-lg">
-                  {{ pay.amount }}
-                </span>
+                <span class="text-lg">{{ pay.amount }}</span>
               </td>
-
-              <!-- 결제 상태 -->
               <td class="text-center">
                 <span
                   class="status-badge"
@@ -80,7 +67,6 @@
                   {{ pay.completionStatus }}
                 </span>
               </td>
-              <!-- 결제 수단 -->
               <td class="text-center">
                 <span class="payment-method">
                   <i
@@ -90,15 +76,19 @@
                   {{ pay.method }}
                 </span>
               </td>
-              <!-- 결제 금액 -->
               <td class="text-center">
-                <span class="text-lg">
-                  {{ pay.paymentDate }}
-                </span>
+                <span class="text-lg">{{ pay.paymentDate }}</span>
               </td>
             </tr>
           </tbody>
         </table>
+      </div>
+      <div class="pagination">
+        <button @click="prevPage" :disabled="currentPage === 1">이전</button>
+        <span>{{ currentPage }} / {{ totalPages }}</span>
+        <button @click="nextPage" :disabled="currentPage === totalPages">
+          다음
+        </button>
       </div>
     </div>
   </div>
@@ -119,40 +109,50 @@ export default {
       default: () => [],
     },
   },
+  data() {
+    return {
+      currentPage: 1,
+      itemsPerPage: 8, // 페이지당 항목 수
+    };
+  },
   computed: {
     ...mapState({
-      pays: (state) => state.pay.pays, // Vuex 상태에서 pays 가져오기
+      pays: (state) => state.pay.pays,
     }),
+    paginatedPays() {
+      const start = (this.currentPage - 1) * this.itemsPerPage;
+      return this.pays.slice(start, start + this.itemsPerPage);
+    },
+    totalPages() {
+      return Math.ceil(this.pays.length / this.itemsPerPage);
+    },
   },
   created() {
-    this.getAllpays(); // 컴포넌트 생성 시 다이닝 목록을 가져오는 액션 실행
-  },
-  mounted() {
-    this.$store.dispatch("pay/getAllpays");
-    console.log("pay/getAllpays");
+    this.getAllpays();
   },
   methods: {
-    ...mapActions("pay", ["getAllpays"]), // Vuex 액션 연결
-    getMemberBadge(type) {
-      return type === "회원" ? "badge-success" : "badge-secondary";
+    ...mapActions("pay", ["getAllpays"]),
+    nextPage() {
+      if (this.currentPage < this.totalPages) {
+        this.currentPage++;
+      }
     },
-    refundCustomer(customer) {
-      customer.paymentStatus = "취소됨";
-      console.log(
-        `환불 처리: 고객 ID ${customer.id}, 새로운 결제 상태: ${customer.paymentStatus}`
-      );
+    prevPage() {
+      if (this.currentPage > 1) {
+        this.currentPage--;
+      }
+    },
+    maskName(name) {
+      if (name.length <= 2) return name;
+      return name[0] + "*".repeat(name.length - 2) + name[name.length - 1];
     },
     getPaymentIcon(method) {
       if (method === "card") {
-        return "fas fa-credit-card card-icon"; // 카드 아이콘
+        return "fas fa-credit-card card-icon";
       } else if (method === "vbank") {
-        return "fas fa-university bank-icon"; // 계좌이체 아이콘
+        return "fas fa-university bank-icon";
       }
-      return ""; // 기본적으로 아이콘이 없는 경우
-    },
-    maskName(name) {
-      if (name.length <= 2) return name; // 이름이 2글자 이하인 경우 그대로 반환
-      return name[0] + "*".repeat(name.length - 2) + name[name.length - 1];
+      return "";
     },
   },
 };
@@ -161,7 +161,7 @@ export default {
 <style scoped>
 /* 테이블 스크롤 */
 .table-container {
-  max-height: 600px;
+  max-height: 800px;
   overflow-y: auto;
 }
 
@@ -282,5 +282,25 @@ export default {
 
 .status-badge i {
   margin-right: 0.5rem; /* 아이콘과 텍스트 간격 */
+}
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.pagination button {
+  margin: 0 10px;
+  padding: 10px 15px;
+  border: none;
+  background-color: #007bff;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.pagination button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
 }
 </style>
