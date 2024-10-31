@@ -18,6 +18,7 @@
               <th class="text-center opacity-7">결제금액</th>
               <th class="text-center opacity-7">결제상태</th>
               <th class="text-center opacity-7">결제수단</th>
+              <th class="text-center opacity-7">결제일자</th>
             </tr>
           </thead>
           <tbody>
@@ -34,7 +35,9 @@
 
               <!-- 결제자 이름 -->
               <td class="name-cell">
-                <h6 class="mb-0 text-m">{{ maskName(pay.username) }}</h6>
+                <h6 class="mb-0 text-m">
+                  {{ maskName(pay.username) }}({{ pay.email }})
+                </h6>
               </td>
 
               <!-- 회원 구분 -->
@@ -87,12 +90,9 @@
                   {{ pay.method }}
                 </span>
               </td>
+              <!-- 결제 금액 -->
               <td class="text-center">
-                <span class="payment-method">
-                  <i
-                    :class="getPaymentIcon(pay.method)"
-                    class="payment-icon"
-                  ></i>
+                <span class="text-lg">
                   {{ pay.paymentDate }}
                 </span>
               </td>
