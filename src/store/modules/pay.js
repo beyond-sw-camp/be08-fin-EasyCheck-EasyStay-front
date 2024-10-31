@@ -35,6 +35,8 @@ export default {
           amount: pays.amount,
           completionStatus: pays.completionStatus,
           method: pays.method,
+          paymentDate: pays.paymentDate,
+          email: pays.email,
         }));
         console.log("받아온 결제 데이터:", paysData);
         commit("setpays", paysData); // 상태 업데이트
