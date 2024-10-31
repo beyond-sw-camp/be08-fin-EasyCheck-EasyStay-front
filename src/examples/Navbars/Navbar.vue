@@ -35,8 +35,12 @@ const handleLogout = () => {
           class="pe-md-3 d-flex align-items-center"
           :class="isRTL ? 'me-md-auto' : 'ms-md-auto'"
         >
-          <div class="card">
-            <p class="card-title">설악 리조트</p>
+          <div class="name">
+            <i
+              class="fa fa-mountain icon"
+              style="color: #036c13; font-size: 1.4em"
+            ></i>
+            <p class="name-title">설악 리조트</p>
           </div>
         </div>
 
@@ -61,27 +65,33 @@ const handleLogout = () => {
     </div>
   </nav>
 </template>
-
 <style>
-.card {
-  width: 200px; /* 카드 너비 */
-  padding: 20px;
+.name {
+  width: 170px; /* 카드 너비 */
+  padding: 10px;
   margin: 15px auto;
   background-color: #ffffff;
-  border-radius: 10px; /* 모서리를 둥글게 */
+  border-radius: 7px; /* 모서리를 둥글게 */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 그림자 */
-  text-align: center;
+  text-align: left; /* 왼쪽 정렬 */
+  display: flex;
   transition: transform 0.3s ease; /* 애니메이션 효과 */
+  gap: 10px; /* 아이콘과 텍스트 간격 */
 }
 
-.card:hover {
+.name:hover {
   transform: translateY(-5px); /* 호버 시 카드가 올라가는 효과 */
 }
 
-.card-title {
+.name-title {
   font-size: 1.2em;
   font-weight: bold;
   color: #333333; /* 텍스트 색상 */
   margin: 0;
+}
+
+.icon {
+  font-size: 1.4em;
+  color: #036c13; /* 아이콘 색상 */
 }
 </style>

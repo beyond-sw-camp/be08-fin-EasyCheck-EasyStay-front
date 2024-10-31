@@ -24,7 +24,7 @@
             <tr v-for="(pay, index) in pays" :key="pay.id">
               <!-- 사진 -->
               <td class="photo-cell">
-                <img :src="pay.image" class="avatar" :alt="pay.name" />
+                <!-- <img :src="pay.images" class="avatar" :alt="pay.name" /> -->
               </td>
 
               <!-- 번호 -->
@@ -34,7 +34,7 @@
 
               <!-- 결제자 이름 -->
               <td class="name-cell">
-                <h6 class="mb-0 text-m">{{ pay.username }}</h6>
+                <h6 class="mb-0 text-m">{{ maskName(pay.username) }}</h6>
               </td>
 
               <!-- 회원 구분 -->
@@ -87,6 +87,15 @@
                   {{ pay.method }}
                 </span>
               </td>
+              <td class="text-center">
+                <span class="payment-method">
+                  <i
+                    :class="getPaymentIcon(pay.method)"
+                    class="payment-icon"
+                  ></i>
+                  {{ pay.paymentDate }}
+                </span>
+              </td>
             </tr>
           </tbody>
         </table>
@@ -112,15 +121,15 @@ export default {
   },
   computed: {
     ...mapState({
-      pays: (state) => state.pay.pays, // Vuex 상태에서 dinings 가져오기
+      pays: (state) => state.pay.pays, // Vuex 상태에서 pays 가져오기
     }),
   },
   created() {
     this.getAllpays(); // 컴포넌트 생성 시 다이닝 목록을 가져오는 액션 실행
   },
   mounted() {
-    // 공지사항을 가져오는 Vuex 액션 호출
     this.$store.dispatch("pay/getAllpays");
+    console.log("pay/getAllpays");
   },
   methods: {
     ...mapActions("pay", ["getAllpays"]), // Vuex 액션 연결
@@ -128,20 +137,22 @@ export default {
       return type === "회원" ? "badge-success" : "badge-secondary";
     },
     refundCustomer(customer) {
-      // 결제 상태를 "취소됨"으로 변경
       customer.paymentStatus = "취소됨";
       console.log(
         `환불 처리: 고객 ID ${customer.id}, 새로운 결제 상태: ${customer.paymentStatus}`
       );
-      // 추가적인 환불 처리 로직을 여기에 작성할 수 있습니다.
     },
     getPaymentIcon(method) {
-      if (method === "CARD") {
+      if (method === "card") {
         return "fas fa-credit-card card-icon"; // 카드 아이콘
-      } else if (method === "VBANK") {
+      } else if (method === "vbank") {
         return "fas fa-university bank-icon"; // 계좌이체 아이콘
       }
       return ""; // 기본적으로 아이콘이 없는 경우
+    },
+    maskName(name) {
+      if (name.length <= 2) return name; // 이름이 2글자 이하인 경우 그대로 반환
+      return name[0] + "*".repeat(name.length - 2) + name[name.length - 1];
     },
   },
 };
