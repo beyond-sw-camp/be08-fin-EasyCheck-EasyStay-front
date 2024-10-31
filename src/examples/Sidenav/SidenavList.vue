@@ -45,7 +45,7 @@ const getRoute = () => {
       <li class="nav-item">
         <sidenav-item
           to="/moneygraph"
-          :class="getRoute() === 'dashboard-default' ? 'active' : ''"
+          :class="getRoute() === 'moneygraph' ? 'active' : ''"
           :navText="'매출 현황 페이지'"
         >
           <template v-slot:icon>
@@ -99,18 +99,6 @@ const getRoute = () => {
           </template>
         </sidenav-item>
       </li>
-
-      <!-- <li class="nav-item">
-        <sidenav-item
-          to="/themeparksregistration"
-          :class="getRoute() === 'themeparksregistration' ? 'active' : ''"
-          :navText="'테마파크'"
-        >
-          <template v-slot:icon>
-            <i class="ni ni-single-02 text-dark text-sm opacity-10"></i>
-          </template>
-        </sidenav-item>
-      </li> -->
 
       <li class="nav-item">
         <sidenav-item
@@ -188,21 +176,6 @@ const getRoute = () => {
           </template>
         </sidenav-item>
       </li>
-
-      <li class="nav-item">
-        <sidenav-item
-          to="/dininglist"
-          :class="getRoute() === 'dininglist' ? 'active' : ''"
-          :navText="'부대시설'"
-        >
-          <template v-slot:icon>
-            <i
-              class="ni ni-calendar-grid-58 text-warning text-sm opacity-10"
-            ></i>
-          </template>
-        </sidenav-item>
-      </li>
-
       <!-- <li class="nav-item">
         <sidenav-item
           to="/amenitieslist"
@@ -216,21 +189,6 @@ const getRoute = () => {
           </template>
         </sidenav-item>
       </li> -->
-
-      <li class="nav-item">
-        <sidenav-item
-          to="/additionalservicelist"
-          :class="getRoute() === 'additionalservicelist' ? 'active' : ''"
-          :navText="'부가서비스'"
-        >
-          <template v-slot:icon>
-            <i
-              class="ni ni-calendar-grid-58 text-warning text-sm opacity-10"
-            ></i>
-          </template>
-        </sidenav-item>
-      </li>
-
       <!-- <li class="nav-item">
         <sidenav-item
           to="/signin"
