@@ -3,6 +3,33 @@
     class="card mb-4"
     style="width: 100%; max-width: 1900px; margin: 50px auto; padding: 0 15px"
   >
+    <!-- Search Section -->
+    <div class="search-container">
+      <div class="search-box">
+        <div class="search-input-group">
+          <label>이름</label>
+          <input
+            type="text"
+            v-model="searchQuery.userName"
+            placeholder="사용자 이름을 입력하세요"
+            class="search-input"
+          />
+        </div>
+        <div class="search-input-group">
+          <label>이메일</label>
+          <input
+            type="text"
+            v-model="searchQuery.email"
+            placeholder="이메일을 입력하세요"
+            class="search-input"
+          />
+        </div>
+        <button @click="handleSearch" class="search-button">
+          <i class="fas fa-search"></i> 검색
+        </button>
+      </div>
+    </div>
+
     <div class="card-header pb-0">
       <h6 class="fs-3">{{ title }}</h6>
     </div>
@@ -70,10 +97,10 @@
               <td class="text-center">
                 <span class="payment-method">
                   <i
-                    :class="getPaymentIcon(pay.method)"
+                    :class="getPaymentIcon(pay.method).iconClass"
                     class="payment-icon"
                   ></i>
-                  {{ pay.method }}
+                  {{ getPaymentIcon(pay.method).text }}
                 </span>
               </td>
               <td class="text-center">
@@ -113,6 +140,10 @@ export default {
     return {
       currentPage: 1,
       itemsPerPage: 8, // 페이지당 항목 수
+      searchQuery: {
+        userName: "",
+        email: "",
+      },
     };
   },
   computed: {
@@ -128,10 +159,20 @@ export default {
     },
   },
   created() {
-    this.getAllpays();
+    this.fetchData();
   },
   methods: {
     ...mapActions("pay", ["getAllpays"]),
+    async fetchData() {
+      await this.getAllpays({
+        userName: this.searchQuery.userName,
+        email: this.searchQuery.email,
+      });
+    },
+    async handleSearch() {
+      this.currentPage = 1; // 검색 시 첫 페이지로 리셋
+      await this.fetchData();
+    },
     nextPage() {
       if (this.currentPage < this.totalPages) {
         this.currentPage++;
@@ -148,17 +189,79 @@ export default {
     },
     getPaymentIcon(method) {
       if (method === "card") {
-        return "fas fa-credit-card card-icon";
+        return { iconClass: "fas fa-credit-card card-icon", text: "카드" };
       } else if (method === "vbank") {
-        return "fas fa-university bank-icon";
+        return { iconClass: "fas fa-university bank-icon", text: "계좌이체" };
       }
-      return "";
+      return { iconClass: "", text: "" };
     },
   },
 };
 </script>
 
 <style scoped>
+/* 새로 추가된 검색 스타일 */
+.search-container {
+  padding: 20px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.search-box {
+  display: flex;
+  gap: 15px;
+  align-items: flex-end;
+}
+
+.search-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.search-input-group label {
+  font-size: 0.9rem;
+  color: #666;
+  font-weight: 500;
+}
+
+.search-input {
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  min-width: 200px;
+  font-size: 0.9rem;
+  transition: border-color 0.2s;
+}
+
+.search-input:focus {
+  border-color: #007bff;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+}
+
+.search-button {
+  padding: 8px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  height: 38px;
+}
+
+.search-button:hover {
+  background-color: #0056b3;
+}
+
+.search-button i {
+  font-size: 0.9rem;
+}
 /* 테이블 스크롤 */
 .table-container {
   max-height: 800px;

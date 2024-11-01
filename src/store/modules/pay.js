@@ -22,9 +22,15 @@ export default {
     },
   },
   actions: {
-    async getAllpays({ commit }) {
+    async getAllpays({ commit }, query) {
+      const { userName, email } = query;
       try {
-        const response = await apiClient.get(`/admin/payments`);
+        const response = await apiClient.get(`/admin/payments`, {
+          params: {
+            userName,
+            email,
+          },
+        });
         console.log("응답 : ", response);
         console.log("응답 데이터 : ", response.data);
 
