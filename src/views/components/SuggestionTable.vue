@@ -39,7 +39,6 @@
           </thead>
           <tbody>
             <tr v-for="(park, index) in parks" :key="park.id">
-              <!-- 사진 -->
               <td class="photo-cell">
                 <img
                   :src="park.image"
@@ -47,41 +46,27 @@
                   :alt="park.name"
                 />
               </td>
-
-              <!-- 번호 -->
               <td class="number-cell">
                 <span class="text-sm font-weight-bold">{{ index + 1 }}</span>
               </td>
-
-              <!-- 건의사항 제목 -->
               <td class="title-cell">
                 <h6 class="mb-0 text-m">{{ park.title }}</h6>
               </td>
 
               <!-- 건의사항 내용 -->
               <td
-                class="text-center"
-                style="
-                  max-width: 200px;
-                  white-space: nowrap;
-                  overflow: hidden;
-                  text-overflow: ellipsis;
-                "
+                class="text-center content-cell"
+                @click="showContentDetail(park.content)"
               >
                 <p class="text-m text-secondary mb-0">{{ park.content }}</p>
               </td>
 
-              <!-- 이메일 -->
               <td class="text-center">
                 <p class="text-m text-secondary mb-0">{{ park.email }}</p>
               </td>
-
-              <!-- 건의사항 타입 -->
               <td class="text-center">
                 <span class="text-sm font-weight-bold">{{ park.type }}</span>
               </td>
-
-              <!-- 버튼 -->
               <td class="text-center" colspan="2">
                 <div class="button-group">
                   <button
@@ -96,6 +81,15 @@
           </tbody>
         </table>
       </div>
+    </div>
+  </div>
+
+  <!-- 모달 창 -->
+  <div v-if="isModalOpen" class="modal-overlay" @click.self="closeModal">
+    <div class="modal-content">
+      <h5>건의사항 내용</h5>
+      <p>{{ selectedContent }}</p>
+      <button class="btn btn-close" @click="closeModal">닫기</button>
     </div>
   </div>
 </template>
@@ -113,13 +107,27 @@ export default {
       default: () => [],
     },
   },
+  data() {
+    return {
+      isModalOpen: false,
+      selectedContent: "",
+    };
+  },
   methods: {
     openResponseForm() {
-      this.showResponseForm = true; // 폼 표시
+      this.showResponseForm = true;
     },
     onClickReplyButton(park) {
       this.$emit("open-response-form", park);
       this.$store.commit("suggestion/setSuggestionId", park.id);
+    },
+    showContentDetail(content) {
+      this.selectedContent = content;
+      this.isModalOpen = true;
+    },
+    closeModal() {
+      this.isModalOpen = false;
+      this.selectedContent = "";
     },
   },
 };
@@ -130,67 +138,94 @@ export default {
   max-height: 700px;
   overflow-y: auto;
 }
-
-/* 스크롤바 숨기기 */
 .table-container::-webkit-scrollbar {
   width: 0;
   height: 0;
 }
-
 .table-container {
   scrollbar-width: none;
   -ms-overflow-style: none;
 }
-
-/* 아바타 이미지 스타일 */
 .avatar {
   border-radius: 50%;
   width: 40px;
   height: 40px;
   object-fit: cover;
 }
-
-/* 사진 셀 */
 .photo-cell {
   padding: 0 8px;
   padding-left: 20px;
   text-align: center;
   width: 50px;
 }
-
-/* 번호 셀 */
 .number-cell {
   text-align: center;
   width: 40px;
 }
-
-/* 제목 셀 */
 .title-cell {
   padding-left: 64px;
-  text-align: left; /* 중앙 정렬 추가 */
+  text-align: left;
 }
-
-/* 버튼 그룹 정렬 */
 .button-group {
   display: flex;
   gap: 8px;
   justify-content: center;
 }
-
-/* 버튼 스타일 */
 button {
   padding: 8px 15px;
   font-size: 0.9rem;
 }
-
-/* 새로운 버튼 스타일 추가 */
 .btn-warning-custom {
-  background-color: #ffa500; /* 노랑주황 색상 */
-  color: #fff; /* 글자 색상을 흰색으로 */
-  border: none; /* 기본 테두리 제거 */
+  background-color: #ffa500;
+  color: #fff;
+  border: none;
+}
+.btn-warning-custom:hover {
+  background-color: #ff8c00;
 }
 
-.btn-warning-custom:hover {
-  background-color: #ff8c00; /* 호버 시 색상 변화 */
+/* 모달 스타일 */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  width: 80%;
+  max-width: 500px;
+  text-align: center;
+}
+
+.btn-close {
+  background-color: #ff8c00;
+  color: #fff;
+  border: none;
+  padding: 8px 15px;
+  cursor: pointer;
+  margin-top: 15px;
+}
+
+.btn-close:hover {
+  background-color: #ffa500;
+}
+
+/* 내용 셀 스타일 */
+.content-cell {
+  cursor: pointer;
+  max-width: 200px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 </style>
