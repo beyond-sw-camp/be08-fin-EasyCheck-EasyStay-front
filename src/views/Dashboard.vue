@@ -132,7 +132,7 @@ const temes = {
               <gradient-line-chart
                 id="chart-line-1"
                 title="각 객실별 매출 현황"
-                description=""
+                description="" 
                 :chart="{
                   labels: ['Aug', 'Sep', 'Oct'],
                   datasets: [
