@@ -30,13 +30,7 @@
           <tbody>
             <tr v-for="(author, index) in authors" :key="author.id">
               <!-- 사진 -->
-              <td class="photo-cell">
-                <img
-                  :src="author.image"
-                  class="avatar avatar-sm"
-                  :alt="author.name"
-                />
-              </td>
+              <td class="photo-cell"></td>
 
               <!-- 번호 -->
               <td class="number-cell">

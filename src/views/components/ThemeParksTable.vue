@@ -34,13 +34,7 @@
           </thead>
           <tbody>
             <tr v-for="(park, index) in parks" :key="park.id">
-              <td class="photo-cell">
-                <img
-                  :src="park.image"
-                  class="avatar avatar-sm"
-                  :alt="park.name"
-                />
-              </td>
+              <td class="photo-cell"></td>
               <td class="number-cell">
                 <span class="text-sm font-weight-bold">{{ index + 1 }}</span>
               </td>
