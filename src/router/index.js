@@ -18,6 +18,7 @@ import Signin from "../views/Signin.vue";
 import MoneyGraph from "../views/MoneyGraph.vue";
 import NoticeEdit from "../views/components/NoticeEdit.vue";
 import EventEdit from "../views/components/EventEdit.vue";
+import SuperAdminDashboard from "../views/components/SuperAdminDashboard.vue";
 
 const routes = [
   {
@@ -25,10 +26,37 @@ const routes = [
     name: "/",
     redirect: "/signin",
   },
+  // 이제 로그인 과정에서 해당 사용자의 역할도 넘겨받음
+  // 유저 역할 localstorage에 저장
   {
     path: "/dashboard-default",
     name: "Dashboard",
     component: Dashboard,
+    beforeEnter: (to, from, next) => {
+      // localStorage에서 사용자 역할을 가져옴
+      const userRole = localStorage.getItem("userRole");
+
+      // 만약 유저 역할이 SUPER_ADMIN이면 SuperAdminDashboard로 라우팅 처리
+      if (userRole === "SUPER_ADMIN") {
+        next({ name: "SuperAdminDashboard" });
+      } else {
+        next();
+      }
+    },
+  },
+  {
+    path: "/super-admin-dashboard",
+    name: "SuperAdminDashboard",
+    component: SuperAdminDashboard,
+    // beforeEnter: (to, from, next) => {
+    //   const userRole = localStorage.getItem("userRole");
+
+    //   if (userRole !== "SUPER_ADMIN") {
+    //     next({ name: "Dashboard" });
+    //   } else {
+    //     next();
+    //   }
+    // },
   },
   {
     path: "/moneygraph",
