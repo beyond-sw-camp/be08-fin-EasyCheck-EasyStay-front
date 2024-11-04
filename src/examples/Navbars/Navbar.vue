@@ -12,6 +12,7 @@ const handleLogout = () => {
   // 여기에 로그아웃 처리 로직 추가
   // ...
 
+  store.dispatch("auth/logout");
   // 로그아웃 후 다른 페이지로 이동 (예: 로그인 페이지)
   router.push("/signin");
 };
