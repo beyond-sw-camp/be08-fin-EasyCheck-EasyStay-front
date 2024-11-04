@@ -26,7 +26,7 @@ const routes = [
     name: "/",
     redirect: "/signin",
   },
-  // 이제 로그인 과정에서 해당 사용자의 역할도 넘겨받음
+  // 이제 로그인 후에 유저 정보도 불러옴
   // 유저 역할 localstorage에 저장
   {
     path: "/dashboard-default",
