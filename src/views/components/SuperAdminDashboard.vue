@@ -1,4 +1,76 @@
 // 최종 관리자 대시보드
+
+<script setup>
+import MiniStatisticsCard from "@/examples/Cards/MiniStatisticsCard.vue";
+import GradientLineChart from "@/examples/Charts/GradientLineChart.vue";
+import GradientLineChart2 from "@/examples/Charts/GradientLineChart2.vue";
+import Deluxe from "@/assets/img/icons/flags/Deluxe.png";
+import Suite from "@/assets/img/icons/flags/Suite.png";
+import Royal from "@/assets/img/icons/flags/Royal.png";
+import Platinum from "@/assets/img/icons/flags/Platinum.png";
+import Theme from "@/assets/img/icons/flags/teme.png";
+
+import { onMounted } from "vue";
+
+onMounted(() => {});
+
+// 객실 관리
+const sales = {
+  us: {
+    country: "Deluxe(디럭스)",
+    sales: 10,
+    value: "$288,000",
+    bounce: "2명",
+    flag: Deluxe,
+  },
+  germany: {
+    country: "Suite(스위트)",
+    sales: 10,
+    value: "$360,000",
+    bounce: "4명",
+    flag: Suite,
+  },
+  britain: {
+    country: "Royal(로얄)",
+    sales: 10,
+    value: "$460,000",
+    bounce: "6명",
+    flag: Royal,
+  },
+  brasil: {
+    country: "Platinum(플래티넘)",
+    sales: 10,
+    value: "$1,208,000",
+    bounce: "2명",
+    flag: Platinum,
+  },
+};
+// 객실 관리
+const temes = {
+  us: {
+    country: "설악 워터피아",
+    sales: 10,
+    value: "$288,000",
+    bounce: "2명",
+    flag: Theme,
+  },
+  germany: {
+    country: "플라자CC설악",
+    sales: 10,
+    value: "$360,000",
+    bounce: "4명",
+    flag: Theme,
+  },
+  britain: {
+    country: "워터파크",
+    sales: 10,
+    value: "$460,000",
+    bounce: "6명",
+    flag: Theme,
+  },
+};
+</script>
+
 <template>
   <div class="py-4 container-fluid">
     <div class="row">
@@ -250,74 +322,5 @@
     </div>
   </div>
 </template>
-
-<script setup>
-import MiniStatisticsCard from "@/examples/Cards/MiniStatisticsCard.vue";
-import GradientLineChart from "@/examples/Charts/GradientLineChart.vue";
-import GradientLineChart2 from "@/examples/Charts/GradientLineChart2.vue";
-
-import Deluxe from "@/assets/img/icons/flags/Deluxe.png";
-import Suite from "@/assets/img/icons/flags/Suite.png";
-import Royal from "@/assets/img/icons/flags/Royal.png";
-import Platinum from "@/assets/img/icons/flags/Platinum.png";
-import Theme from "@/assets/img/icons/flags/teme.png";
-
-// 객실 관리
-const sales = {
-  us: {
-    country: "Deluxe(디럭스)",
-    sales: 10,
-    value: "$288,000",
-    bounce: "2명",
-    flag: Deluxe,
-  },
-  germany: {
-    country: "Suite(스위트)",
-    sales: 10,
-    value: "$360,000",
-    bounce: "4명",
-    flag: Suite,
-  },
-  britain: {
-    country: "Royal(로얄)",
-    sales: 10,
-    value: "$460,000",
-    bounce: "6명",
-    flag: Royal,
-  },
-  brasil: {
-    country: "Platinum(플래티넘)",
-    sales: 10,
-    value: "$1,208,000",
-    bounce: "2명",
-    flag: Platinum,
-  },
-};
-// 객실 관리
-const temes = {
-  us: {
-    country: "설악 워터피아",
-    sales: 10,
-    value: "$288,000",
-    bounce: "2명",
-    flag: Theme,
-  },
-  germany: {
-    country: "플라자CC설악",
-    sales: 10,
-    value: "$360,000",
-    bounce: "4명",
-    flag: Theme,
-  },
-  britain: {
-    country: "워터파크",
-    sales: 10,
-    value: "$460,000",
-    bounce: "6명",
-    flag: Theme,
-  },
-};
-// 가장 인기있는 객실, 당일 목표 대비 실적, 문의 개수, 매출
-</script>
 
 <style lang="scss" scoped></style>
