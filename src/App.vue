@@ -13,7 +13,7 @@ Coded by www.creative-tim.com
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 -->
 <script setup>
-import { computed } from "vue";
+import { computed, onMounted } from "vue";
 import { useStore } from "vuex";
 import Sidenav from "./examples/Sidenav";
 import Configurator from "@/examples/Configurator.vue";
@@ -45,6 +45,10 @@ const navClasses = computed(() => {
     "position-absolute px-4 mx-0 w-100 z-index-2": isAbsolute.value,
     "px-0 mx-4": !isAbsolute.value,
   };
+});
+
+onMounted(() => {
+  store.commit("auth/initAuthState");
 });
 </script>
 

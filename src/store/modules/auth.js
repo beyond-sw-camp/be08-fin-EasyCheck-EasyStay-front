@@ -1,12 +1,32 @@
 import apiClient from "@/api";
 
 export default {
+  namespace: true,
   state: {
     isAuthenticated: false,
+    // 유저 정보
+
+    userInfo: null,
   },
   mutations: {
     setAuthState(state, status) {
       state.isAuthenticated = status;
+    },
+    setUserInfo(state, info) {
+      console.log(`[setUserInfo] info = ${info}`);
+      state.userInfo = info;
+      localStorage.setItem("userRole", info.role);
+    },
+    clearAuthState(state) {
+      state.isAuthenticated = false;
+    },
+    initAuthState(state) {
+      const isLogined = localStorage.getItem("accessToken");
+      if (isLogined) {
+        state.isAuthenticated = true;
+      } else {
+        state.isAuthenticated = false;
+      }
     },
   },
   actions: {
@@ -45,10 +65,11 @@ refreshToken: ~
 
     async fetchUserInfo({ commit }) {
       try {
-        const response = await apiClient.get("/auth/me");
+        // 유저 정보 불러오기
+        const response = await apiClient.get("/users/info");
 
         // user 정보를 상태에 저장
-        commit("setUser", response.data);
+        commit("setUserInfo", response.data);
       } catch (error) {
         // user를 못찾을 경우 에러를 띄워줌.
         console.error("Failed to fetch user info:", error);
@@ -59,6 +80,8 @@ refreshToken: ~
       // 토큰을 제거합니다
       localStorage.removeItem("accessToken");
       localStorage.removeItem("refreshToken");
+      localStorage.removeItem("userRole");
+
       commit("clearAuthState"); // 인증 상태 초기화
     },
   },

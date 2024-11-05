@@ -40,7 +40,7 @@ const handleLogin = async () => {
     });
 
     // 로그인 성공 시 user 정보 가져오기
-    // await store.dispatch("auth/fetchUserInfo");
+    await store.dispatch("auth/fetchUserInfo");
 
     router.push("/dashboard-default");
   } catch (error) {
