@@ -1,9 +1,8 @@
 <script setup>
-import MoneyGraphChart from "../examples/Charts/MoneyGraphChart.vue";
-import PieChart from "../examples/Charts/PieChart.vue";
-import PieChartRoom from "../examples/Charts/PieChartRoom.vue";
-import PieChartService from "../examples/Charts/PieChartService.vue";
-import PieChartTheme from "../examples/Charts/PieChartTheme.vue";
+import SuperMoneyGraphChart from "../examples/Charts/SuperMoneyGraphChart.vue";
+import SuperPieChart from "../examples/Charts/SuperPieChart.vue";
+import SuperPieChartRoom from "../examples/Charts/SuperPieChartRoom.vue";
+import SuperPieChartTheme from "../examples/Charts/SuperPieChartTheme.vue";
 </script>
 <template>
   <div class="py-4 container-fluid">
@@ -14,7 +13,7 @@ import PieChartTheme from "../examples/Charts/PieChartTheme.vue";
           <div class="col-lg-8 mb-lg">
             <!-- line chart -->
             <div class="card z-index-2">
-              <MoneyGraphChart
+              <SuperMoneyGraphChart
                 id="chart-line"
                 title="A 리조트 총 매출 현황"
                 description=""
@@ -37,6 +36,30 @@ import PieChartTheme from "../examples/Charts/PieChartTheme.vue";
                       label: '플래티넘',
                       data: [120, 180, 170],
                     },
+                    {
+                      label: '프리미어 디럭스',
+                      data: [160, 190, 180],
+                    },
+                    {
+                      label: '프리미어 스위트',
+                      data: [190, 210, 190],
+                    },
+                    {
+                      label: '프레지덴셜 스위트',
+                      data: [220, 230, 200],
+                    },
+                    {
+                      label: '그랜드 스위트',
+                      data: [210, 190, 180],
+                    },
+                    {
+                      label: '로열 디럭스',
+                      data: [180, 170, 160],
+                    },
+                    {
+                      label: '엠버서더 스위트',
+                      data: [200, 220, 210],
+                    },
                   ],
                 }"
               />
@@ -44,7 +67,7 @@ import PieChartTheme from "../examples/Charts/PieChartTheme.vue";
           </div>
           <div class="col-lg-4">
             <!-- 원형 그래프 -->
-            <PieChart />
+            <SuperPieChart />
           </div>
         </div>
         <div class="row mt-4">
@@ -58,17 +81,13 @@ import PieChartTheme from "../examples/Charts/PieChartTheme.vue";
             </div>
           </div>
 
-          <div class="col-lg-4">
+          <div class="col-lg-6">
             <!-- 원형 그래프 -->
-            <PieChartRoom />
+            <SuperPieChartRoom />
           </div>
-          <div class="col-lg-4">
+          <div class="col-lg-6">
             <!-- 원형 그래프 -->
-            <PieChartTheme />
-          </div>
-          <div class="col-lg-4">
-            <!-- 원형 그래프 -->
-            <PieChartService />
+            <SuperPieChartTheme />
           </div>
         </div>
       </div>
