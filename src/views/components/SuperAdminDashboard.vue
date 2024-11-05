@@ -1,14 +1,11 @@
-// 최종 관리자 대시보드
+<!-- 최종 관리자 대시보드 -->
 
 <script setup>
 import MiniStatisticsCard from "@/examples/Cards/MiniStatisticsCard.vue";
-import GradientLineChart from "@/examples/Charts/GradientLineChart.vue";
-import GradientLineChart2 from "@/examples/Charts/GradientLineChart2.vue";
-import Deluxe from "@/assets/img/icons/flags/Deluxe.png";
-import Suite from "@/assets/img/icons/flags/Suite.png";
-import Royal from "@/assets/img/icons/flags/Royal.png";
-import Platinum from "@/assets/img/icons/flags/Platinum.png";
+import SuperAdminChart from "@/examples/Charts/SuperAdminChart.vue";
+import SuperAdminChart2 from "@/examples/Charts/SuperAdminChart2.vue";
 import Theme from "@/assets/img/icons/flags/teme.png";
+import Hotel from "@/assets/img/icons/flags/Hotel.png";
 
 import { onMounted } from "vue";
 
@@ -17,32 +14,74 @@ onMounted(() => {});
 // 객실 관리
 const sales = {
   us: {
-    country: "Deluxe(디럭스)",
+    country: "A리조트",
     sales: 10,
     value: "$288,000",
     bounce: "2명",
-    flag: Deluxe,
+    flag: Hotel,
   },
   germany: {
-    country: "Suite(스위트)",
+    country: "B리조트",
     sales: 10,
     value: "$360,000",
     bounce: "4명",
-    flag: Suite,
+    flag: Hotel,
   },
   britain: {
-    country: "Royal(로얄)",
+    country: "C리조트",
     sales: 10,
     value: "$460,000",
     bounce: "6명",
-    flag: Royal,
+    flag: Hotel,
   },
   brasil: {
-    country: "Platinum(플래티넘)",
+    country: "D리조트",
     sales: 10,
     value: "$1,208,000",
     bounce: "2명",
-    flag: Platinum,
+    flag: Hotel,
+  },
+  canada: {
+    country: "E리조트",
+    sales: 12,
+    value: "$320,000",
+    bounce: "3명",
+    flag: Hotel,
+  },
+  australia: {
+    country: "A호텔",
+    sales: 11,
+    value: "$410,000",
+    bounce: "5명",
+    flag: Hotel,
+  },
+  france: {
+    country: "B호텔",
+    sales: 9,
+    value: "$540,000",
+    bounce: "4명",
+    flag: Hotel,
+  },
+  italy: {
+    country: "C호텔",
+    sales: 8,
+    value: "$1,350,000",
+    bounce: "3명",
+    flag: Hotel,
+  },
+  spain: {
+    country: "D호텔",
+    sales: 15,
+    value: "$450,000",
+    bounce: "2명",
+    flag: Hotel,
+  },
+  japan: {
+    country: "E호텔",
+    sales: 14,
+    value: "$520,000",
+    bounce: "3명",
+    flag: Hotel,
   },
 };
 // 객실 관리
@@ -81,7 +120,7 @@ const temes = {
             <mini-statistics-card
               title="가장 인기있는 객실"
               value="Deluxe(디럭스)"
-              description="현재 가장 인기있는 객실"
+              description="설악 리조트"
               :icon="{
                 component: 'ni ni-favourite-28',
                 background: 'bg-gradient-danger',
@@ -136,31 +175,54 @@ const temes = {
         <!-- 매출 그래프 -->
         <div class="row">
           <div class="col-lg-6 mb-lg">
-            <!-- line chart -->
             <div class="card z-index-2">
               <!-- 각 숙박시설별 매출 현황 월 단위로 -->
-              <gradient-line-chart
+              <super-admin-chart
                 id="chart-line-1"
                 title="각 숙박시설 월별 매출 현황"
                 description=""
                 :chart="{
-                  labels: ['Aug', 'Sep', 'Oct'],
+                  labels: ['Jul', 'Aug', 'Sep'],
                   datasets: [
                     {
-                      label: '디럭스',
-                      data: [150, 200, 150],
+                      label: 'A리조트',
+                      data: [180, 200, 320, 400, 280],
                     },
                     {
-                      label: '스위트',
-                      data: [180, 160, 200],
+                      label: 'B리조트',
+                      data: [150, 220, 340, 380, 270],
                     },
                     {
-                      label: '로얄',
-                      data: [200, 140, 130],
+                      label: 'C리조트',
+                      data: [140, 210, 330, 370, 260],
                     },
                     {
-                      label: '플래티넘',
-                      data: [120, 180, 170],
+                      label: 'D리조트',
+                      data: [120, 180, 290, 340, 230],
+                    },
+                    {
+                      label: 'E리조트',
+                      data: [100, 160, 250, 300, 210],
+                    },
+                    {
+                      label: 'A호텔',
+                      data: [220, 280, 400, 450, 320],
+                    },
+                    {
+                      label: 'B호텔',
+                      data: [170, 230, 370, 420, 310],
+                    },
+                    {
+                      label: 'C호텔',
+                      data: [300, 350, 500, 550, 400],
+                    },
+                    {
+                      label: 'D호텔',
+                      data: [250, 300, 480, 530, 390],
+                    },
+                    {
+                      label: 'E호텔',
+                      data: [400, 450, 600, 650, 500],
                     },
                   ],
                 }"
@@ -171,7 +233,7 @@ const temes = {
             <!-- line chart -->
             <div class="card z-index-2">
               <!-- 각 숙박시설별 테마파크 총 매출 현황 월 단위로 -->
-              <gradient-line-chart2
+              <super-admin-chart2
                 id="chart-line-2"
                 title="각 테마파크별 매출 현황"
                 description=""
@@ -204,7 +266,10 @@ const temes = {
                   <h6 class="mb-3">숙박시설 관리</h6>
                 </div>
               </div>
-              <div class="table-responsive">
+              <div
+                class="table-responsive"
+                style="max-height: 300px; overflow-y: auto"
+              >
                 <table class="table align-items-center">
                   <tbody>
                     <tr v-for="(sale, index) in sales" :key="index">
