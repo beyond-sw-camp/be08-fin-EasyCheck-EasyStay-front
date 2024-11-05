@@ -52,15 +52,50 @@ onMounted(() => {
   gradientStroke3.addColorStop(0.5, "rgba(216, 191, 216, 0.1)"); // 더 연한 보라색
   gradientStroke3.addColorStop(0, "rgba(216, 191, 216, 0.0)"); // 투명한 보라색
 
+  // 네 번째 그래디언트를 연한 옐로우 계열로 변경
+  var gradientStroke4 = gradientLineChart.createLinearGradient(0, 230, 0, 50);
+  gradientStroke4.addColorStop(1, "rgba(255,255,204,0.3)"); // 연한 옐로우
+  gradientStroke4.addColorStop(0.2, "rgba(255,255,204,0.0)"); // 투명한 옐로우
+
+  // 다섯 번째 그래디언트를 라벤더 계열로 변경
+  var gradientStroke5 = gradientLineChart.createLinearGradient(0, 230, 0, 50);
+  gradientStroke5.addColorStop(1, "rgba(230,230,250,0.3)"); // 라벤더
+  gradientStroke5.addColorStop(0.2, "rgba(230,230,250,0.0)"); // 투명한 라벤더
+
+  // 여섯 번째 그래디언트를 밝은 오렌지 계열로 변경
+  var gradientStroke6 = gradientLineChart.createLinearGradient(0, 230, 0, 50);
+  gradientStroke6.addColorStop(1, "rgba(255,218,185,0.3)"); // 밝은 오렌지
+  gradientStroke6.addColorStop(0.2, "rgba(255,218,185,0.0)"); // 투명한 오렌지
+
+  // 일곱 번째 그래디언트를 연한 청록색 계열로 변경
+  var gradientStroke7 = gradientLineChart.createLinearGradient(0, 230, 0, 50);
+  gradientStroke7.addColorStop(1, "rgba(176,224,230,0.3)"); // 연한 청록색
+  gradientStroke7.addColorStop(0.2, "rgba(176,224,230,0.0)"); // 투명한 청록색
+
+  // 여덟 번째 그래디언트를 파스텔 핑크 계열로 변경
+  var gradientStroke8 = gradientLineChart.createLinearGradient(0, 230, 0, 50);
+  gradientStroke8.addColorStop(1, "rgba(255,182,193,0.3)"); // 파스텔 핑크
+  gradientStroke8.addColorStop(0.2, "rgba(255,182,193,0.0)"); // 투명한 파스텔 핑크
+
+  // 아홉 번째 그래디언트를 청록 계열로 변경
+  var gradientStroke9 = gradientLineChart.createLinearGradient(0, 230, 0, 50);
+  gradientStroke9.addColorStop(1, "rgba(64,224,208,0.3)"); // 청록색
+  gradientStroke9.addColorStop(0.2, "rgba(64,224,208,0.0)"); // 투명한 청록색
+
+  // 열 번째 그래디언트를 밝은 파란색 계열로 변경
+  var gradientStroke10 = gradientLineChart.createLinearGradient(0, 230, 0, 50);
+  gradientStroke10.addColorStop(1, "rgba(173,216,230,0.3)"); // 밝은 파란색
+  gradientStroke10.addColorStop(0.2, "rgba(173,216,230,0.0)"); // 투명한 파란색
+
   // 중복된 차트 방지를 위해 기존 차트 제거
   let chartStatus = Chart.getChart(props.id);
   if (chartStatus != undefined) {
     chartStatus.destroy();
   }
   // 네 개의 데이터셋이 있는 경우
-  if (props.chart.datasets.length == 3) {
+  if (props.chart.datasets.length == 10) {
     new Chart(gradientLineChart, {
-      type: "line",
+      type: "bar",
       data: {
         labels: props.chart.labels,
         datasets: [
@@ -101,6 +136,97 @@ onMounted(() => {
             backgroundColor: gradientStroke3,
             fill: true,
             data: props.chart.datasets[2].data,
+            maxBarThickness: 6,
+          },
+          {
+            label: props.chart.datasets[3].label,
+            tension: 0.4,
+            borderWidth: 0,
+            pointRadius: 0,
+            borderColor: "#82cbc4",
+            // eslint-disable-next-line no-dupe-keys
+            borderWidth: 3,
+            backgroundColor: gradientStroke4,
+            fill: true,
+            data: props.chart.datasets[3].data,
+            maxBarThickness: 6,
+          },
+          {
+            label: props.chart.datasets[4].label,
+            tension: 0.4,
+            borderWidth: 0,
+            pointRadius: 0,
+            borderColor: "#58ccff",
+            // eslint-disable-next-line no-dupe-keys
+            borderWidth: 3,
+            backgroundColor: gradientStroke5,
+            fill: true,
+            data: props.chart.datasets[4].data,
+            maxBarThickness: 6,
+          },
+          {
+            label: props.chart.datasets[5].label,
+            tension: 0.4,
+            borderWidth: 0,
+            pointRadius: 0,
+            borderColor: "#0e6ca5",
+            // eslint-disable-next-line no-dupe-keys
+            borderWidth: 3,
+            backgroundColor: gradientStroke6,
+            fill: true,
+            data: props.chart.datasets[5].data,
+            maxBarThickness: 6,
+          },
+          {
+            label: props.chart.datasets[6].label,
+            tension: 0.4,
+            borderWidth: 0,
+            pointRadius: 0,
+            borderColor: "#9fa9d8",
+            // eslint-disable-next-line no-dupe-keys
+            borderWidth: 3,
+            backgroundColor: gradientStroke7,
+            fill: true,
+            data: props.chart.datasets[6].data,
+            maxBarThickness: 6,
+          },
+          {
+            label: props.chart.datasets[7].label,
+            tension: 0.4,
+            borderWidth: 0,
+            pointRadius: 0,
+            borderColor: "#b96bc6",
+            // eslint-disable-next-line no-dupe-keys
+            borderWidth: 3,
+            backgroundColor: gradientStroke8,
+            fill: true,
+            data: props.chart.datasets[7].data,
+            maxBarThickness: 6,
+          },
+          {
+            label: props.chart.datasets[8].label,
+            tension: 0.4,
+            borderWidth: 0,
+            pointRadius: 0,
+            borderColor: "#fb7a09",
+            // eslint-disable-next-line no-dupe-keys
+            borderWidth: 3,
+            backgroundColor: gradientStroke9,
+            fill: true,
+            data: props.chart.datasets[8].data,
+            maxBarThickness: 6,
+          },
+          {
+            label: props.chart.datasets[9].label,
+            tension: 0.4,
+            borderWidth: 0,
+            pointRadius: 0,
+            borderColor: "#000000",
+            // eslint-disable-next-line no-dupe-keys
+            borderWidth: 3,
+            backgroundColor: gradientStroke10,
+            fill: true,
+            data: props.chart.datasets[9].data,
             maxBarThickness: 6,
           },
         ],

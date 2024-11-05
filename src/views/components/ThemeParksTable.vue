@@ -1,8 +1,5 @@
 <template>
-  <div
-    class="card mb-4"
-    style="width: 100%; max-width: 1900px; margin: 50px auto; padding: 0 15px"
-  >
+  <div class="card mb-4" style="width: 100%; max-width: 1900px; margin: 50px auto; padding: 0 15px">
     <div class="card-header pb-0">
       <h6 class="fs-3">{{ title }}</h6>
     </div>
@@ -11,22 +8,14 @@
         <table class="table align-items-center mb-0">
           <thead>
             <tr>
-              <th
-                class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
-              ></th>
-              <th
-                class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
-              >
+              <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"></th>
+              <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                 번호
               </th>
-              <th
-                class="ztext-secondary text-xxs font-weight-bolder opacity-7 ps-6"
-              >
+              <th class="ztext-secondary text-xxs font-weight-bolder opacity-7 ps-6">
                 이름
               </th>
-              <th
-                class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
-              >
+              <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                 소개
               </th>
               <th class="text-secondary opacity-7"></th>
@@ -46,10 +35,7 @@
               </td>
               <td class="text-center" colspan="2">
                 <div class="button-group">
-                  <button
-                    class="btn btn-sm btn-warning"
-                    @click="showFacilities(park.id)"
-                  >
+                  <button class="btn btn-sm btn-warning" @click="showFacilities(park.id)">
                     시설 더보기
                   </button>
                 </div>
@@ -60,16 +46,8 @@
         <div v-if="selectedParkFacilities.length > 0">
           <h6 class="mt-4">시설 목록</h6>
           <div class="facility-cards">
-            <div
-              v-for="facility in selectedParkFacilities"
-              :key="facility.id"
-              class="facility-card"
-            >
-              <img
-                :src="facility.imageUrl"
-                alt="시설 이미지"
-                class="facility-image"
-              />
+            <div v-for="facility in selectedParkFacilities" :key="facility.id" class="facility-card">
+              <img :src="facility.imageUrl" alt="시설 이미지" class="facility-image" />
               <div class="facility-info">
                 <h6 class="facility-name">{{ facility.name }}</h6>
                 <p class="facility-description">{{ facility.introduction }}</p>
@@ -85,6 +63,7 @@
 </template>
 
 <script>
+import apiClient from "../../api/index"
 export default {
   props: {
     title: {
@@ -100,11 +79,8 @@ export default {
   methods: {
     async showFacilities(themeParkId) {
       try {
-        const response = await fetch(
-          `http://localhost:8080/api/v1/parks/${themeParkId}/attractions`
-        );
-        const data = await response.json();
-        this.selectedParkFacilities = data.data; // 데이터 바인딩
+        const response = await apiClient.get(`/parks/${themeParkId}/attractions`)
+        this.selectedParkFacilities = response.data.data; // 데이터 바인딩
         console.log("이것이 시설이다!", this.selectedParkFacilities);
       } catch (error) {
         console.error("시설 목록 가져오기 실패:", error);
@@ -188,7 +164,8 @@ button {
   border: 1px solid #ccc;
   border-radius: 8px;
   overflow: hidden;
-  width: calc(33.333% - 16px); /* 3개 카드가 가로로 나열되도록 설정 */
+  width: calc(33.333% - 16px);
+  /* 3개 카드가 가로로 나열되도록 설정 */
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s;
 }
