@@ -19,6 +19,7 @@ import MoneyGraph from "../views/MoneyGraph.vue";
 import NoticeEdit from "../views/components/NoticeEdit.vue";
 import EventEdit from "../views/components/EventEdit.vue";
 import SuperAdminDashboard from "../views/components/SuperAdminDashboard.vue";
+import SuperAdminMoneyGraph from "@/views/SuperAdminMoneyGraph.vue";
 
 const routes = [
   {
@@ -62,6 +63,29 @@ const routes = [
     path: "/moneygraph",
     name: "MoneyGraph",
     component: MoneyGraph,
+    beforeEnter: (to, from, next) => {
+      const userRole = localStorage.getItem("userRole");
+
+      if (userRole === "SUPER_ADMIN") {
+        next({ name: "SuperAdminMoneyGraph" });
+      } else {
+        next();
+      }
+    },
+  },
+  {
+    path: "/super-admin-moneygraph",
+    name: "SuperAdminMoneyGraph",
+    component: SuperAdminMoneyGraph,
+    beforeEnter: (to, from, next) => {
+      const userRole = localStorage.getItem("userRole");
+
+      if (userRole !== "SUPER_ADMIN") {
+        next({ name: "MoneyGraph" });
+      } else {
+        next();
+      }
+    },
   },
   {
     path: "/tables",
