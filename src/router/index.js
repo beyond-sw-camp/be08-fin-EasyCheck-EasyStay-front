@@ -18,7 +18,7 @@ import Signin from "../views/Signin.vue";
 import MoneyGraph from "../views/MoneyGraph.vue";
 import NoticeEdit from "../views/components/NoticeEdit.vue";
 import EventEdit from "../views/components/EventEdit.vue";
-import SuperAdminDashboard from "../views/components/SuperAdminDashboard.vue";
+import SuperAdminDashboard from "../views/SuperAdminDashboard.vue";
 import SuperAdminMoneyGraph from "@/views/SuperAdminMoneyGraph.vue";
 
 const routes = [
