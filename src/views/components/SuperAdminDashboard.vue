@@ -95,25 +95,74 @@ const sales = {
 };
 // 객실 관리
 const temes = {
-  us: {
+  resort1: {
     country: "설악 워터피아",
     sales: 10,
     value: "$288,000",
     bounce: "2명",
     flag: Theme,
   },
-  germany: {
-    country: "플라자CC설악",
+  resort2: {
+    country: "플라자CC 설악",
     sales: 10,
     value: "$360,000",
     bounce: "4명",
     flag: Theme,
   },
-  britain: {
+  resort3: {
     country: "워터파크",
     sales: 10,
     value: "$460,000",
     bounce: "6명",
+    flag: Theme,
+  },
+  resort4: {
+    country: "한화리조트 양평",
+    sales: 8,
+    value: "$220,000",
+    bounce: "3명",
+    flag: Theme,
+  },
+  resort5: {
+    country: "한화리조트 대천",
+    sales: 12,
+    value: "$390,000",
+    bounce: "5명",
+    flag: Theme,
+  },
+  resort6: {
+    country: "한화리조트 제주",
+    sales: 15,
+    value: "$500,000",
+    bounce: "7명",
+    flag: Theme,
+  },
+  resort7: {
+    country: "한화리조트 백암",
+    sales: 7,
+    value: "$210,000",
+    bounce: "2명",
+    flag: Theme,
+  },
+  resort8: {
+    country: "한화리조트 지리산",
+    sales: 9,
+    value: "$280,000",
+    bounce: "4명",
+    flag: Theme,
+  },
+  resort9: {
+    country: "한화리조트 수안보",
+    sales: 11,
+    value: "$330,000",
+    bounce: "6명",
+    flag: Theme,
+  },
+  resort10: {
+    country: "한화리조트 산정호수",
+    sales: 13,
+    value: "$470,000",
+    bounce: "5명",
     flag: Theme,
   },
 };
@@ -261,6 +310,34 @@ const temes = {
                       label: '워터파크',
                       data: [100, 140, 150],
                     },
+                    {
+                      label: '한화리조트 양평',
+                      data: [130, 125, 140],
+                    },
+                    {
+                      label: '한화리조트 대천',
+                      data: [115, 135, 125],
+                    },
+                    {
+                      label: '한화리조트 제주',
+                      data: [140, 150, 160],
+                    },
+                    {
+                      label: '한화리조트 백암',
+                      data: [105, 130, 120],
+                    },
+                    {
+                      label: '한화리조트 지리산',
+                      data: [125, 115, 135],
+                    },
+                    {
+                      label: '한화리조트 수안보',
+                      data: [110, 145, 120],
+                    },
+                    {
+                      label: '한화리조트 산정호수',
+                      data: [130, 140, 150],
+                    },
                   ],
                 }"
               />
@@ -336,7 +413,10 @@ const temes = {
                   <h6 class="mb-3">테마파크 관리</h6>
                 </div>
               </div>
-              <div class="table-responsive">
+              <div
+                class="table-responsive"
+                style="max-height: 300px; overflow-y: auto"
+              >
                 <table class="table align-items-center">
                   <tbody>
                     <tr v-for="(teme, index) in temes" :key="index">
