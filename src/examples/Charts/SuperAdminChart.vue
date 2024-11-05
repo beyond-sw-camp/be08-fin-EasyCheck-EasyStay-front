@@ -104,7 +104,7 @@ onMounted(() => {
             tension: 0.4,
             borderWidth: 0,
             pointRadius: 0,
-            borderColor: "#f06161",
+            borderColor: "#fd8a69",
             backgroundColor: gradientStroke1,
             // eslint-disable-next-line no-dupe-keys
             borderWidth: 3,
@@ -117,7 +117,7 @@ onMounted(() => {
             tension: 0.4,
             borderWidth: 0,
             pointRadius: 0,
-            borderColor: "#36a2eb",
+            borderColor: "#ffcd4a",
             // eslint-disable-next-line no-dupe-keys
             borderWidth: 3,
             backgroundColor: gradientStroke2,
@@ -130,7 +130,7 @@ onMounted(() => {
             tension: 0.4,
             borderWidth: 0,
             pointRadius: 0,
-            borderColor: "#4bc0c0",
+            borderColor: "#afd485",
             // eslint-disable-next-line no-dupe-keys
             borderWidth: 3,
             backgroundColor: gradientStroke3,
@@ -143,7 +143,7 @@ onMounted(() => {
             tension: 0.4,
             borderWidth: 0,
             pointRadius: 0,
-            borderColor: "#ffdf00",
+            borderColor: "#82cbc4",
             // eslint-disable-next-line no-dupe-keys
             borderWidth: 3,
             backgroundColor: gradientStroke4,
@@ -156,7 +156,7 @@ onMounted(() => {
             tension: 0.4,
             borderWidth: 0,
             pointRadius: 0,
-            borderColor: "#9966ff",
+            borderColor: "#58ccff",
             // eslint-disable-next-line no-dupe-keys
             borderWidth: 3,
             backgroundColor: gradientStroke5,
@@ -169,7 +169,7 @@ onMounted(() => {
             tension: 0.4,
             borderWidth: 0,
             pointRadius: 0,
-            borderColor: "#ff9f40",
+            borderColor: "#0e6ca5",
             // eslint-disable-next-line no-dupe-keys
             borderWidth: 3,
             backgroundColor: gradientStroke6,
@@ -182,7 +182,7 @@ onMounted(() => {
             tension: 0.4,
             borderWidth: 0,
             pointRadius: 0,
-            borderColor: "#40e0d0",
+            borderColor: "#9fa9d8",
             // eslint-disable-next-line no-dupe-keys
             borderWidth: 3,
             backgroundColor: gradientStroke7,
@@ -195,7 +195,7 @@ onMounted(() => {
             tension: 0.4,
             borderWidth: 0,
             pointRadius: 0,
-            borderColor: "#ff69b4",
+            borderColor: "#b96bc6",
             // eslint-disable-next-line no-dupe-keys
             borderWidth: 3,
             backgroundColor: gradientStroke8,
@@ -208,7 +208,7 @@ onMounted(() => {
             tension: 0.4,
             borderWidth: 0,
             pointRadius: 0,
-            borderColor: "#00ced1",
+            borderColor: "#fb7a09",
             // eslint-disable-next-line no-dupe-keys
             borderWidth: 3,
             backgroundColor: gradientStroke9,
@@ -221,7 +221,7 @@ onMounted(() => {
             tension: 0.4,
             borderWidth: 0,
             pointRadius: 0,
-            borderColor: "#808080",
+            borderColor: "#000000",
             // eslint-disable-next-line no-dupe-keys
             borderWidth: 3,
             backgroundColor: gradientStroke10,

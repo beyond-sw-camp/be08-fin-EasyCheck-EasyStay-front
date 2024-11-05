@@ -5,7 +5,16 @@ import MiniStatisticsCard from "@/examples/Cards/MiniStatisticsCard.vue";
 import SuperAdminChart from "@/examples/Charts/SuperAdminChart.vue";
 import SuperAdminChart2 from "@/examples/Charts/SuperAdminChart2.vue";
 import Theme from "@/assets/img/icons/flags/teme.png";
-import Hotel from "@/assets/img/icons/flags/Hotel.png";
+import Hotel1 from "@/assets/img/icons/flags/Hotel1.png";
+import Hotel2 from "@/assets/img/icons/flags/Hotel2.png";
+import Hotel3 from "@/assets/img/icons/flags/Hotel3.png";
+import Hotel4 from "@/assets/img/icons/flags/Hotel4.png";
+import Hotel5 from "@/assets/img/icons/flags/Hotel5.png";
+import Hotel6 from "@/assets/img/icons/flags/Hotel6.png";
+import Hotel7 from "@/assets/img/icons/flags/Hotel7.png";
+import Hotel8 from "@/assets/img/icons/flags/Hotel8.png";
+import Hotel9 from "@/assets/img/icons/flags/Hotel9.png";
+import Hotel10 from "@/assets/img/icons/flags/Hotel10.png";
 
 import { onMounted } from "vue";
 
@@ -18,70 +27,70 @@ const sales = {
     sales: 10,
     value: "$288,000",
     bounce: "2명",
-    flag: Hotel,
+    flag: Hotel1,
   },
   germany: {
     country: "B리조트",
     sales: 10,
     value: "$360,000",
     bounce: "4명",
-    flag: Hotel,
+    flag: Hotel2,
   },
   britain: {
     country: "C리조트",
     sales: 10,
     value: "$460,000",
     bounce: "6명",
-    flag: Hotel,
+    flag: Hotel3,
   },
   brasil: {
     country: "D리조트",
     sales: 10,
     value: "$1,208,000",
     bounce: "2명",
-    flag: Hotel,
+    flag: Hotel4,
   },
   canada: {
     country: "E리조트",
     sales: 12,
     value: "$320,000",
     bounce: "3명",
-    flag: Hotel,
+    flag: Hotel5,
   },
   australia: {
     country: "A호텔",
     sales: 11,
     value: "$410,000",
     bounce: "5명",
-    flag: Hotel,
+    flag: Hotel6,
   },
   france: {
     country: "B호텔",
     sales: 9,
     value: "$540,000",
     bounce: "4명",
-    flag: Hotel,
+    flag: Hotel7,
   },
   italy: {
     country: "C호텔",
     sales: 8,
     value: "$1,350,000",
     bounce: "3명",
-    flag: Hotel,
+    flag: Hotel8,
   },
   spain: {
     country: "D호텔",
     sales: 15,
     value: "$450,000",
     bounce: "2명",
-    flag: Hotel,
+    flag: Hotel9,
   },
   japan: {
     country: "E호텔",
     sales: 14,
     value: "$520,000",
     bounce: "3명",
-    flag: Hotel,
+    flag: Hotel10,
   },
 };
 // 객실 관리
