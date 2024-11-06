@@ -71,7 +71,7 @@ const handleLogin = async () => {
                     로그인
                   </h4>
                   <p class="mb-0" style="font-size: 20px">
-                    Easy Stay 관리자 로그인
+                    Easy Stay 관리자 로그인 입니다.
                   </p>
                 </div>
                 <div class="card-body">
