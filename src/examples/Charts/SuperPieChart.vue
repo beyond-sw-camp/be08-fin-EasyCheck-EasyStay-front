@@ -1,17 +1,9 @@
 <template>
-  <div
-    style="
-      max-width: 700px;
-      height: 590px;
-      background-color: white;
-      padding: 50px;
-      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-      border-radius: 10px;
-    "
-  >
-    <canvas ref="chartCanvas" style="max-height: 700px"></canvas>
+  <div class="chart-container">
+    <canvas ref="chartCanvas"></canvas>
   </div>
 </template>
+
 <script setup>
 import { ref, onMounted, nextTick } from "vue";
 import {
@@ -24,7 +16,48 @@ import {
 
 ChartJS.register(Title, Tooltip, Legend, ArcElement);
 
-// 차트 옵션 설정
+const chartCanvas = ref(null);
+
+// 이전 데이터의 평균값을 계산
+const calculateTotal = () => {
+  // 객실 매출 (10개 시설의 11개월 평균)
+  const roomRevenue =
+    [
+      68000,
+      58000,
+      42000,
+      48000,
+      45000,
+      38000,
+      32000,
+      28000,
+      38000,
+      32000, // 1월
+    ].reduce((a, b) => a + b, 0) * 11; // 11개월 합계
+
+  // 테마파크 매출 (10개 시설의 11개월 평균)
+  const themeParkRevenue =
+    [
+      4800,
+      2200,
+      3500,
+      5200,
+      3800,
+      2800,
+      4200,
+      3200,
+      4500,
+      9800, // 1월
+    ].reduce((a, b) => a + b, 0) * 11; // 11개월 합계
+
+  return {
+    room: roomRevenue,
+    themePark: themeParkRevenue,
+  };
+};
+
+const totals = calculateTotal();
+
 const chartOptions = {
   responsive: true,
   maintainAspectRatio: false,
@@ -36,7 +69,17 @@ const chartOptions = {
       display: true,
       text: "총 객실/테마파크 매출 비율",
       font: {
-        size: 24, // 글씨 크기를 24px로 설정
+        size: 24,
+      },
+    },
+    tooltip: {
+      callbacks: {
+        label: function (context) {
+          const value = context.raw;
+          const total = context.dataset.data.reduce((a, b) => a + b, 0);
+          const percentage = ((value / total) * 100).toFixed(1);
+          return `${context.label}: ${value.toLocaleString()}만원 (${percentage}%)`;
+        },
       },
     },
   },
@@ -50,37 +93,30 @@ const chartOptions = {
   },
 };
 
-// 차트 배경색을 하얀색으로 설정하는 beforeDraw 커스텀 훅 추가
 const backgroundColorPlugin = {
   id: "customCanvasBackgroundColor",
   beforeDraw: (chart) => {
     const ctx = chart.canvas.getContext("2d");
     ctx.save();
     ctx.globalCompositeOperation = "destination-over";
-    ctx.fillStyle = "white"; // 배경색을 하얀색으로 설정
+    ctx.fillStyle = "white";
     ctx.fillRect(0, 0, chart.width, chart.height);
     ctx.restore();
   },
 };
 
-// DOM이 렌더링된 후에 차트를 그리기 위한 ref와 onMounted
-const chartCanvas = ref(null);
-
 onMounted(async () => {
-  await nextTick(); // DOM이 완전히 렌더링된 후 차트 생성
+  await nextTick();
   if (chartCanvas.value) {
     const ctx = chartCanvas.value.getContext("2d");
 
-    // 그라데이션 색상 설정
-    // 노을 색상 그라데이션 설정
     const sunsetGradient1 = ctx.createLinearGradient(0, 0, 0, 500);
-    sunsetGradient1.addColorStop(0, "#FFB74D"); // 따뜻한 노란색
-    sunsetGradient1.addColorStop(1, "#FF6F61"); // 부드러운 오렌지색
+    sunsetGradient1.addColorStop(0, "#FFB74D");
+    sunsetGradient1.addColorStop(1, "#FF6F61");
 
-    // 바다 색상 그라데이션 설정
     const oceanGradient1 = ctx.createLinearGradient(0, 0, 0, 500);
-    oceanGradient1.addColorStop(0, "#A7DFF7"); // 연한 하늘색
-    oceanGradient1.addColorStop(1, "#3F87A6"); // 짙은 바다색
+    oceanGradient1.addColorStop(0, "#A7DFF7");
+    oceanGradient1.addColorStop(1, "#3F87A6");
 
     new ChartJS(ctx, {
       type: "pie",
@@ -89,12 +125,8 @@ onMounted(async () => {
         datasets: [
           {
             label: "총 객실/테마파크 매출 비율",
-            data: [360000, 460000],
-            backgroundColor: [
-              //   deluxeGradient,
-              sunsetGradient1, // 첫 번째 나뭇잎 초록색 그라데이션
-              oceanGradient1, // 두 번째 나뭇잎 초록색 그라데이션
-            ],
+            data: [totals.room, totals.themePark],
+            backgroundColor: [sunsetGradient1, oceanGradient1],
           },
         ],
       },
@@ -104,3 +136,19 @@ onMounted(async () => {
   }
 });
 </script>
+
+<style scoped>
+.chart-container {
+  max-width: 700px;
+  height: 590px;
+  background-color: white;
+  padding: 50px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+}
+
+canvas {
+  width: 100% !important;
+  height: 100% !important;
+}
+</style>

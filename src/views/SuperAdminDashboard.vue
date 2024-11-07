@@ -1,6 +1,7 @@
 <!-- 최종 관리자 대시보드 -->
 
 <script setup>
+import { ref } from "vue";
 import MiniStatisticsCard from "@/examples/Cards/MiniStatisticsCard.vue";
 import SuperAdminChart from "@/examples/Charts/SuperAdminChart.vue";
 import SuperAdminChart2 from "@/examples/Charts/SuperAdminChart2.vue";
@@ -16,169 +17,312 @@ import Hotel8 from "@/assets/img/icons/flags/Hotel8.png";
 import Hotel9 from "@/assets/img/icons/flags/Hotel9.png";
 import Hotel10 from "@/assets/img/icons/flags/Hotel10.png";
 
-import { onMounted } from "vue";
-
-onMounted(() => {});
-
-// 객실 관리
-const sales = {
+const sales = ref({
   us: {
-    country: "A리조트",
+    country: "한화 설악 쏘라노",
     sales: 10,
-    value: "$288,000",
+    value: "85,000만원",
     bounce: "2명",
     flag: Hotel1,
   },
   germany: {
-    country: "B리조트",
+    country: "한화 거제 벨버디어",
     sales: 10,
-    value: "$360,000",
+    value: "78,000만원",
     bounce: "4명",
     flag: Hotel2,
   },
   britain: {
-    country: "C리조트",
+    country: "한화 산정호수 안시",
     sales: 10,
-    value: "$460,000",
+    value: "52,000만원",
     bounce: "6명",
     flag: Hotel3,
   },
   brasil: {
-    country: "D리조트",
+    country: "스플라스 리솜",
     sales: 10,
-    value: "$1,208,000",
+    value: "48,000만원",
     bounce: "2명",
     flag: Hotel4,
   },
   canada: {
-    country: "E리조트",
+    country: "인스파이어드 리조트",
     sales: 12,
-    value: "$320,000",
+    value: "62,000만원",
     bounce: "3명",
     flag: Hotel5,
   },
   australia: {
-    country: "A호텔",
+    country: "시그니엘호텔",
     sales: 11,
-    value: "$410,000",
+    value: "92,000만원",
     bounce: "5명",
     flag: Hotel6,
   },
   france: {
-    country: "B호텔",
+    country: "더 플라자호텔",
     sales: 9,
-    value: "$540,000",
+    value: "85,000만원",
     bounce: "4명",
     flag: Hotel7,
   },
   italy: {
-    country: "C호텔",
+    country: "MATIÈ Osiria",
     sales: 8,
-    value: "$1,350,000",
+    value: "82,000만원",
     bounce: "3명",
     flag: Hotel8,
   },
   spain: {
-    country: "D호텔",
+    country: "여수 벨메르",
     sales: 15,
-    value: "$450,000",
+    value: "78,000만원",
     bounce: "2명",
     flag: Hotel9,
   },
   japan: {
-    country: "E호텔",
+    country: "브리드 양양",
     sales: 14,
-    value: "$520,000",
+    value: "72,000만원",
     bounce: "3명",
     flag: Hotel10,
   },
-};
-// 객실 관리
-const temes = {
+});
+
+const temes = ref({
   resort1: {
     country: "설악 워터피아",
     sales: 10,
-    value: "$288,000",
+    value: "48,000만원",
     bounce: "2명",
     flag: Theme,
   },
   resort2: {
     country: "플라자CC 설악",
     sales: 10,
-    value: "$360,000",
+    value: "22,000만원",
     bounce: "4명",
     flag: Theme,
   },
   resort3: {
-    country: "워터파크",
+    country: "인피니티풀",
     sales: 10,
-    value: "$460,000",
+    value: "35,000만원",
     bounce: "6명",
     flag: Theme,
   },
   resort4: {
-    country: "한화리조트 양평",
+    country: "마리나",
     sales: 8,
-    value: "$220,000",
+    value: "52,000만원",
     bounce: "3명",
     flag: Theme,
   },
   resort5: {
-    country: "한화리조트 대천",
+    country: "산정 에코 물놀이장",
     sales: 12,
-    value: "$390,000",
+    value: "38,000만원",
     bounce: "5명",
     flag: Theme,
   },
   resort6: {
-    country: "한화리조트 제주",
+    country: "온천 사우나",
     sales: 15,
-    value: "$500,000",
+    value: "28,000만원",
     bounce: "7명",
     flag: Theme,
   },
   resort7: {
-    country: "한화리조트 백암",
+    country: "스플라스 워터파크",
     sales: 7,
-    value: "$210,000",
+    value: "42,000만원",
     bounce: "2명",
     flag: Theme,
   },
   resort8: {
-    country: "한화리조트 지리산",
+    country: "라라골프클럽",
     sales: 9,
-    value: "$280,000",
+    value: "32,000만원",
     bounce: "4명",
     flag: Theme,
   },
   resort9: {
-    country: "한화리조트 수안보",
+    country: "스플래시 베이",
     sales: 11,
-    value: "$330,000",
+    value: "45,000만원",
     bounce: "6명",
     flag: Theme,
   },
   resort10: {
-    country: "한화리조트 산정호수",
+    country: "르 스페이스",
     sales: 13,
-    value: "$470,000",
+    value: "98,000만원",
     bounce: "5명",
     flag: Theme,
   },
-};
-</script>
+});
 
+const chartLineData = ref({
+  labels: [
+    "1월",
+    "2월",
+    "3월",
+    "4월",
+    "5월",
+    "6월",
+    "7월",
+    "8월",
+    "9월",
+    "10월",
+    "11월",
+  ],
+  datasets: [
+    {
+      label: "한화 설악 쏘라노",
+      data: [
+        45000, 42000, 52000, 58000, 75000, 48000, 62000, 85000, 68000, 55000,
+        48000,
+      ],
+    },
+    {
+      label: "한화 거제 벨버디어",
+      data: [
+        38000, 35000, 42000, 48000, 62000, 58000, 65000, 78000, 58000, 52000,
+        45000,
+      ],
+    },
+    {
+      label: "한화 산정호수 안시",
+      data: [
+        32000, 28000, 35000, 42000, 48000, 45000, 52000, 68000, 48000, 42000,
+        38000,
+      ],
+    },
+    {
+      label: "스플라스 리솜",
+      data: [
+        28000, 25000, 32000, 38000, 45000, 42000, 48000, 65000, 45000, 38000,
+        35000,
+      ],
+    },
+    {
+      label: "인스파이어드 리조트",
+      data: [
+        42000, 38000, 45000, 52000, 68000, 62000, 72000, 88000, 65000, 58000,
+        52000,
+      ],
+    },
+    {
+      label: "시그니엘호텔",
+      data: [
+        68000, 65000, 72000, 78000, 85000, 82000, 88000, 92000, 85000, 78000,
+        75000,
+      ],
+    },
+    {
+      label: "더 플라자호텔",
+      data: [
+        58000, 55000, 62000, 68000, 75000, 72000, 78000, 85000, 72000, 68000,
+        65000,
+      ],
+    },
+    {
+      label: "MATIÈ Osiria",
+      data: [
+        48000, 45000, 52000, 58000, 65000, 62000, 75000, 82000, 68000, 55000,
+        52000,
+      ],
+    },
+    {
+      label: "여수 벨메르",
+      data: [
+        38000, 35000, 42000, 48000, 55000, 52000, 65000, 78000, 58000, 48000,
+        42000,
+      ],
+    },
+    {
+      label: "브리드 양양",
+      data: [
+        32000, 28000, 35000, 42000, 48000, 45000, 58000, 72000, 52000, 42000,
+        38000,
+      ],
+    },
+  ],
+});
+
+const chartLine2Data = ref({
+  labels: [
+    "1월",
+    "2월",
+    "3월",
+    "4월",
+    "5월",
+    "6월",
+    "7월",
+    "8월",
+    "9월",
+    "10월",
+    "11월",
+  ],
+  datasets: [
+    {
+      label: "설악 워터피아",
+      data: [4800, 2200, 3500, 5200, 3800, 2800, 4200, 3200, 4500, 9800, 4800],
+    },
+    {
+      label: "플라자CC 설악",
+      data: [2200, 2000, 2800, 3200, 3800, 3500, 4200, 5200, 3800, 3200, 2800],
+    },
+    {
+      label: "인피니티풀",
+      data: [3500, 3200, 3800, 4200, 4800, 4500, 5200, 6200, 4800, 4200, 3800],
+    },
+    {
+      label: "마리나",
+      data: [5200, 4800, 5500, 6200, 7200, 6800, 7800, 8800, 7200, 6500, 5800],
+    },
+    {
+      label: "산정 에코 물놀이장",
+      data: [3800, 3500, 4200, 4800, 5500, 5200, 6200, 7500, 5800, 5200, 4800],
+    },
+    {
+      label: "온천 사우나",
+      data: [2800, 2500, 3200, 3800, 4500, 4200, 5200, 6200, 4800, 4200, 3800],
+    },
+    {
+      label: "스플라스 워터파크",
+      data: [4200, 3800, 4500, 5200, 6000, 5800, 6800, 7800, 6200, 5500, 5200],
+    },
+    {
+      label: "라라골프클럽",
+      data: [3200, 3000, 3500, 4200, 4800, 4500, 5200, 6200, 4800, 4200, 3800],
+    },
+    {
+      label: "스플래시 베이",
+      data: [4500, 4200, 4800, 5500, 6200, 5800, 6800, 7800, 6200, 5500, 5200],
+    },
+    {
+      label: "르 스페이스",
+      data: [
+        9800, 9200, 10500, 11200, 12500, 11800, 13500, 15200, 12800, 11500,
+        10800,
+      ],
+    },
+  ],
+});
+</script>
 <template>
   <div class="py-4 container-fluid">
     <div class="row">
       <div class="col-lg-12">
         <div class="row">
           <div class="col-lg-3 col-md-6 col-12">
-            <!-- 모든 숙박시설 중 가장 인기있는 객실 -->
+            <!-- 모든 숙박시설 중 가장 인기있는 지점-->
             <mini-statistics-card
-              title="가장 인기있는 객실"
-              value="Deluxe(디럭스)"
-              description="설악 리조트"
+              title="가장 인기있는 지점"
+              value="시그니엘호텔"
+              description="월 평균 매출 85,000만원"
               :icon="{
                 component: 'ni ni-favourite-28',
                 background: 'bg-gradient-danger',
@@ -190,10 +334,8 @@ const temes = {
             <!-- 모든 숙박시설 객실 총 매출 -->
             <mini-statistics-card
               title="숙박시설 객실 총 매출"
-              value="2,300"
-              description="<span
-                class='text-sm font-weight-bolder text-success'
-                >+3%</span> 전일 대비 상승"
+              value="429,000만원"
+              description="<span class='text-sm font-weight-bolder text-success'>+5.2%</span> 전년 대비 상승"
               :icon="{
                 component: 'ni ni-world',
                 background: 'bg-gradient-warning',
@@ -205,8 +347,8 @@ const temes = {
             <!-- 모든 숙박시설 테마파크 총 매출 -->
             <mini-statistics-card
               title="테마파크 총 매출"
-              value="+1,462"
-              description="현재 누적 문의 개수"
+              value="440,000만원"
+              description="<span class='text-sm font-weight-bolder text-success'>+3.8%</span> 전년 대비 상승"
               :icon="{
                 component: 'ni ni-email-83',
                 background: 'bg-gradient-success',
@@ -218,10 +360,8 @@ const temes = {
             <!-- 모든 숙박시설 합산 총 매출 -->
             <mini-statistics-card
               title="매출 총합"
-              value="$103,430"
-              description="<span
-                class='text-sm font-weight-bolder text-success'
-                >+5%</span> 실시간 변동률"
+              value="869,000만원"
+              description="<span class='text-sm font-weight-bolder text-success'>+4.5%</span> 전년 대비 상승"
               :icon="{
                 component: 'ni ni-money-coins',
                 background: 'bg-gradient-secondary',
@@ -239,51 +379,7 @@ const temes = {
                 id="chart-line-1"
                 title="각 숙박시설 월별 매출 현황"
                 description=""
-                :chart="{
-                  labels: ['Jul', 'Aug', 'Sep'],
-                  datasets: [
-                    {
-                      label: 'A리조트',
-                      data: [180, 200, 320, 400, 280],
-                    },
-                    {
-                      label: 'B리조트',
-                      data: [150, 220, 340, 380, 270],
-                    },
-                    {
-                      label: 'C리조트',
-                      data: [140, 210, 330, 370, 260],
-                    },
-                    {
-                      label: 'D리조트',
-                      data: [120, 180, 290, 340, 230],
-                    },
-                    {
-                      label: 'E리조트',
-                      data: [100, 160, 250, 300, 210],
-                    },
-                    {
-                      label: 'A호텔',
-                      data: [220, 280, 400, 450, 320],
-                    },
-                    {
-                      label: 'B호텔',
-                      data: [170, 230, 370, 420, 310],
-                    },
-                    {
-                      label: 'C호텔',
-                      data: [300, 350, 500, 550, 400],
-                    },
-                    {
-                      label: 'D호텔',
-                      data: [250, 300, 480, 530, 390],
-                    },
-                    {
-                      label: 'E호텔',
-                      data: [400, 450, 600, 650, 500],
-                    },
-                  ],
-                }"
+                :chart="chartLineData"
               />
             </div>
           </div>
@@ -295,51 +391,7 @@ const temes = {
                 id="chart-line-2"
                 title="각 테마파크별 매출 현황"
                 description=""
-                :chart="{
-                  labels: ['Aug', 'Sep', 'Oct'],
-                  datasets: [
-                    {
-                      label: '설악 워터피아',
-                      data: [120, 120, 130],
-                    },
-                    {
-                      label: '플라자CC설악',
-                      data: [110, 160, 100],
-                    },
-                    {
-                      label: '워터파크',
-                      data: [100, 140, 150],
-                    },
-                    {
-                      label: '한화리조트 양평',
-                      data: [130, 125, 140],
-                    },
-                    {
-                      label: '한화리조트 대천',
-                      data: [115, 135, 125],
-                    },
-                    {
-                      label: '한화리조트 제주',
-                      data: [140, 150, 160],
-                    },
-                    {
-                      label: '한화리조트 백암',
-                      data: [105, 130, 120],
-                    },
-                    {
-                      label: '한화리조트 지리산',
-                      data: [125, 115, 135],
-                    },
-                    {
-                      label: '한화리조트 수안보',
-                      data: [110, 145, 120],
-                    },
-                    {
-                      label: '한화리조트 산정호수',
-                      data: [130, 140, 150],
-                    },
-                  ],
-                }"
+                :chart="chartLine2Data"
               />
             </div>
           </div>
@@ -369,9 +421,6 @@ const temes = {
                             />
                           </div>
                           <div class="ms-5">
-                            <!-- <p class="mb-0 text-s font-weight-bold">
-                              객실 종류:
-                            </p> -->
                             <h6 class="mb-0 text-m">
                               종류 : {{ sale.country }}
                             </h6>
@@ -380,21 +429,16 @@ const temes = {
                       </td>
                       <td>
                         <div class="text-center">
-                          <!-- <p class="mb-0 text-s font-weight-bold">
-                            객실 총 개수:
-                          </p> -->
                           <h6 class="mb-0 text-sm">개수 : {{ sale.sales }}</h6>
                         </div>
                       </td>
                       <td>
                         <div class="text-center">
-                          <!-- <p class="mb-0 text-s font-weight-bold">가격:</p> -->
                           <h6 class="mb-0 text-sm">가격 : {{ sale.value }}</h6>
                         </div>
                       </td>
                       <td class="text-sm align-middle">
                         <div class="text-center col">
-                          <!-- <p class="mb-0 text-s font-weight-bold">:</p> -->
                           <h6 class="mb-0 text-sm">
                             기준 인원 : {{ sale.bounce }}
                           </h6>
@@ -430,9 +474,6 @@ const temes = {
                             />
                           </div>
                           <div class="ms-5">
-                            <!-- <p class="mb-0 text-s font-weight-bold">
-                              객실 종류:
-                            </p> -->
                             <h6 class="mb-0 text-m">
                               종류 : {{ teme.country }}
                             </h6>
@@ -441,9 +482,6 @@ const temes = {
                       </td>
                       <td>
                         <div class="text-center">
-                          <!-- <p class="mb-0 text-s font-weight-bold">
-                            객실 총 개수:
-                          </p> -->
                           <h6 class="mb-0 text-sm">
                             시설 개수 : {{ teme.sales }}
                           </h6>
@@ -451,7 +489,6 @@ const temes = {
                       </td>
                       <td>
                         <div class="text-center">
-                          <!-- <p class="mb-0 text-s font-weight-bold">가격:</p> -->
                           <h6 class="mb-0 text-sm">
                             입장권 가격 : {{ teme.value }}
                           </h6>
@@ -459,7 +496,6 @@ const temes = {
                       </td>
                       <td class="text-sm align-middle">
                         <div class="text-center col">
-                          <!-- <p class="mb-0 text-s font-weight-bold">:</p> -->
                           <h6 class="mb-0 text-sm">
                             기준 인원 : {{ teme.bounce }}
                           </h6>

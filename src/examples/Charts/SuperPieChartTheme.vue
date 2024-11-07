@@ -1,75 +1,54 @@
 <template>
-  <div
-    style="
-      max-width: 1000px;
-      height: 590px;
-      background-color: white;
-      padding: 50px;
-      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-      border-radius: 10px;
-    "
-  >
-    <!-- 월 선택 탭 -->
-    <div class="month-tabs">
-      <button
-        v-for="(month, index) in months"
-        :key="index"
-        :class="['tab-button', { active: selectedMonth === month.value }]"
-        @click="setMonth(month.value)"
+  <div class="chart-container">
+    <div class="select-container">
+      <select
+        v-model="selectedMonth"
+        class="month-select"
+        @change="setMonth(selectedMonth)"
       >
-        {{ month.label }}
-      </button>
+        <option v-for="month in months" :key="month.value" :value="month.value">
+          {{ month.label }}
+        </option>
+      </select>
     </div>
 
-    <canvas ref="chartCanvas" style="max-height: 700px"></canvas>
+    <canvas ref="chartCanvas"></canvas>
   </div>
 </template>
 
 <script setup>
 import { ref, onMounted, nextTick } from "vue";
-import {
-  Chart as ChartJS,
-  Title,
-  Tooltip,
-  Legend,
-  ArcElement,
-  BarElement,
-  CategoryScale,
-  LinearScale,
-} from "chart.js/auto";
-
-ChartJS.register(
-  Title,
-  Tooltip,
-  Legend,
-  ArcElement,
-  BarElement,
-  CategoryScale,
-  LinearScale
-);
+import { Chart as ChartJS } from "chart.js/auto";
 
 const chartCanvas = ref(null);
-const selectedMonth = ref("march");
+const selectedMonth = ref("1");
 
 const months = [
-  { label: "3월", value: "march" },
-  { label: "4월", value: "april" },
-  { label: "5월", value: "may" },
+  { label: "1월", value: "1" },
+  { label: "2월", value: "2" },
+  { label: "3월", value: "3" },
+  { label: "4월", value: "4" },
+  { label: "5월", value: "5" },
+  { label: "6월", value: "6" },
+  { label: "7월", value: "7" },
+  { label: "8월", value: "8" },
+  { label: "9월", value: "9" },
+  { label: "10월", value: "10" },
+  { label: "11월", value: "11" },
 ];
 
 const monthlyData = {
-  march: [
-    360000, 460000, 1208000, 500000, 600000, 750000, 900000, 650000, 580000,
-    670000,
-  ],
-  april: [
-    300000, 420000, 1100000, 450000, 590000, 700000, 860000, 610000, 540000,
-    630000,
-  ],
-  may: [
-    330000, 440000, 1150000, 480000, 610000, 730000, 890000, 640000, 570000,
-    660000,
-  ],
+  1: [4800, 2200, 3500, 5200, 3800, 2800, 4200, 3200, 4500, 9800],
+  2: [4500, 2000, 3200, 4800, 3500, 2500, 3800, 3000, 4200, 9200],
+  3: [5200, 2800, 3800, 5500, 4200, 3200, 4500, 3500, 4800, 10500],
+  4: [5800, 3200, 4200, 6200, 4800, 3800, 5200, 4200, 5500, 11200],
+  5: [6500, 3800, 4800, 7200, 5500, 4500, 6000, 4800, 6200, 12500],
+  6: [6200, 3500, 4500, 6800, 5200, 4200, 5800, 4500, 5800, 11800],
+  7: [7200, 4200, 5200, 7800, 6200, 5200, 6800, 5200, 6800, 13500],
+  8: [8500, 5200, 6200, 8800, 7500, 6200, 7800, 6200, 7800, 15200],
+  9: [6800, 3800, 4800, 7200, 5800, 4800, 6200, 4800, 6200, 12800],
+  10: [5500, 3200, 4200, 6500, 5200, 4200, 5500, 4200, 5500, 11500],
+  11: [5200, 2800, 3800, 5800, 4800, 3800, 5200, 3800, 5200, 10800],
 };
 
 const setMonth = (month) => {
@@ -81,25 +60,25 @@ const chartOptions = {
   responsive: true,
   maintainAspectRatio: false,
   plugins: {
-    legend: { position: "top" },
-    title: { display: true, text: "테마파크별 매출", font: { size: 24 } },
+    legend: {
+      position: "top",
+      display: false,
+    },
+    title: {
+      display: true,
+      text: "테마파크별 월별 매출 현황",
+      font: { size: 24 },
+    },
   },
-  layout: { padding: { top: 10, left: 10, right: 10, bottom: 10 } },
   scales: {
-    x: { beginAtZero: true },
-    y: { beginAtZero: true },
-  },
-};
-
-const backgroundColorPlugin = {
-  id: "customCanvasBackgroundColor",
-  beforeDraw: (chart) => {
-    const ctx = chart.canvas.getContext("2d");
-    ctx.save();
-    ctx.globalCompositeOperation = "destination-over";
-    ctx.fillStyle = "white";
-    ctx.fillRect(0, 0, chart.width, chart.height);
-    ctx.restore();
+    y: {
+      beginAtZero: true,
+      ticks: {
+        callback: function (value) {
+          return value.toLocaleString() + "만원";
+        },
+      },
+    },
   },
 };
 
@@ -110,86 +89,50 @@ onMounted(async () => {
   if (chartCanvas.value) {
     const ctx = chartCanvas.value.getContext("2d");
 
-    // 그라데이션 색상 설정
-    // 테마파크별 그라데이션 색상 설정
-    const parkAGradient = ctx.createLinearGradient(0, 0, 0, 500);
-    parkAGradient.addColorStop(0, "#FFB74D"); // 밝은 노란색
-    parkAGradient.addColorStop(1, "#FF9800"); // 오렌지색
-
-    const parkBGradient = ctx.createLinearGradient(0, 0, 0, 500);
-    parkBGradient.addColorStop(0, "#FFABAB"); // 연한 빨간색
-    parkBGradient.addColorStop(1, "#FF677D"); // 핑크색
-
-    const parkCGradient = ctx.createLinearGradient(0, 0, 0, 500);
-    parkCGradient.addColorStop(0, "#C8E6C9"); // 연한 초록색
-    parkCGradient.addColorStop(1, "#81C784"); // 초록색
-
-    const parkDGradient = ctx.createLinearGradient(0, 0, 0, 500);
-    parkDGradient.addColorStop(0, "#FF7043"); // 주황색
-    parkDGradient.addColorStop(1, "#FF3D00"); // 짙은 주황색
-
-    const parkEGradient = ctx.createLinearGradient(0, 0, 0, 500);
-    parkEGradient.addColorStop(0, "#90CAF9"); // 연한 파란색
-    parkEGradient.addColorStop(1, "#42A5F5"); // 파란색
-
-    const parkFGradient = ctx.createLinearGradient(0, 0, 0, 500);
-    parkFGradient.addColorStop(0, "#F06292"); // 핑크색
-    parkFGradient.addColorStop(1, "#EC407A"); // 다크 핑크색
-
-    const parkGGradient = ctx.createLinearGradient(0, 0, 0, 500);
-    parkGGradient.addColorStop(0, "#FFD54F"); // 노란색
-    parkGGradient.addColorStop(1, "#FFCA28"); // 깊은 노란색
-
-    const parkHGradient = ctx.createLinearGradient(0, 0, 0, 500);
-    parkHGradient.addColorStop(0, "#FFABAB"); // 연한 빨간색
-    parkHGradient.addColorStop(1, "#FF677D"); // 핑크색
-
-    const parkIGradient = ctx.createLinearGradient(0, 0, 0, 500);
-    parkIGradient.addColorStop(0, "#A5D6A7"); // 연한 초록색
-    parkIGradient.addColorStop(1, "#388E3C"); // 진한 초록색
-
-    const parkJGradient = ctx.createLinearGradient(0, 0, 0, 500);
-    parkJGradient.addColorStop(0, "#FFCCBC"); // 밝은 오렌지색
-    parkJGradient.addColorStop(1, "#D32F2F"); // 짙은 빨간색
+    const gradients = [
+      ["#FFB74D", "#FF9800"], // 설악 워터피아
+      ["#FFABAB", "#FF677D"], // 플라자CC 설악
+      ["#C8E6C9", "#81C784"], // 인피니티풀
+      ["#FF7043", "#FF3D00"], // 마리나
+      ["#90CAF9", "#42A5F5"], // 산정 에코 물놀이장
+      ["#F06292", "#EC407A"], // 온천 사우나
+      ["#FFD54F", "#FFCA28"], // 스플라스 워터파크
+      ["#FFABAB", "#FF677D"], // 라라골프클럽
+      ["#A5D6A7", "#388E3C"], // 스플래시 베이
+      ["#FFCCBC", "#D32F2F"], // 르 스페이스
+    ].map(([color1, color2]) => {
+      const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+      gradient.addColorStop(0, color1);
+      gradient.addColorStop(1, color2);
+      return gradient;
+    });
 
     chart = new ChartJS(ctx, {
       type: "bar",
       data: {
         labels: [
-          "테마파크 A",
-          "테마파크 B",
-          "테마파크 C",
-          "테마파크 D",
-          "테마파크 E",
-          "테마파크 F",
-          "테마파크 G",
-          "테마파크 H",
-          "테마파크 I",
-          "테마파크 J",
-        ], // 테마파크 카테고리 목록
+          "설악 워터피아",
+          "플라자CC 설악",
+          "인피니티풀",
+          "마리나",
+          "산정 에코 물놀이장",
+          "온천 사우나",
+          "스플라스 워터파크",
+          "라라골프클럽",
+          "스플래시 베이",
+          "르 스페이스",
+        ],
         datasets: [
           {
-            label: "각 테마파크별 매출 비율",
             data: monthlyData[selectedMonth.value],
-            backgroundColor: [
-              parkAGradient,
-              parkBGradient,
-              parkCGradient,
-              parkDGradient,
-              parkEGradient,
-              parkFGradient,
-              parkGGradient,
-              parkHGradient,
-              parkIGradient,
-              parkJGradient,
-            ],
+            backgroundColor: gradients,
+            borderRadius: 5,
+            barPercentage: 0.7,
           },
         ],
       },
       options: chartOptions,
-      plugins: [backgroundColorPlugin],
     });
-    updateChartData();
   }
 });
 
@@ -201,35 +144,76 @@ const updateChartData = () => {
 };
 </script>
 
-<style>
-.month-tabs {
+<style scoped>
+.chart-container {
+  max-width: 1000px;
+  height: 590px;
+  background-color: white;
+  padding: 50px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+}
+
+.select-container {
+  margin-bottom: 25px;
   display: flex;
-  justify-content: center;
-  margin-bottom: 20px; /* 여백 추가 */
+  justify-content: flex-end;
+  padding-right: 20px;
 }
 
-.tab-button {
-  background-color: #ffffff; /* 기본 배경색 */
-  border: none; /* 테두리 제거 */
-  border-radius: 8px; /* 모서리 둥글게 */
-  padding: 10px 20px; /* 패딩 추가 */
-  margin: 0 10px; /* 버튼 간격 */
-  font-size: 16px; /* 글자 크기 */
-  font-weight: 600; /* 글자 두께 */
-  color: #555; /* 기본 글자 색상 */
-  cursor: pointer; /* 커서 모양 변경 */
-  transition: all 0.3s ease; /* 부드러운 전환 효과 */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
+.month-select {
+  position: relative;
+  padding: 10px 35px 10px 15px;
+  font-size: 15px;
+  border: 2px solid #e9ecef;
+  border-radius: 8px;
+  background-color: #f8f9fa;
+  cursor: pointer;
+  min-width: 140px;
+  color: #495057;
+  font-weight: 500;
+  outline: none;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%231864ab' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+  background-size: 18px;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
-.tab-button.active {
-  background-color: #a0ceff; /* 선택된 버튼의 배경색 */
-  color: white; /* 선택된 버튼의 글자 색상 */
-  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2); /* 선택된 버튼의 그림자 */
+.month-select:hover {
+  border-color: #1864ab;
+  background-color: white;
 }
 
-.tab-button:hover {
-  background-color: #e7f1ff; /* 호버 시 배경색 변경 */
-  color: #007bff; /* 호버 시 글자 색상 변경 */
+.month-select:focus {
+  border-color: #1864ab;
+  background-color: white;
+  box-shadow: 0 0 0 3px rgba(24, 100, 171, 0.15);
+}
+
+.month-select option {
+  padding: 10px;
+  font-size: 15px;
+  background-color: white;
+  color: #495057;
+}
+
+canvas {
+  width: 100% !important;
+  height: calc(100% - 60px) !important;
+}
+
+@media (max-width: 768px) {
+  .chart-container {
+    padding: 30px;
+    height: 500px;
+  }
+
+  .month-select {
+    font-size: 14px;
+    min-width: 120px;
+  }
 }
 </style>
