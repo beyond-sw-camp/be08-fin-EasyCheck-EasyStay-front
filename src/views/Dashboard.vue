@@ -1,4 +1,5 @@
 <script setup>
+import { ref } from "vue";
 import MiniStatisticsCard from "@/examples/Cards/MiniStatisticsCard.vue";
 import GradientLineChart from "@/examples/Charts/GradientLineChart.vue";
 import GradientLineChart2 from "@/examples/Charts/GradientLineChart2.vue";
@@ -9,63 +10,90 @@ import Royal from "@/assets/img/icons/flags/Royal.png";
 import Platinum from "@/assets/img/icons/flags/Platinum.png";
 import Theme from "@/assets/img/icons/flags/teme.png";
 
-// 객실 관리
-const sales = {
-  us: {
+// 객실 데이터
+const sales = ref({
+  deluxe: {
     country: "Deluxe(디럭스)",
-    sales: 10,
-    value: "288,000만원",
+    sales: 150,
+    value: "288,000원",
     bounce: "2명",
     flag: Deluxe,
   },
-  germany: {
+  suite: {
     country: "Suite(스위트)",
-    sales: 10,
-    value: "360,000만원",
+    sales: 180,
+    value: "360,000원",
     bounce: "4명",
     flag: Suite,
   },
-  britain: {
+  royal: {
     country: "Royal(로얄)",
-    sales: 10,
-    value: "460,000만원",
+    sales: 200,
+    value: "460,000원",
     bounce: "6명",
     flag: Royal,
   },
-  brasil: {
+  platinum: {
     country: "Platinum(플래티넘)",
-    sales: 10,
-    value: "1,208,000만원",
+    sales: 120,
+    value: "1,208,000원",
     bounce: "2명",
     flag: Platinum,
   },
-};
-// 객실 관리
-const temes = {
-  us: {
+});
+
+// 테마파크 데이터
+const temes = ref({
+  waterpia: {
     country: "설악 워터피아",
-    sales: 10,
-    value: "288,000만원",
+    sales: 120,
+    value: "288,000원",
     bounce: "2명",
     flag: Theme,
   },
-  germany: {
+  plaza: {
     country: "플라자CC설악",
-    sales: 10,
-    value: "360,000만원",
+    sales: 110,
+    value: "360,000원",
     bounce: "4명",
     flag: Theme,
   },
-  britain: {
+  waterpark: {
     country: "워터파크",
-    sales: 10,
-    value: "460,000만원",
+    sales: 100,
+    value: "460,000원",
     bounce: "6명",
     flag: Theme,
   },
+});
+
+const themeChartData = {
+  labels: ["Aug", "Sep", "Oct"],
+  datasets: [
+    {
+      label: "설악 워터피아",
+      data: [120, 120, 130],
+    },
+    {
+      label: "플라자CC설악",
+      data: [110, 160, 100],
+    },
+    {
+      label: "워터파크",
+      data: [100, 140, 150],
+    },
+  ],
 };
-// 가장 인기있는 객실, 당일 목표 대비 실적, 문의 개수, 매출
+
+// 통계 데이터
+const statistics = ref({
+  popularRoom: "Deluxe(디럭스)",
+  dailyTarget: "2,300",
+  inquiries: "+1,462",
+  revenue: "$103,430",
+});
 </script>
+
 <template>
   <div class="py-4 container-fluid">
     <div class="row">
@@ -74,7 +102,7 @@ const temes = {
           <div class="col-lg-3 col-md-6 col-12">
             <mini-statistics-card
               title="가장 인기있는 객실"
-              value="Deluxe(디럭스)"
+              :value="statistics.popularRoom"
               description="현재 가장 인기있는 객실"
               :icon="{
                 component: 'ni ni-favourite-28',
@@ -86,10 +114,8 @@ const temes = {
           <div class="col-lg-3 col-md-6 col-12">
             <mini-statistics-card
               title="당일 목표 대비 실적"
-              value="2,300"
-              description="<span
-                class='text-sm font-weight-bolder text-success'
-                >+3%</span> 전일 대비 상승"
+              :value="statistics.dailyTarget"
+              description="<span class='text-sm font-weight-bolder text-success'>+3%</span> 전일 대비 상승"
               :icon="{
                 component: 'ni ni-world',
                 background: 'bg-gradient-warning',
@@ -100,7 +126,7 @@ const temes = {
           <div class="col-lg-3 col-md-6 col-12">
             <mini-statistics-card
               title="문의 개수"
-              value="+1,462"
+              :value="statistics.inquiries"
               description="현재 누적 문의 개수"
               :icon="{
                 component: 'ni ni-email-83',
@@ -112,10 +138,8 @@ const temes = {
           <div class="col-lg-3 col-md-6 col-12">
             <mini-statistics-card
               title="매출"
-              value="$103,430"
-              description="<span
-                class='text-sm font-weight-bolder text-success'
-                >+5%</span> 실시간 변동률"
+              :value="statistics.revenue"
+              description="<span class='text-sm font-weight-bolder text-success'>+5%</span> 실시간 변동률"
               :icon="{
                 component: 'ni ni-money-coins',
                 background: 'bg-gradient-secondary',
@@ -124,67 +148,31 @@ const temes = {
             />
           </div>
         </div>
+
         <!-- 매출 그래프 -->
         <div class="row">
           <div class="col-lg-6 mb-lg">
-            <!-- line chart -->
             <div class="card z-index-2">
               <gradient-line-chart
                 id="chart-line-1"
                 title="각 객실별 매출 현황"
                 description=""
-                :chart="{
-                  labels: ['Aug', 'Sep', 'Oct'],
-                  datasets: [
-                    {
-                      label: '디럭스',
-                      data: [150, 200, 150],
-                    },
-                    {
-                      label: '스위트',
-                      data: [180, 160, 200],
-                    },
-                    {
-                      label: '로얄',
-                      data: [200, 140, 130],
-                    },
-                    {
-                      label: '플래티넘',
-                      data: [120, 180, 170],
-                    },
-                  ],
-                }"
               />
             </div>
           </div>
           <div class="col-lg-6 mb-lg">
-            <!-- line chart -->
             <div class="card z-index-2">
               <gradient-line-chart2
                 id="chart-line-2"
                 title="각 테마파크별 매출 현황"
                 description=""
-                :chart="{
-                  labels: ['Aug', 'Sep', 'Oct'],
-                  datasets: [
-                    {
-                      label: '설악 워터피아',
-                      data: [120, 120, 130],
-                    },
-                    {
-                      label: '플라자CC설악',
-                      data: [110, 160, 100],
-                    },
-                    {
-                      label: '워터파크',
-                      data: [100, 140, 150],
-                    },
-                  ],
-                }"
+                :chart="themeChartData"
               />
             </div>
           </div>
         </div>
+
+        <!-- 객실 & 테마파크 관리 -->
         <div class="row mt-4">
           <div class="col-lg-6 mb-lg-0 mb-4">
             <div class="card">
@@ -196,20 +184,17 @@ const temes = {
               <div class="table-responsive">
                 <table class="table align-items-center">
                   <tbody>
-                    <tr v-for="(sale, index) in sales" :key="index">
+                    <tr v-for="(sale, key) in sales" :key="key">
                       <td class="w-30">
                         <div class="px-1 py-1 d-flex align-items-center">
                           <div class="ms-3">
                             <img
                               :src="sale.flag"
-                              alt="Country flag"
+                              alt="Room type"
                               style="width: 40px; height: 40px"
                             />
                           </div>
                           <div class="ms-5">
-                            <!-- <p class="mb-0 text-s font-weight-bold">
-                              객실 종류:
-                            </p> -->
                             <h6 class="mb-0 text-m">
                               종류 : {{ sale.country }}
                             </h6>
@@ -218,21 +203,18 @@ const temes = {
                       </td>
                       <td>
                         <div class="text-center">
-                          <!-- <p class="mb-0 text-s font-weight-bold">
-                            객실 총 개수:
-                          </p> -->
-                          <h6 class="mb-0 text-sm">개수 : {{ sale.sales }}</h6>
+                          <h6 class="mb-0 text-sm">
+                            현재 예약: {{ sale.sales }}
+                          </h6>
                         </div>
                       </td>
                       <td>
                         <div class="text-center">
-                          <!-- <p class="mb-0 text-s font-weight-bold">가격:</p> -->
                           <h6 class="mb-0 text-sm">가격 : {{ sale.value }}</h6>
                         </div>
                       </td>
                       <td class="text-sm align-middle">
                         <div class="text-center col">
-                          <!-- <p class="mb-0 text-s font-weight-bold">:</p> -->
                           <h6 class="mb-0 text-sm">
                             기준 인원 : {{ sale.bounce }}
                           </h6>
@@ -254,20 +236,17 @@ const temes = {
               <div class="table-responsive">
                 <table class="table align-items-center">
                   <tbody>
-                    <tr v-for="(teme, index) in temes" :key="index">
+                    <tr v-for="(teme, key) in temes" :key="key">
                       <td class="w-30">
                         <div class="px-1 py-1 d-flex align-items-center">
                           <div class="ms-3">
                             <img
                               :src="teme.flag"
-                              alt="Country flag"
+                              alt="Theme park"
                               style="width: 40px; height: 40px"
                             />
                           </div>
                           <div class="ms-5">
-                            <!-- <p class="mb-0 text-s font-weight-bold">
-                              객실 종류:
-                            </p> -->
                             <h6 class="mb-0 text-m">
                               종류 : {{ teme.country }}
                             </h6>
@@ -276,17 +255,13 @@ const temes = {
                       </td>
                       <td>
                         <div class="text-center">
-                          <!-- <p class="mb-0 text-s font-weight-bold">
-                            객실 총 개수:
-                          </p> -->
                           <h6 class="mb-0 text-sm">
-                            시설 개수 : {{ teme.sales }}
+                            현재 예약 : {{ teme.sales }}
                           </h6>
                         </div>
                       </td>
                       <td>
                         <div class="text-center">
-                          <!-- <p class="mb-0 text-s font-weight-bold">가격:</p> -->
                           <h6 class="mb-0 text-sm">
                             입장권 가격 : {{ teme.value }}
                           </h6>
@@ -294,7 +269,6 @@ const temes = {
                       </td>
                       <td class="text-sm align-middle">
                         <div class="text-center col">
-                          <!-- <p class="mb-0 text-s font-weight-bold">:</p> -->
                           <h6 class="mb-0 text-sm">
                             기준 인원 : {{ teme.bounce }}
                           </h6>
