@@ -1,387 +1,233 @@
 <script setup>
-import { onMounted } from "vue";
+import { ref, onMounted } from "vue";
 import Chart from "chart.js/auto";
 
-// 컴포넌트 외부에서 데이터를 받아오기 위한 인터페이스
-const props = defineProps({
-  id: {
-    type: String,
-    required: true,
-  }, // 차트를 표시할 <canvas>의 ID
-  height: {
-    type: String,
-    default: "300",
-  }, // 차트의 높이
-  title: {
-    type: String,
-    default: "",
-  }, // 차트 제목
-  description: {
-    type: String,
-    default: "",
-  }, // 차트 설명
-  chart: {
-    // 차트 데이터와 설정
-    type: Object,
-    required: true,
-    labels: Array, // X축에 표시할 레이블 목록
-    datasets: {
-      // 데이터셋 정보 (여러 개 가능)
-      type: Array,
-      label: String,
-      data: Array,
+const chartId = "theme-bar-chart";
+const title = ref("테마파크별 매출 현황");
+const chartInstance = ref(null);
+
+const chartLine2Data = ref({
+  labels: [
+    "1월",
+    "2월",
+    "3월",
+    "4월",
+    "5월",
+    "6월",
+    "7월",
+    "8월",
+    "9월",
+    "10월",
+    "11월",
+  ],
+  datasets: [
+    {
+      label: "설악 워터피아",
+      data: [4800, 2200, 3500, 5200, 3800, 2800, 4200, 3200, 4500, 9800, 4800],
     },
-  },
+    {
+      label: "플라자CC 설악",
+      data: [2200, 2000, 2800, 3200, 3800, 3500, 4200, 5200, 3800, 3200, 2800],
+    },
+    {
+      label: "인피니티풀",
+      data: [3500, 3200, 3800, 4200, 4800, 4500, 5200, 6200, 4800, 4200, 3800],
+    },
+    {
+      label: "마리나",
+      data: [5200, 4800, 5500, 6200, 7200, 6800, 7800, 8800, 7200, 6500, 5800],
+    },
+    {
+      label: "산정 에코 물놀이장",
+      data: [3800, 3500, 4200, 4800, 5500, 5200, 6200, 7500, 5800, 5200, 4800],
+    },
+    {
+      label: "온천 사우나",
+      data: [2800, 2500, 3200, 3800, 4500, 4200, 5200, 6200, 4800, 4200, 3800],
+    },
+    {
+      label: "스플라스 워터파크",
+      data: [4200, 3800, 4500, 5200, 6000, 5800, 6800, 7800, 6200, 5500, 5200],
+    },
+    {
+      label: "라라골프클럽",
+      data: [3200, 3000, 3500, 4200, 4800, 4500, 5200, 6200, 4800, 4200, 3800],
+    },
+    {
+      label: "스플래시 베이",
+      data: [4500, 4200, 4800, 5500, 6200, 5800, 6800, 7800, 6200, 5500, 5200],
+    },
+    {
+      label: "르 스페이스",
+      data: [
+        9800, 9200, 10500, 11200, 12500, 11800, 13500, 15200, 12800, 11500,
+        10800,
+      ],
+    },
+  ],
 });
 
 onMounted(() => {
-  var gradientLineChart = document.getElementById(props.id).getContext("2d");
+  const ctx = document.getElementById(chartId).getContext("2d");
 
-  var gradientStroke1 = gradientLineChart.createLinearGradient(0, 230, 0, 50);
-  gradientStroke1.addColorStop(1, "rgba(255, 182, 193, 0.2)"); // 매우 연한 #FFB6C1
-  gradientStroke1.addColorStop(0.5, "rgba(255, 182, 193, 0.1)"); // 더 밝고 연한 핑크색
-  gradientStroke1.addColorStop(0, "rgba(255, 182, 193, 0.0)"); // 완전히 투명한 핑크색
+  // 컬러 팔레트 정의
+  const colors = {
+    borders: [
+      "#FFB6C1",
+      "#87ceeb",
+      "#cfcffb",
+      "#82cbc4",
+      "#58ccff",
+      "#0e6ca5",
+      "#9fa9d8",
+      "#b96bc6",
+      "#fb7a09",
+      "#000000",
+    ],
+    backgrounds: [
+      "rgba(255, 182, 193, 0.1)",
+      "rgba(135, 206, 235, 0.1)",
+      "rgba(207, 207, 251, 0.1)",
+      "rgba(130, 203, 196, 0.1)",
+      "rgba(88, 204, 255, 0.1)",
+      "rgba(14, 108, 165, 0.1)",
+      "rgba(159, 169, 216, 0.1)",
+      "rgba(185, 107, 198, 0.1)",
+      "rgba(251, 122, 9, 0.1)",
+      "rgba(0, 0, 0, 0.1)",
+    ],
+  };
 
-  var gradientStroke2 = gradientLineChart.createLinearGradient(0, 230, 0, 50);
-  gradientStroke2.addColorStop(1, "rgba(135, 206, 235, 0.2)"); // 연한 하늘색 #87CEEB
-  gradientStroke2.addColorStop(0.5, "rgba(135, 206, 235, 0.1)"); // 더 연한 하늘색
-  gradientStroke2.addColorStop(0, "rgba(135, 206, 235, 0.0)"); // 투명한 하늘색
-
-  var gradientStroke3 = gradientLineChart.createLinearGradient(0, 230, 0, 50);
-  gradientStroke3.addColorStop(1, "rgba(216, 191, 216, 0.2)"); // 연한 보라색 #D8BFD8
-  gradientStroke3.addColorStop(0.5, "rgba(216, 191, 216, 0.1)"); // 더 연한 보라색
-  gradientStroke3.addColorStop(0, "rgba(216, 191, 216, 0.0)"); // 투명한 보라색
-
-  // 네 번째 그래디언트를 연한 옐로우 계열로 변경
-  var gradientStroke4 = gradientLineChart.createLinearGradient(0, 230, 0, 50);
-  gradientStroke4.addColorStop(1, "rgba(255,255,204,0.3)"); // 연한 옐로우
-  gradientStroke4.addColorStop(0.2, "rgba(255,255,204,0.0)"); // 투명한 옐로우
-
-  // 다섯 번째 그래디언트를 라벤더 계열로 변경
-  var gradientStroke5 = gradientLineChart.createLinearGradient(0, 230, 0, 50);
-  gradientStroke5.addColorStop(1, "rgba(230,230,250,0.3)"); // 라벤더
-  gradientStroke5.addColorStop(0.2, "rgba(230,230,250,0.0)"); // 투명한 라벤더
-
-  // 여섯 번째 그래디언트를 밝은 오렌지 계열로 변경
-  var gradientStroke6 = gradientLineChart.createLinearGradient(0, 230, 0, 50);
-  gradientStroke6.addColorStop(1, "rgba(255,218,185,0.3)"); // 밝은 오렌지
-  gradientStroke6.addColorStop(0.2, "rgba(255,218,185,0.0)"); // 투명한 오렌지
-
-  // 일곱 번째 그래디언트를 연한 청록색 계열로 변경
-  var gradientStroke7 = gradientLineChart.createLinearGradient(0, 230, 0, 50);
-  gradientStroke7.addColorStop(1, "rgba(176,224,230,0.3)"); // 연한 청록색
-  gradientStroke7.addColorStop(0.2, "rgba(176,224,230,0.0)"); // 투명한 청록색
-
-  // 여덟 번째 그래디언트를 파스텔 핑크 계열로 변경
-  var gradientStroke8 = gradientLineChart.createLinearGradient(0, 230, 0, 50);
-  gradientStroke8.addColorStop(1, "rgba(255,182,193,0.3)"); // 파스텔 핑크
-  gradientStroke8.addColorStop(0.2, "rgba(255,182,193,0.0)"); // 투명한 파스텔 핑크
-
-  // 아홉 번째 그래디언트를 청록 계열로 변경
-  var gradientStroke9 = gradientLineChart.createLinearGradient(0, 230, 0, 50);
-  gradientStroke9.addColorStop(1, "rgba(64,224,208,0.3)"); // 청록색
-  gradientStroke9.addColorStop(0.2, "rgba(64,224,208,0.0)"); // 투명한 청록색
-
-  // 열 번째 그래디언트를 밝은 파란색 계열로 변경
-  var gradientStroke10 = gradientLineChart.createLinearGradient(0, 230, 0, 50);
-  gradientStroke10.addColorStop(1, "rgba(173,216,230,0.3)"); // 밝은 파란색
-  gradientStroke10.addColorStop(0.2, "rgba(173,216,230,0.0)"); // 투명한 파란색
-
-  // 중복된 차트 방지를 위해 기존 차트 제거
-  let chartStatus = Chart.getChart(props.id);
-  if (chartStatus != undefined) {
-    chartStatus.destroy();
+  // 기존 차트 제거
+  if (chartInstance.value) {
+    chartInstance.value.destroy();
   }
-  // 네 개의 데이터셋이 있는 경우
-  if (props.chart.datasets.length == 10) {
-    new Chart(gradientLineChart, {
-      type: "bar",
-      data: {
-        labels: props.chart.labels,
-        datasets: [
-          {
-            label: props.chart.datasets[0].label,
-            tension: 0.4,
-            borderWidth: 0,
-            pointRadius: 0,
-            borderColor: "#FFB6C1 ",
-            backgroundColor: gradientStroke1,
-            // eslint-disable-next-line no-dupe-keys
-            borderWidth: 3,
-            fill: true,
-            data: props.chart.datasets[0].data,
-            maxBarThickness: 6,
+
+  chartInstance.value = new Chart(ctx, {
+    type: "bar",
+    data: {
+      labels: chartLine2Data.value.labels,
+      datasets: chartLine2Data.value.datasets.map((dataset, index) => ({
+        label: dataset.label,
+        data: dataset.data,
+        borderColor: colors.borders[index],
+        backgroundColor: colors.backgrounds[index],
+        borderWidth: 2,
+        borderRadius: 5,
+        maxBarThickness: 10,
+      })),
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          display: true,
+          position: "bottom",
+          labels: {
+            usePointStyle: true,
+            padding: 20,
+            font: {
+              size: 11,
+            },
           },
-          {
-            label: props.chart.datasets[1].label,
-            tension: 0.4,
-            borderWidth: 0,
-            pointRadius: 0,
-            borderColor: "#87ceeb",
-            // eslint-disable-next-line no-dupe-keys
-            borderWidth: 3,
-            backgroundColor: gradientStroke2,
-            fill: true,
-            data: props.chart.datasets[1].data,
-            maxBarThickness: 6,
-          },
-          {
-            label: props.chart.datasets[2].label,
-            tension: 0.4,
-            borderWidth: 0,
-            pointRadius: 0,
-            borderColor: "#cfcffb",
-            // eslint-disable-next-line no-dupe-keys
-            borderWidth: 3,
-            backgroundColor: gradientStroke3,
-            fill: true,
-            data: props.chart.datasets[2].data,
-            maxBarThickness: 6,
-          },
-          {
-            label: props.chart.datasets[3].label,
-            tension: 0.4,
-            borderWidth: 0,
-            pointRadius: 0,
-            borderColor: "#82cbc4",
-            // eslint-disable-next-line no-dupe-keys
-            borderWidth: 3,
-            backgroundColor: gradientStroke4,
-            fill: true,
-            data: props.chart.datasets[3].data,
-            maxBarThickness: 6,
-          },
-          {
-            label: props.chart.datasets[4].label,
-            tension: 0.4,
-            borderWidth: 0,
-            pointRadius: 0,
-            borderColor: "#58ccff",
-            // eslint-disable-next-line no-dupe-keys
-            borderWidth: 3,
-            backgroundColor: gradientStroke5,
-            fill: true,
-            data: props.chart.datasets[4].data,
-            maxBarThickness: 6,
-          },
-          {
-            label: props.chart.datasets[5].label,
-            tension: 0.4,
-            borderWidth: 0,
-            pointRadius: 0,
-            borderColor: "#0e6ca5",
-            // eslint-disable-next-line no-dupe-keys
-            borderWidth: 3,
-            backgroundColor: gradientStroke6,
-            fill: true,
-            data: props.chart.datasets[5].data,
-            maxBarThickness: 6,
-          },
-          {
-            label: props.chart.datasets[6].label,
-            tension: 0.4,
-            borderWidth: 0,
-            pointRadius: 0,
-            borderColor: "#9fa9d8",
-            // eslint-disable-next-line no-dupe-keys
-            borderWidth: 3,
-            backgroundColor: gradientStroke7,
-            fill: true,
-            data: props.chart.datasets[6].data,
-            maxBarThickness: 6,
-          },
-          {
-            label: props.chart.datasets[7].label,
-            tension: 0.4,
-            borderWidth: 0,
-            pointRadius: 0,
-            borderColor: "#b96bc6",
-            // eslint-disable-next-line no-dupe-keys
-            borderWidth: 3,
-            backgroundColor: gradientStroke8,
-            fill: true,
-            data: props.chart.datasets[7].data,
-            maxBarThickness: 6,
-          },
-          {
-            label: props.chart.datasets[8].label,
-            tension: 0.4,
-            borderWidth: 0,
-            pointRadius: 0,
-            borderColor: "#fb7a09",
-            // eslint-disable-next-line no-dupe-keys
-            borderWidth: 3,
-            backgroundColor: gradientStroke9,
-            fill: true,
-            data: props.chart.datasets[8].data,
-            maxBarThickness: 6,
-          },
-          {
-            label: props.chart.datasets[9].label,
-            tension: 0.4,
-            borderWidth: 0,
-            pointRadius: 0,
-            borderColor: "#000000",
-            // eslint-disable-next-line no-dupe-keys
-            borderWidth: 3,
-            backgroundColor: gradientStroke10,
-            fill: true,
-            data: props.chart.datasets[9].data,
-            maxBarThickness: 6,
-          },
-        ],
+        },
       },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: {
+      interaction: {
+        intersect: false,
+        mode: "index",
+      },
+      scales: {
+        y: {
+          beginAtZero: true,
+          grid: {
+            drawBorder: false,
+            display: true,
+            drawOnChartArea: true,
+            drawTicks: false,
+            borderDash: [5, 5],
+            color: "rgba(255, 255, 255, 0.1)",
+          },
+          ticks: {
+            padding: 10,
+            color: "#ccc",
+            font: {
+              size: 11,
+            },
+            callback: function (value) {
+              return value.toLocaleString() + "건";
+            },
+          },
+          title: {
+            display: true,
+            text: "이용객 수",
+            color: "#ccc",
+            font: {
+              size: 12,
+              weight: "normal",
+            },
+          },
+        },
+        x: {
+          grid: {
+            drawBorder: false,
             display: false,
+            drawOnChartArea: false,
+            drawTicks: false,
           },
-        },
-        interaction: {
-          intersect: false,
-          mode: "index",
-        },
-        scales: {
-          y: {
-            grid: {
-              drawBorder: false,
-              display: true,
-              drawOnChartArea: true,
-              drawTicks: false,
-              borderDash: [5, 5],
-            },
-            ticks: {
-              display: true,
-              padding: 10,
-              color: "#fbfbfb",
-              font: {
-                size: 11,
-                family: "Open Sans",
-                style: "normal",
-                lineHeight: 2,
-              },
+          ticks: {
+            display: true,
+            color: "#ccc",
+            padding: 10,
+            font: {
+              size: 11,
             },
           },
-          x: {
-            grid: {
-              drawBorder: false,
-              display: false,
-              drawOnChartArea: false,
-              drawTicks: false,
-              borderDash: [5, 5],
-            },
-            ticks: {
-              display: true,
-              color: "#ccc",
-              padding: 20,
-              font: {
-                size: 11,
-                family: "Open Sans",
-                style: "normal",
-                lineHeight: 2,
-              },
+          title: {
+            display: true,
+            text: "월별",
+            color: "#ccc",
+            font: {
+              size: 12,
+              weight: "normal",
             },
           },
         },
       },
-    });
-  } else if (props.chart.datasets.length == 1) {
-    new Chart(gradientLineChart, {
-      type: "line",
-      data: {
-        labels: props.chart.labels,
-        datasets: [
-          {
-            label: props.chart.datasets[0].label,
-            tension: 0.4,
-            borderWidth: 0,
-            pointRadius: 0,
-            borderColor: "#ef4d4d",
-            backgroundColor: gradientStroke1,
-            // eslint-disable-next-line no-dupe-keys
-            borderWidth: 3,
-            fill: true,
-            data: props.chart.datasets[0].data,
-            maxBarThickness: 6,
-          },
-        ],
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: {
-            display: false,
-          },
-        },
-        interaction: {
-          intersect: false,
-          mode: "index",
-        },
-        scales: {
-          y: {
-            grid: {
-              drawBorder: false,
-              display: true,
-              drawOnChartArea: true,
-              drawTicks: false,
-              borderDash: [5, 5],
-            },
-            ticks: {
-              display: true,
-              padding: 10,
-              color: "#fbfbfb",
-              font: {
-                size: 11,
-                family: "Open Sans",
-                style: "normal",
-                lineHeight: 2,
-              },
-            },
-          },
-          x: {
-            grid: {
-              drawBorder: false,
-              display: false,
-              drawOnChartArea: false,
-              drawTicks: false,
-              borderDash: [5, 5],
-            },
-            ticks: {
-              display: true,
-              color: "#ccc",
-              padding: 20,
-              font: {
-                size: 11,
-                family: "Open Sans",
-                style: "normal",
-                lineHeight: 2,
-              },
-            },
-          },
-        },
-      },
-    });
-  }
+    },
+  });
 });
 </script>
+
 <template>
   <div class="card z-index-2">
     <div class="pb-0 card-header mb-0">
-      <h6>{{ props.title }}</h6>
-      <!--  eslint-disable-next-line vue/no-v-html -->
-      <p v-if="props.description" class="text-sm" v-html="props.description" />
+      <h6>{{ title }}</h6>
     </div>
     <div class="p-3 card-body">
       <div class="chart">
-        <canvas
-          :id="props.id"
-          class="chart-canvas"
-          :height="props.height"
-        ></canvas>
+        <canvas :id="chartId" class="chart-canvas" height="300"></canvas>
       </div>
     </div>
   </div>
 </template>
+
+<style scoped>
+.chart-canvas {
+  width: 100%;
+  height: 100%;
+  min-height: 300px;
+}
+
+.card {
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.card-header h6 {
+  color: #344767;
+  font-size: 1rem;
+  margin: 0;
+}
+</style>
