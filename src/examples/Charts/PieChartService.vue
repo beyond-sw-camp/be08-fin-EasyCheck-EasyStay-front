@@ -39,7 +39,7 @@ const chartOptions = {
   maintainAspectRatio: false,
   plugins: {
     legend: {
-      position: "top",
+      display: false, // 범례 숨기기
     },
     title: {
       display: true,
@@ -101,7 +101,7 @@ onMounted(async () => {
         labels: ["부가서비스", "테마파크", "객실", "와인"], // 카테고리 유지
         datasets: [
           {
-            label: "각 부가서비스별 매출 비율",
+            label: "",
             data: [400000, 360000, 460000, 1208000], // 각 카테고리의 데이터
             backgroundColor: [
               lightBlueGradient,

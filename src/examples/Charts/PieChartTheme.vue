@@ -39,7 +39,7 @@ const chartOptions = {
   maintainAspectRatio: false,
   plugins: {
     legend: {
-      position: "top",
+      display: false, // 범례 숨기기
     },
     title: {
       display: true,
@@ -91,7 +91,7 @@ onMounted(async () => {
         labels: ["설악 워터피아", "플라자 CC 설악", "워터파크"], // 카테고리 변경
         datasets: [
           {
-            label: "각 테마파크별 매출 비율",
+            label: "",
             data: [288000, 360000, 460000], // 각 카테고리의 데이터
             backgroundColor: colors, // 각 카테고리의 색상
           },

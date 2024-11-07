@@ -14,28 +14,28 @@ const sales = {
   us: {
     country: "Deluxe(디럭스)",
     sales: 10,
-    value: "$288,000",
+    value: "288,000만원",
     bounce: "2명",
     flag: Deluxe,
   },
   germany: {
     country: "Suite(스위트)",
     sales: 10,
-    value: "$360,000",
+    value: "360,000만원",
     bounce: "4명",
     flag: Suite,
   },
   britain: {
     country: "Royal(로얄)",
     sales: 10,
-    value: "$460,000",
+    value: "460,000만원",
     bounce: "6명",
     flag: Royal,
   },
   brasil: {
     country: "Platinum(플래티넘)",
     sales: 10,
-    value: "$1,208,000",
+    value: "1,208,000만원",
     bounce: "2명",
     flag: Platinum,
   },
@@ -45,21 +45,21 @@ const temes = {
   us: {
     country: "설악 워터피아",
     sales: 10,
-    value: "$288,000",
+    value: "288,000만원",
     bounce: "2명",
     flag: Theme,
   },
   germany: {
     country: "플라자CC설악",
     sales: 10,
-    value: "$360,000",
+    value: "360,000만원",
     bounce: "4명",
     flag: Theme,
   },
   britain: {
     country: "워터파크",
     sales: 10,
-    value: "$460,000",
+    value: "460,000만원",
     bounce: "6명",
     flag: Theme,
   },
@@ -132,7 +132,7 @@ const temes = {
               <gradient-line-chart
                 id="chart-line-1"
                 title="각 객실별 매출 현황"
-                description="" 
+                description=""
                 :chart="{
                   labels: ['Aug', 'Sep', 'Oct'],
                   datasets: [

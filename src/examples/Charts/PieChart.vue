@@ -75,16 +75,16 @@ onMounted(async () => {
 
     // 나뭇잎 초록색 계열 그라데이션 설정
     const leafGradient1 = ctx.createLinearGradient(0, 0, 0, 500);
-    leafGradient1.addColorStop(0, "#A8D5BA"); // 연한 초록색
-    leafGradient1.addColorStop(1, "#4BB543"); // 진한 초록색
+    leafGradient1.addColorStop(0, "#ADD8E6"); // 연한 초록색
+    leafGradient1.addColorStop(1, "#4682B4"); // 진한 초록색
 
     const leafGradient2 = ctx.createLinearGradient(0, 0, 0, 500);
-    leafGradient2.addColorStop(0, "#C1E1C1"); // 밝은 연두색
-    leafGradient2.addColorStop(1, "#3B8A3A"); // 중간 초록색
+    leafGradient2.addColorStop(0, "#FFB2C2"); // 밝은 연두색
+    leafGradient2.addColorStop(1, "#FFB2C2"); // 중간 초록색
 
     const leafGradient3 = ctx.createLinearGradient(0, 0, 0, 500);
-    leafGradient3.addColorStop(0, "#E3F8E3"); // 아주 연한 초록색
-    leafGradient3.addColorStop(1, "#007A33"); // 깊은 초록색
+    leafGradient3.addColorStop(0, "#FF7E5F"); // 아주 연한 초록색
+    leafGradient3.addColorStop(1, "#FEB47B"); // 깊은 초록색
 
     new ChartJS(ctx, {
       type: "pie",
