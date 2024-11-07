@@ -41,7 +41,7 @@ const chartOptions = {
   maintainAspectRatio: false,
   plugins: {
     legend: {
-      position: "top",
+      display: false, // 범례 숨기기
     },
     title: {
       display: true,
@@ -111,7 +111,7 @@ onMounted(async () => {
         labels: ["디럭스", "스위트", "로얄", "플래티넘"], // 카테고리 추가
         datasets: [
           {
-            label: "각 객실별 매출 비율",
+            label: "",
             data: [360000, 460000, 1208000, 500000], // 각 카테고리의 데이터
             backgroundColor: [
               deluxeGradient,

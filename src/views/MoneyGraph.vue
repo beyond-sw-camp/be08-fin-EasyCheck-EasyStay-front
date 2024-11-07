@@ -16,7 +16,7 @@ import PieChartTheme from "../examples/Charts/PieChartTheme.vue";
             <div class="card z-index-2">
               <MoneyGraphChart
                 id="chart-line"
-                title="A 리조트 총 매출 현황"
+                title="설악쏘라노 총 매출 현황"
                 description=""
                 :chart="{
                   labels: ['Aug', 'Sep', 'Oct'],
