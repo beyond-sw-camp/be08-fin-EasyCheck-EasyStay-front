@@ -1,11 +1,19 @@
 <script setup>
-import { computed } from "vue";
+import { computed, onMounted } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 
 const store = useStore();
 const isRTL = computed(() => store.state.isRTL);
 const router = useRouter();
+
+const accommodationName = computed(
+  () => store.getters["admin/manageAccommodationName"]
+);
+
+onMounted(async () => {
+  await store.dispatch("admin/fetchManagerAccommodation");
+});
 
 // 로그아웃 함수 정의
 const handleLogout = () => {
@@ -41,7 +49,7 @@ const handleLogout = () => {
               class="fa fa-mountain icon"
               style="color: #036c13; font-size: 1.4em"
             ></i>
-            <p class="name-title">설악 리조트</p>
+            <p class="name-title">{{ accommodationName }}</p>
           </div>
         </div>
 

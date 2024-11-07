@@ -9,6 +9,7 @@ import theme from "./modules/theme";
 import suggestion from "./modules/suggestion";
 import pay from "./modules/pay";
 import event from "./modules/event";
+import admin from "./modules/admin";
 
 export default createStore({
   modules: {
@@ -47,6 +48,10 @@ export default createStore({
     event: {
       namespaced: true,
       ...event,
+    },
+    admin: {
+      namespaced: true,
+      ...admin,
     },
   },
 });

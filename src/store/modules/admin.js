@@ -1,64 +1,92 @@
 import apiClient from "@/api";
 
 export default {
+  // namespaced가 true인 경우 namespaced로 작성해야 합니다 (오타 수정)
+  namespaced: true, // 'namespace: true'가 아님
+
   state: {
-    // 가장 인기있는 객실, 당일 목표 대비 실적, 문의 개수, 매출 정보 저장할 state
+    managerAccommodation: null,
     operationStats: null,
-    // 각 객실별 매출 현황, 각 테마파크별 매출 현황 저장할 state
     graphStats: null,
-    // 모든 객실
     rooms: [],
-    // 모든 테마파크
     themeParks: [],
   },
-  mutations: {},
+
+  mutations: {
+    // actions에서 직접 state를 수정하는 것은 Vuex 패턴에 맞지 않습니다
+    // mutations를 추가해야 합니다
+    SET_MANAGER_ACCOMMODATION(state, data) {
+      state.managerAccommodation = data;
+    },
+    SET_OPERATION_STATS(state, data) {
+      state.operationStats = data;
+    },
+    SET_GRAPH_STATS(state, data) {
+      state.graphStats = data;
+    },
+    SET_ROOMS(state, data) {
+      state.rooms = data;
+    },
+    SET_THEME_PARKS(state, data) {
+      state.themeParks = data;
+    },
+  },
+
   actions: {
-    // 대시보드 상단에 있는
-    // 가장 인기있는 객실, 당일 목표 대비 실적, 문의 개수, 매출 정보 조회
-    async fetchOperationStats(state) {
+    // actions의 첫 번째 파라미터는 context 객체여야 합니다
+    async fetchManagerAccommodation({ commit }) {
+      // state가 아닌 { commit }
       try {
-        // api 결정되면 주소 적으면 됨
-        const response = await apiClient.get("/");
-        state.operationStats = response.data;
+        const response = await apiClient.get("/admin/accommodation");
+        commit("SET_MANAGER_ACCOMMODATION", response.data); // mutation을 통해 상태 변경
       } catch (err) {
         console.log(err);
-        // 실패할 경우 state null로 초기화
-        state.operationStats = null;
+        commit("SET_MANAGER_ACCOMMODATION", null);
       }
     },
-    // 각 객실별 매출 현황, 각 테마파크별 매출 현황 조회
-    async fetchGraphStats(state) {
+
+    async fetchOperationStats({ commit }) {
       try {
         const response = await apiClient.get("/");
-        state.graphStats = response.data;
+        commit("SET_OPERATION_STATS", response.data);
       } catch (err) {
         console.log(err);
-        // 실패할 경우 state null로 초기화
-        state.graphStats = null;
+        commit("SET_OPERATION_STATS", null);
       }
     },
-    // 모든 객실 불러오기
-    async fetchAllRooms(state) {
+
+    async fetchGraphStats({ commit }) {
       try {
         const response = await apiClient.get("/");
-        state.rooms = response.data;
+        commit("SET_GRAPH_STATS", response.data);
       } catch (err) {
         console.log(err);
-        // 실패할 경우 state 빈 배열로 초기화
-        state.graphStats = [];
+        commit("SET_GRAPH_STATS", null);
       }
     },
-    // 모든 테마파크 불러오기
-    async fetchAllThemeParks(state) {
+
+    async fetchAllRooms({ commit }) {
       try {
         const response = await apiClient.get("/");
-        state.themeParks = response.data;
+        commit("SET_ROOMS", response.data);
       } catch (err) {
         console.log(err);
-        // 실패할 경우 state 빈 배열로 초기화
-        state.themeParks = [];
+        commit("SET_ROOMS", []); // graphStats가 아닌 rooms로 수정
+      }
+    },
+
+    async fetchAllThemeParks({ commit }) {
+      try {
+        const response = await apiClient.get("/");
+        commit("SET_THEME_PARKS", response.data);
+      } catch (err) {
+        console.log(err);
+        commit("SET_THEME_PARKS", []);
       }
     },
   },
-  getters: {},
+
+  getters: {
+    manageAccommodationName: (state) => state.managerAccommodation?.name,
+  },
 };
