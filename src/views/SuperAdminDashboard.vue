@@ -11,11 +11,11 @@ import Hotel2 from "@/assets/img/icons/flags/Hotel2.png";
 import Hotel3 from "@/assets/img/icons/flags/Hotel3.png";
 import Hotel4 from "@/assets/img/icons/flags/Hotel4.png";
 import Hotel5 from "@/assets/img/icons/flags/Hotel5.png";
-import Hotel6 from "@/assets/img/icons/flags/Hotel6.png";
-import Hotel7 from "@/assets/img/icons/flags/Hotel7.png";
-import Hotel8 from "@/assets/img/icons/flags/Hotel8.png";
-import Hotel9 from "@/assets/img/icons/flags/Hotel9.png";
-import Hotel10 from "@/assets/img/icons/flags/Hotel10.png";
+// import Hotel6 from "@/assets/img/icons/flags/Hotel6.png";
+// import Hotel7 from "@/assets/img/icons/flags/Hotel7.png";
+// import Hotel8 from "@/assets/img/icons/flags/Hotel8.png";
+// import Hotel9 from "@/assets/img/icons/flags/Hotel9.png";
+// import Hotel10 from "@/assets/img/icons/flags/Hotel10.png";
 
 const sales = ref({
   us: {
@@ -47,47 +47,47 @@ const sales = ref({
     flag: Hotel4,
   },
   canada: {
-    country: "인스파이어드 리조트",
+    country: "인스파이어 리조트",
     sales: 12,
     value: "62,000만원",
     bounce: "3명",
     flag: Hotel5,
   },
-  australia: {
-    country: "시그니엘호텔",
-    sales: 11,
-    value: "92,000만원",
-    bounce: "5명",
-    flag: Hotel6,
-  },
-  france: {
-    country: "더 플라자호텔",
-    sales: 9,
-    value: "85,000만원",
-    bounce: "4명",
-    flag: Hotel7,
-  },
-  italy: {
-    country: "MATIÈ Osiria",
-    sales: 8,
-    value: "82,000만원",
-    bounce: "3명",
-    flag: Hotel8,
-  },
-  spain: {
-    country: "여수 벨메르",
-    sales: 15,
-    value: "78,000만원",
-    bounce: "2명",
-    flag: Hotel9,
-  },
-  japan: {
-    country: "브리드 양양",
-    sales: 14,
-    value: "72,000만원",
-    bounce: "3명",
-    flag: Hotel10,
-  },
+  // australia: {
+  //   country: "시그니엘호텔",
+  //   sales: 11,
+  //   value: "92,000만원",
+  //   bounce: "5명",
+  //   flag: Hotel6,
+  // },
+  // france: {
+  //   country: "더 플라자호텔",
+  //   sales: 9,
+  //   value: "85,000만원",
+  //   bounce: "4명",
+  //   flag: Hotel7,
+  // },
+  // italy: {
+  //   country: "MATIÈ Osiria",
+  //   sales: 8,
+  //   value: "82,000만원",
+  //   bounce: "3명",
+  //   flag: Hotel8,
+  // },
+  // spain: {
+  //   country: "여수 벨메르",
+  //   sales: 15,
+  //   value: "78,000만원",
+  //   bounce: "2명",
+  //   flag: Hotel9,
+  // },
+  // japan: {
+  //   country: "브리드 양양",
+  //   sales: 14,
+  //   value: "72,000만원",
+  //   bounce: "3명",
+  //   flag: Hotel10,
+  // },
 });
 
 const temes = ref({
@@ -148,14 +148,14 @@ const temes = ref({
     flag: Theme,
   },
   resort9: {
-    country: "스플래시 베이",
+    country: "디즈니랜드",
     sales: 11,
     value: "45,000만원",
     bounce: "6명",
     flag: Theme,
   },
   resort10: {
-    country: "르 스페이스",
+    country: "온천 사우나",
     sales: 13,
     value: "98,000만원",
     bounce: "5명",
